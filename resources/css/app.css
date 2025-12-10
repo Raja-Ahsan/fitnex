@@ -1,0 +1,738 @@
+@import 'tailwindcss'; 
+
+
+@theme {
+    --font-primary: 'Orbitron', sans-serif;
+    --font-secondary: 'Space Grotesk', sans-serif;
+    --primary-theme: #0079D4;
+    --text-black: #000;
+    --dim-white: #ffffff61;
+    --para-white: #ffffffc7;
+    --breakpoint-xxl: 100rem;
+}
+
+/* global css */
+body,
+html {
+    overflow-x: hidden;
+}
+
+body {
+    font-family: var(--font-primary);
+}
+
+.container {
+    @apply mx-auto px-[10px];
+}
+
+.primary-theme {
+    color: var(--primary-theme);
+}
+
+.bg-primary-theme {
+    background-color: var(--primary-theme);
+}
+
+.para-white {
+    color: var(--para-white);
+}
+
+/* global css end here */
+
+.border-bottom {
+    @apply border-b;
+    border-color: var(--dim-white);
+}
+
+.btn {
+    @apply px-[20px] py-[10px] rounded-[8px] font-bold;
+    font-family: var(--font-secondary);
+}
+
+.primary-btn {
+    @apply text-white;
+    background-color: var(--primary-theme);
+}
+
+.header .primary-btn {
+    @apply p-[10px] md:px-[20px] md:py-[12px] text-[12px];
+}
+
+.label-area {
+    @apply text-black py-[8px] px-[30px] rounded-[60px] font-bold;
+    font-family: var(--font-secondary);
+    background: linear-gradient(rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.8) 100%);
+}
+
+.hero-banner {
+    /* background: url('/images/hero-banner.png') no-repeat center center; */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    @apply py-[80px] lg:py-[100px] xl:py-[150px] xxl:py-[200px] relative z-[1];
+}
+.listing-banner::before,
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #00000059;
+    z-index: -1;
+}
+
+.md-circle {
+    @apply w-[20px] h-[20px] rounded-full;
+}
+
+.para {
+    @apply text-[20px] font-medium;
+    font-family: var(--font-secondary);
+}
+
+
+
+.our-services-item {
+    @apply relative overflow-hidden;
+}
+
+.our-services-content {
+    @apply absolute top-0 left-0 w-full h-full flex items-center justify-center z-[3];
+    transform: translateY(100%);
+    transition: transform 0.4s ease-in-out;
+}
+
+.our-services-item:hover .our-services-content {
+    transform: translateY(0);
+}
+
+.our-services-item::before {
+    @apply absolute top-0 left-0 w-full h-full bg-[#00000040] z-[2];
+    content: '';
+}
+
+.rotate-text {
+    transform-origin: 0 0;
+    transform: rotate(90deg);
+}
+
+.rotate-text h4 {
+    @apply font-bold;
+}
+
+.rotate-text h4:first-child {
+    @apply text-[24px];
+}
+
+.rotate-text h4:last-child {
+    @apply text-[36px];
+}
+
+.testi-content {
+    @apply bg-[#121212] px-[20px] py-[30px] min-h-[310px];
+}
+
+.stars i {
+    @apply text-[#FFD700] text-[23px];
+}
+
+.fitness-journey-slider .slick-slide,
+.testimonials-slider .slick-slide {
+    @apply px-[20px];
+}
+
+.label-field {
+    @apply text-white mb-[10px];
+    font-family: var(--font-secondary);
+}
+
+.input-field {
+    @apply bg-[#1A1A1A] rounded-[8px] p-[20px] w-full;
+    color: var(--para-white);
+    font-family: var(--font-secondary);
+}
+
+.field-wrap {
+    @apply flex flex-col;
+}
+
+.select-field {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    @apply relative;
+}
+
+.select-field:focus {
+    outline: none;
+}
+
+.custom-select-wrapper .custom-arrow {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 18px;
+}
+
+.submit-btn {
+    @apply py-[20px] text-[20px] font-bold;
+    font-family: var(--font-secondary);
+}
+
+.footer-links li {
+    @apply mb-[10px];
+}
+
+.footer-links a {
+    @apply text-white;
+    font-family: var(--font-secondary);
+}
+
+.social-icons {
+    @apply flex gap-x-[10px];
+}
+
+.social-icons li {
+    @apply flex items-center justify-center w-[40px] h-[40px] bg-white;
+}
+
+.social-icons li a {
+    @apply flex items-center justify-center;
+}
+
+.social-icons li i {
+    @apply text-[23px] text-black;
+}
+
+/* Slight scale for active slides, but only apply to the center one */
+.fitness-journey-slider .slick-current.slick-active.slick-center img {
+    transform: scale(1.5);
+    /* Slight scale for active images */
+    transition: transform 0.3s ease-in-out;
+}
+
+.fitness-journey-slider .slick-slide {
+    transform: scale(0.8);
+    /* Slight scale for active images */
+    transition: transform 0.3s ease-in-out;
+}
+.testimonials-slider .slick-dots,
+.fitness-journey-slider .slick-dots {
+    background: rgba(207, 189, 189, 0.12);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    max-width: 180px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    bottom: 25px;
+}
+.testimonials-slider .slick-dots li button:before,
+.fitness-journey-slider .slick-dots li button:before {
+    opacity: .25;
+    font-size: 16px;
+    color: #fff;
+}
+.testimonials-slider .slick-dots li.slick-active button:before,
+.fitness-journey-slider .slick-dots li.slick-active button:before {
+    font-size: 16px;
+    opacity: 1;
+}
+.testimonials-slider .slick-dots {
+    bottom: -55px;
+}
+.testimonials-slider .slick-dots li.slick-active button:before,
+.testimonials-slider .slick-dots li button:before {
+    font-size: 12px;
+}
+.primary-nav a {
+    color: var(--para-white);
+}
+
+.primary-navs a.active {
+    color: #0079d4;
+    font-weight: 800;
+}
+
+.primary-navs select {
+    background: transparent !important;
+    border: none !important;
+}
+.primary-nav select option {
+    @apply text-black;
+}
+
+.primary-nav select {
+    color: var(--para-white);
+}
+
+.text-rotate {
+    writing-mode: vertical-lr;
+    transform: rotate(90deg);
+    writing-mode: vertical-lr;
+    transform: rotate(0deg);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    position: relative;
+}
+
+.text-rotate::before {
+    content: '';
+    border-top: 5px solid var(--primary-theme);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    max-width: 60px;
+
+}
+
+.text-rotate h4 {
+    @apply text-[36px] font-bold mt-[20px];
+    color: var(--primary-theme);
+}
+
+.text-rotate span {
+    @apply text-[24px] font-bold text-white mt-[20px];
+}
+
+.expert-trainers-img-wrapper {
+    @apply relative;
+}
+
+.social-links-wrapper a {
+    @apply text-[23px] text-black bg-white w-[40px] h-[40px] flex items-center justify-center mb-[10px];
+}
+
+.social-links-wrapper {
+    @apply absolute top-[20px] left-[20px];
+}
+
+/* Keyframes for scrolling with rotation */
+.slider-01 li,
+.slider-02 li {
+    @apply !flex items-center justify-between gap-x-[20px] uppercase font-bold text-[12px] xl:text-[16px];
+}
+
+.slider-01 li .md-circle {
+    @apply mr-[10px];
+}
+
+.slider-02 li .md-circle {
+    @apply ml-[10px];
+}
+
+.expert-traning-card {
+    @apply rounded-2xl p-[20px] w-full;
+    background-color: var(--primary-theme);
+}
+
+.expert-traning-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    /* Hidden by default */
+    visibility: hidden;
+    /* Hidden by default */
+    padding: 20px;
+    background: var(--primary-theme);
+    /* Dark background */
+    border-radius: 10px;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    /* Prevent interaction with the card until it's visible */
+}
+
+.trainer-card {
+    max-height: 450px;
+ }
+
+/* Show the card when hovering over the image */
+.expert-trainers-img-wrapper:hover .expert-traning-card {
+    opacity: 1;
+    visibility: visible;
+    /* Make the card visible */
+}
+
+.expert-traning-card h4 {
+    @apply text-[30px] font-bold text-white mb-[10px];
+}
+
+.expert-traning-card span {
+    @apply text-[20px] font-bold text-white;
+}
+
+.expert-traning-card p {
+    @apply text-[16px] text-white mt-[10px];
+}
+
+.expoert-traning-card:hover {
+    background-color: var(--primary-theme);
+}
+
+.close-icon i,
+.menu-icon i {
+    display: none;
+}
+
+.our-services-item img {
+    @apply mx-auto;
+}
+
+.our-services-item h4 {
+    @apply text-[28px] md:text-[20px] xxl:text-[28px] font-bold text-center text-white;
+}
+
+.primary-navs select option {
+    @apply text-black;
+}
+
+/* Ensure the next arrow is centered on the current active slide */
+.fitness-journey-slider .slick-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    right: 348px;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+}
+
+/* Optional: Style the arrow to make it visible */
+.fitness-journey-slider .slick-next i {
+    color: white;
+    font-size: 19px;
+
+}
+
+/* Optional: Remove the previous arrow */
+.fitness-journey-slider .slick-prev {
+    display: none;
+}
+
+.fitness-journey-slider .slick-next:before {
+    content: '';
+}
+.primary-btn {
+    @apply border border-transparent;
+}
+.primary-btn:hover {
+    @apply bg-transparent border border-white transition-all duration-300;
+}
+.social-icons li {
+    @apply border border-transparent;
+}
+.social-icons li:hover {
+    @apply bg-transparent border border-white transition-all duration-300;
+}
+.social-icons li:hover i {
+    @apply text-white;
+}
+.sec-hd {
+    @apply text-[36px] font-black mb-[20px] uppercase;
+    color: var(--primary-theme);
+}
+.our-services-item img {
+    @apply object-cover;
+}
+.testi-content,
+.testimonial-item img {
+    @apply max-h-[310px];
+}
+/* responsive */
+@media (max-width: 1440px) {
+    .fitness-journey-slider .slick-next {
+        right: 378px;
+    }
+    .sec-hd {
+        font-size: 70px;
+    }
+}
+
+@media (max-width: 1280px) {
+    .fitness-journey-slider .slick-next {
+        right: 398px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* <---------mobile menu----------> */
+    .close-icon i,
+    .menu-icon i {
+        display: block;
+        z-index: 2;
+        background: var(--secondry-theme);
+        width: 3.5rem;
+        height: 3.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        /* position: absolute;
+    top: 38px;
+    right: 10px; */
+        border-radius: 2px;
+    }
+
+    .close-icon i {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        border-radius: 100%;
+    }
+
+    .primary-navs {
+        transform: translateX(-100%);
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: all ease-in-out 1s;
+        padding: 40px 0 0 20px;
+        z-index: 2;
+        box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+    }
+
+    .primary-navs.active {
+        transform: translateX(0);
+        background-color: #000;
+        width: 70%;
+        overflow: auto;
+        height: 100%;
+    }
+
+    .primary-navs .dropdown-menu {
+        position: static !important;
+        float: none !important;
+        width: 100% !important;
+        margin-top: 0 !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .primary-navs .dropdown-menu li a {
+        padding: 10px 15px !important;
+        color: white !important;
+    }
+}
+
+.slider-01,
+.slider-02 { 
+    position: relative;
+    margin: 0 auto;
+    left: -10%;
+    right: 0;
+    transform-origin: center center;
+    position: absolute;
+    width: 120%;
+}
+
+.slider-01 {
+    transform: rotate(4deg);
+}
+
+.slider-02 {
+    transform: rotate(-4deg);
+}
+
+
+.listing-banner {
+    @apply flex items-center justify-center text-center py-[200px] relative z-[1] text-white;
+}
+.trainer-card {
+    max-height: 450px;
+}
+.trainer-details-img {
+    width: 100%;
+    min-height: 600px;
+    object-fit: cover;
+    object-position: top;
+    max-width: 570px;
+    max-height: 740px;
+}
+
+.listing-banner::before {
+    background-color: #0079d447;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/*font-family: 'Poppins', sans-serif;*/
+/*font-family: 'Roboto Condensed', sans-serif;*/
+.primary-btn {
+  @apply bg-[#0079D4] text-white py-[10px] px-[30px] rounded-[24px] font-secondary;
+}
+
+.primary-navs a {
+  @apply relative;
+}
+
+.primary-navs a.active {
+  @apply text-[#0079D4];
+}
+
+.primary-navs a::before {
+  @apply content-[""] absolute bg-[#0079D4] h-[2px] w-[0%] left-0 -bottom-[5px] rounded-xl duration-300;
+}
+
+.primary-navs a:hover::before {
+  @apply w-[100%];
+}
+
+#mobile-menu {
+  transition: left 0.3s ease-in-out;
+}
+
+.menu-open {
+  left: 0 !important;
+}
+
+/* -webkit-scrollbar-track   */
+::-webkit-scrollbar-track {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-radius: 10px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* -webkit-scrollbar-thumb */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #0079d4 0%, #1a1a1a 50%, #000000 100%);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background-clip: content-box;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* -webkit-scrollbar-thumb:hover */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #0056b3 0%, #2d2d2d 50%, #1a1a1a 100%);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* -webkit-scrollbar-thumb:active */
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(135deg, #004085 0%, #000000 50%, #1a1a1a 100%);
+  transform: scale(1.05);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+/* -webkit-scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  transition: all 0.3s ease;
+}
+
+/* -webkit-scrollbar for horizontal scrollbars */
+::-webkit-scrollbar:horizontal {
+  height: 12px;
+}
+
+/* -webkit-scrollbar-corner */
+::-webkit-scrollbar-corner {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Custom scrollbar for specific containers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #0f0f0f 0%, #1a1a1a 100%);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #0079d4 0%, #1a1a1a 50%, #000000 100%);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #0056b3 0%, #2d2d2d 50%, #1a1a1a 100%);
+  transform: translateY(-1px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Animated scrollbar for special elements */
+.animated-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.animated-scrollbar::-webkit-scrollbar-track {
+  background: rgba(26, 26, 26, 0.9);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.animated-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #0079d4, #1a1a1a, #000000, #0079d4);
+  background-size: 300% 300%;
+  border-radius: 10px;
+  animation: gradientShift 4s ease infinite;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.animated-scrollbar::-webkit-scrollbar-thumb:hover {
+  animation: gradientShift 2s ease infinite;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 121, 212, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Keyframe animation for gradient shift */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Smooth scrollbar appearance */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #0079d4 #1a1a1a;
+}
+
+
+
+   
