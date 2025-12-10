@@ -17,34 +17,37 @@ class TrainerDashboardController extends Controller
 
         // Get statistics
         $stats = [
-            'total_bookings' => TrainerBooking::forTrainer($trainer->id)->count(),
-            'this_month' => TrainerBooking::forTrainer($trainer->id)
+            'total_bookings' => \App\Models\Appointment::where('trainer_id', $trainer->id)->count(),
+            'this_month' => \App\Models\Appointment::where('trainer_id', $trainer->id)
                 ->whereMonth('created_at', Carbon::now()->month)
                 ->count(),
-            'pending' => TrainerBooking::forTrainer($trainer->id)
-                ->where('booking_status', 'pending')
+            'pending' => \App\Models\Appointment::where('trainer_id', $trainer->id)
+                ->where('status', 'pending')
                 ->count(),
-            'total_revenue' => TrainerBooking::forTrainer($trainer->id)
-                ->where('payment_status', 'paid')
+            'total_revenue' => \App\Models\Appointment::where('trainer_id', $trainer->id)
+                ->where(function ($query) {
+                    $query->where('payment_status', 'paid')
+                        ->orWhere('payment_status', 'completed');
+                })
                 ->sum('price'),
         ];
 
         // Get upcoming bookings (next 7 days)
-        $upcomingBookings = TrainerBooking::forTrainer($trainer->id)
-            ->upcoming()
-            ->whereHas('timeSlot', function ($query) {
-                $query->whereBetween('slot_datetime', [
-                    Carbon::now(),
-                    Carbon::now()->addDays(7)
-                ]);
-            })
-            ->with(['user', 'timeSlot.availability'])
-            ->orderBy('created_at', 'desc')
+        $upcomingBookings = \App\Models\Appointment::where('trainer_id', $trainer->id)
+            ->where('status', '!=', 'cancelled')
+            ->where('status', '!=', 'completed')
+            ->whereBetween('appointment_date', [
+                Carbon::now()->startOfDay(),
+                Carbon::now()->addDays(7)->endOfDay()
+            ])
+            ->with(['user'])
+            ->orderBy('appointment_date', 'asc')
+            ->orderBy('appointment_time', 'asc')
             ->limit(5)
             ->get();
 
         // Get recent bookings
-        $recentBookings = TrainerBooking::forTrainer($trainer->id)
+        $recentBookings = \App\Models\Appointment::where('trainer_id', $trainer->id)
             ->with('user')
             ->orderBy('created_at', 'desc')
             ->limit(5)
@@ -63,5 +66,46 @@ class TrainerDashboardController extends Controller
             'recentBookings',
             'availabilities'
         ));
+    }
+    public function profile()
+    {
+        $user = Auth::user();
+        return view('trainer.profile.edit', compact('user'));
+    }
+
+    public function updateProfile(\Illuminate\Http\Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'password' => 'nullable|min:8|confirmed',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if ($request->filled('password')) {
+            $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
+        }
+
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('uploads/user'), $imageName);
+            $user->image = $imageName;
+
+            // Sync with Trainer table
+            $trainer = Trainer::where('created_by', $user->id)->first();
+            if ($trainer) {
+                $trainer->image = $imageName;
+                $trainer->save();
+            }
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully.');
     }
 }

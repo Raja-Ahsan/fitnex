@@ -10,7 +10,7 @@ use App\Models\Package;
 use App\Models\Banner;
 use App\Models\HomeSlider;
 use App\Models\Testimonial;
-use App\Models\AboutUs; 
+use App\Models\AboutUs;
 use App\Models\City;
 use App\Models\MemberDirectory;
 use App\Models\State;
@@ -26,24 +26,24 @@ use Stripe\Exception\CardException;
 use App\Models\Payment;
 use App\Models\JobPost;
 use App\Models\Project;
-use App\Models\PaymentDetail; 
+use App\Models\PaymentDetail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Team;
 use App\Models\Blog;
-use App\Models\Trainer; 
+use App\Models\Trainer;
 use App\Models\BlogCategory;
 class WebController extends Controller
 {
     public function index()
     {
-        $page_title = 'Fitnex'; 
+        $page_title = 'Fitnex';
         $testimonials = Testimonial::where('status', '=', 1)->get();
         $categories = Category::where('status', 1)->get();
         $abouts = AboutUs::where('status', 1)->get();
         $states = City::where('status', 1)->get();
-        $cities = State::where('status', 1)->get(); 
+        $cities = State::where('status', 1)->get();
         $projects = Project::where('status', 1)->get();
-        $homesliders = HomeSlider::where('status',  1)->get();
+        $homesliders = HomeSlider::where('status', 1)->get();
         $trainers = Trainer::where('status', 1)->take(4)->get();
         return view('website.index', compact('abouts', 'categories', 'projects', 'page_title', 'homesliders', 'testimonials', 'cities', 'states', 'trainers'));
     }
@@ -178,8 +178,8 @@ class WebController extends Controller
     }
 
 
-    public function AboutUs() 
-    { 
+    public function AboutUs()
+    {
         $abouts = AboutUs::where('status', 1)->get();
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
         $testimonials = Testimonial::where('status', '=', 1)->get();
@@ -195,14 +195,14 @@ class WebController extends Controller
 
         return view('website.about-us', compact('page_title', 'abouts', 'banner', 'testimonials', 'teams', 'categories', 'page_data'));
     }
-    
-    public function Trainers() 
-    { 
+
+    public function Trainers()
+    {
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
         $categories = Category::where('status', 1)->get();
-        $trainers = Trainer::where('status', 1)->get();
+        $trainers = Trainer::with('user')->where('status', 1)->get();
         $page_title = 'Trainer Listing | FITNEX';
-        return view('website.trainers', compact('page_title',  'banner', 'trainers', 'categories'));
+        return view('website.trainers', compact('page_title', 'banner', 'trainers', 'categories'));
     }
 
     public function TrainerDetail($id)
@@ -215,7 +215,7 @@ class WebController extends Controller
         return view('website.trainer-detail', compact('page_title', 'trainer', 'cities', 'states', 'banner'));
     }
 
-    
+
     /* public function Benefits()
     {
         $abouts = AboutUs::where('status', 1)->get();
@@ -224,7 +224,7 @@ class WebController extends Controller
         $page_title = 'Benefits | FITNEX';
         return view('website.benefits', compact('page_title', 'abouts', 'banner', 'testimonials'));
     } */
-    
+
     /* public function MemberDirectory()
     {
         $abouts = AboutUs::where('status', 1)->get();
@@ -238,29 +238,29 @@ class WebController extends Controller
         return view('website.member-directory', compact('page_title', 'categories', 'member_directories', 'abouts', 'banner'));
     } */
 
-   /*  public function MemberDirectory()
-    {
-        $abouts = AboutUs::where('status', 1)->get();
-        $categories = Category::where('status', 1)->get();
-        $banner = Banner::where('id', 15)->where('status', 1)->first();
-        $page_title = 'Member Directory | FITNEX';
+    /*  public function MemberDirectory()
+     {
+         $abouts = AboutUs::where('status', 1)->get();
+         $categories = Category::where('status', 1)->get();
+         $banner = Banner::where('id', 15)->where('status', 1)->first();
+         $page_title = 'Member Directory | FITNEX';
 
-        $member_directories_raw = MemberDirectory::where('status', 'approved')->get();
-        $member_directories = [];
+         $member_directories_raw = MemberDirectory::where('status', 'approved')->get();
+         $member_directories = [];
 
-        foreach ($member_directories_raw as $member) {
-            $categoryIds = json_decode($member->category_id, true);
-            if (is_array($categoryIds)) {
-                foreach ($categoryIds as $categoryId) {
-                    $member_directories[$categoryId][] = $member;
-                }
-            }
-        }
+         foreach ($member_directories_raw as $member) {
+             $categoryIds = json_decode($member->category_id, true);
+             if (is_array($categoryIds)) {
+                 foreach ($categoryIds as $categoryId) {
+                     $member_directories[$categoryId][] = $member;
+                 }
+             }
+         }
 
-        $all_members = collect($member_directories_raw)->unique('title')->sortBy('title');
+         $all_members = collect($member_directories_raw)->unique('title')->sortBy('title');
 
-        return view('website.member-directory', compact('page_title', 'categories', 'member_directories', 'all_members', 'abouts', 'banner'));
-    } */
+         return view('website.member-directory', compact('page_title', 'categories', 'member_directories', 'all_members', 'abouts', 'banner'));
+     } */
 
 
     /* public function Registration()
@@ -276,7 +276,7 @@ class WebController extends Controller
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
         $page_title = 'Registration | FITNEX';
         $categories = Category::where('status', 1)->get();
-       /*  $packages = Package::where('status', 1)->get(); */
+        /*  $packages = Package::where('status', 1)->get(); */
         return view('website.sign-up', compact('page_title', 'banner', 'categories'));
     }
     public function Blogs()
@@ -294,12 +294,12 @@ class WebController extends Controller
         $events = Event::where('status', 1)->orderBy('date', 'asc')->get();
         return view('website.events', compact('page_title', 'banner', 'events'));
     } */
-   /*  public function Careers()
-    {
-        $banner = Banner::where('id', 19)->where('status', 1)->first();
-        $page_title = 'Careers | FITNEX';
-        return view('website.careers', compact('page_title', 'banner'));
-    } */
+    /*  public function Careers()
+     {
+         $banner = Banner::where('id', 19)->where('status', 1)->first();
+         $page_title = 'Careers | FITNEX';
+         return view('website.careers', compact('page_title', 'banner'));
+     } */
 
     /* public function ProjectHub()
     {
@@ -309,17 +309,17 @@ class WebController extends Controller
         return view('website.project-hub', compact('page_title', 'projects', 'banner'));
     } */
 
-   /*  public function Gallery()
-    {
-        $banner = Banner::where('status', 1)->first();
-        $page_title = 'Gallery | FITNEX';
-        return view('website.gallery', compact('page_title', 'banner'));
-    } */
+    /*  public function Gallery()
+     {
+         $banner = Banner::where('status', 1)->first();
+         $page_title = 'Gallery | FITNEX';
+         return view('website.gallery', compact('page_title', 'banner'));
+     } */
 
     public function ContactUs()
     {
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
-        $page_title = 'Contact Us | FITNEX'; 
+        $page_title = 'Contact Us | FITNEX';
         return view('website.contact-us', compact('page_title', 'banner'));
     }
 
@@ -367,7 +367,7 @@ class WebController extends Controller
         $categories = Category::where('status', 1)->get();
         return view('website.sign-up', compact('page_title', 'banner', 'package', 'categories'));
     }
-    
+
     public function storeUser(Request $request)
     {
         $this->validate($request, [
@@ -382,9 +382,9 @@ class WebController extends Controller
         ]);
 
         try {
-            
+
             if ($request->amount != 0) {
-              
+
                 // Set your Stripe secret key
                 Stripe::setApiKey(config('services.stripe.secret'));
                 // Create a Stripe customer
@@ -399,9 +399,9 @@ class WebController extends Controller
                     'currency' => 'usd',
                     /* 'description' => $request->package_description, */
                 ]);
-              
+
                 if ($response->status === 'succeeded') {
-                    
+
                     // Create the user
                     $user = User::create([
                         'name' => $request->name,
@@ -410,15 +410,15 @@ class WebController extends Controller
                         'password' => Hash::make($request->password),
                         'phone' => $request->phone,
                         'role' => $request->role,
-                       /*  'category_id' => isset($request->category_id) ? json_encode($request->category_id) : null, */
+                        /*  'category_id' => isset($request->category_id) ? json_encode($request->category_id) : null, */
                         'expiry_date' => isset($request->expiry_date) ? date('Y-m-d', strtotime($request->expiry_date)) : null,
                         'status' => 0, // Set as inactive until email is verified
                         /* 'package_id' => $request->package_id, */
                     ]);
-                    
+
                     $user->assignRole($request->input('role'));
                     $userId = $user->id;
-                   
+
                     // Generate and save verification token
                     do {
                         $verify_token = uniqid();
@@ -442,7 +442,7 @@ class WebController extends Controller
                         'paid' => $request->amount,
                         'dues' => '0',
                         'payment_status' => $response->status,
-                      /*   'package_id' => $request->package_id, */
+                        /*   'package_id' => $request->package_id, */
                     ]);
 
                     if ($payment) {
@@ -498,7 +498,7 @@ class WebController extends Controller
     }
 
 
-   
+
     public function __construct()
     {
         $this->middleware(['auth', 'role:EPC Developer'])->only(['OurContractors', 'AgentDetail']);
@@ -534,7 +534,7 @@ class WebController extends Controller
         $page_title = $category->title . ' Details'; // Or a more generic title if preferred
         $abouts = AboutUs::where('status', 1)->get();
         $testimonials = Testimonial::where('status', '=', 1)->get();
-        
+
         // Assuming you have a 'website.service-details' view to display the details
         return view('website.service-details', compact('page_title', 'category', 'abouts', 'testimonials'));
     } */

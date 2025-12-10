@@ -26,13 +26,13 @@ class TrainerBookingController extends Controller
     {
         $trainer = Trainer::where('created_by', Auth::id())->firstOrFail();
 
-        $query = Booking::forTrainer($trainer->id)
-            ->with(['user', 'timeSlot'])
+        $query = \App\Models\Appointment::where('trainer_id', $trainer->id)
+            ->with(['user'])
             ->orderBy('created_at', 'desc');
 
         // Filter by status
         if ($request->filled('status')) {
-            $query->where('booking_status', $request->status);
+            $query->where('status', $request->status);
         }
 
         // Filter by payment status
@@ -42,24 +42,20 @@ class TrainerBookingController extends Controller
 
         // Filter by date range
         if ($request->filled('date_from')) {
-            $query->whereHas('timeSlot', function ($q) use ($request) {
-                $q->where('slot_datetime', '>=', $request->date_from);
-            });
+            $query->whereDate('appointment_date', '>=', $request->date_from);
         }
 
         if ($request->filled('date_to')) {
-            $query->whereHas('timeSlot', function ($q) use ($request) {
-                $q->where('slot_datetime', '<=', $request->date_to);
-            });
+            $query->whereDate('appointment_date', '<=', $request->date_to);
         }
 
         $bookings = $query->paginate(20);
 
         $stats = [
-            'total' => Booking::forTrainer($trainer->id)->count(),
-            'pending' => Booking::forTrainer($trainer->id)->where('booking_status', 'pending')->count(),
-            'confirmed' => Booking::forTrainer($trainer->id)->confirmed()->count(),
-            'completed' => Booking::forTrainer($trainer->id)->where('booking_status', 'completed')->count(),
+            'total' => \App\Models\Appointment::where('trainer_id', $trainer->id)->count(),
+            'pending' => \App\Models\Appointment::where('trainer_id', $trainer->id)->where('status', 'pending')->count(),
+            'confirmed' => \App\Models\Appointment::where('trainer_id', $trainer->id)->where('status', 'confirmed')->count(),
+            'completed' => \App\Models\Appointment::where('trainer_id', $trainer->id)->where('status', 'completed')->count(),
         ];
 
         return view('trainer.bookings.index', compact('bookings', 'stats', 'trainer'));
@@ -68,15 +64,14 @@ class TrainerBookingController extends Controller
     /**
      * Display the specified booking.
      */
-    public function show(Booking $booking)
+    public function show($id)
     {
         $trainer = Trainer::where('created_by', Auth::id())->firstOrFail();
+        $booking = \App\Models\Appointment::with(['user'])->findOrFail($id);
 
         if ($booking->trainer_id !== $trainer->id) {
             abort(403, 'Unauthorized access to this booking.');
         }
-
-        $booking->load(['user', 'timeSlot', 'reschedules']);
 
         return view('trainer.bookings.show', compact('booking'));
     }
@@ -84,19 +79,20 @@ class TrainerBookingController extends Controller
     /**
      * Approve/confirm a booking.
      */
-    public function approve(Booking $booking)
+    public function approve($id)
     {
         $trainer = Trainer::where('created_by', Auth::id())->firstOrFail();
+        $booking = \App\Models\Appointment::findOrFail($id);
 
         if ($booking->trainer_id !== $trainer->id) {
             abort(403, 'Unauthorized access to this booking.');
         }
 
-        if ($booking->payment_status !== 'paid') {
+        if ($booking->payment_status !== 'paid' && $booking->payment_status !== 'completed' && $booking->price > 0) {
             return back()->with('error', 'Cannot approve booking with unpaid status.');
         }
 
-        $booking->update(['booking_status' => 'confirmed']);
+        $booking->update(['status' => 'confirmed']);
 
         // TODO: Send notification to customer
         // TODO: Create Google Calendar event
@@ -107,9 +103,10 @@ class TrainerBookingController extends Controller
     /**
      * Cancel a booking.
      */
-    public function cancel(Request $request, Booking $booking)
+    public function cancel(Request $request, $id)
     {
         $trainer = Trainer::where('created_by', Auth::id())->firstOrFail();
+        $booking = \App\Models\Appointment::findOrFail($id);
 
         if ($booking->trainer_id !== $trainer->id) {
             abort(403, 'Unauthorized access to this booking.');
@@ -119,15 +116,10 @@ class TrainerBookingController extends Controller
             'reason' => 'required|string|max:500',
         ]);
 
-        $this->bookingService->cancelBooking(
-            $booking->id,
-            Auth::id(),
-            $request->reason
-        );
-
-        // TODO: Send notification to customer
-        // TODO: Delete Google Calendar event
-        // TODO: Process refund if applicable
+        $booking->update([
+            'status' => 'cancelled',
+            // 'cancellation_reason' => $request->reason // If column exists
+        ]);
 
         return redirect()->route('trainer.bookings.index')
             ->with('success', 'Booking cancelled successfully.');
@@ -136,15 +128,16 @@ class TrainerBookingController extends Controller
     /**
      * Mark booking as completed.
      */
-    public function complete(Booking $booking)
+    public function complete($id)
     {
         $trainer = Trainer::where('created_by', Auth::id())->firstOrFail();
+        $booking = \App\Models\Appointment::findOrFail($id);
 
         if ($booking->trainer_id !== $trainer->id) {
             abort(403, 'Unauthorized access to this booking.');
         }
 
-        $this->bookingService->completeBooking($booking->id);
+        $booking->update(['status' => 'completed']);
 
         return back()->with('success', 'Booking marked as completed.');
     }

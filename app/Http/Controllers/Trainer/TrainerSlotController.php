@@ -62,22 +62,23 @@ class TrainerSlotController extends Controller
     {
         $trainer = Trainer::where('created_by', Auth::id())->firstOrFail();
 
-        $startDateTime = Carbon::parse($request->start_datetime);
-        $endDateTime = Carbon::parse($request->end_datetime);
+        $startDateTime = Carbon::parse($request->date . ' ' . $request->start_time);
+        $endDateTime = Carbon::parse($request->date . ' ' . $request->end_time);
 
         // Create blocked slot record
         BlockedSlot::create([
             'trainer_id' => $trainer->id,
-            'start_datetime' => $startDateTime,
-            'end_datetime' => $endDateTime,
+            'date' => $startDateTime->format('Y-m-d'),
+            'start_time' => $startDateTime->format('H:i:s'),
+            'end_time' => $endDateTime->format('H:i:s'),
             'reason' => $request->reason,
         ]);
 
-        // Mark existing slots in this range as unavailable
+        // Delete existing unbooked slots in this range
         TimeSlot::forTrainer($trainer->id)
             ->whereBetween('slot_datetime', [$startDateTime, $endDateTime])
             ->available()
-            ->update(['is_available' => false]);
+            ->delete();
 
         return redirect()->route('trainer.slots.index')
             ->with('success', 'Time slots blocked successfully.');
@@ -93,13 +94,10 @@ class TrainerSlotController extends Controller
         $blockedSlot = BlockedSlot::where('trainer_id', $trainer->id)
             ->findOrFail($id);
 
-        // Re-enable slots in this range
-        TimeSlot::forTrainer($trainer->id)
-            ->whereBetween('slot_datetime', [
-                $blockedSlot->start_datetime,
-                $blockedSlot->end_datetime
-            ])
-            ->update(['is_available' => true]);
+        // We don't need to restore TimeSlots here as they are generated dynamically or were deleted.
+        // If we needed to restore, we would need to call the slot generation service.
+        // For now, removing the BlockedSlot rule is sufficient to make the time available again 
+        // via the getAvailableTimes calculation.
 
         $blockedSlot->delete();
 
@@ -115,7 +113,8 @@ class TrainerSlotController extends Controller
         $trainer = Trainer::where('created_by', Auth::id())->firstOrFail();
 
         $blockedSlots = BlockedSlot::where('trainer_id', $trainer->id)
-            ->orderBy('start_datetime', 'desc')
+            ->orderBy('date', 'desc')
+            ->orderBy('start_time', 'desc')
             ->paginate(20);
 
         return view('trainer.slots.blocked', compact('trainer', 'blockedSlots'));

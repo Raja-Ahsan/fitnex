@@ -47,6 +47,8 @@ use App\Http\Controllers\admin\BlogController;
 |
 */
 
+
+
 Route::get('/route-clear', function () {
     Artisan::call('route:clear');
     Artisan::call('view:clear');
@@ -299,20 +301,6 @@ Route::group(['middleware' => ['auth']], function () {
     //Events
     Route::resource('event', EventController::class);
 
-    //Trainers
-    Route::resource('trainer', TrainerController::class);
-
-    //Blog Category
-    Route::resource('blog_category', BlogCategoryController::class);
-
-    //Blogs
-    Route::resource('blog', BlogController::class);
-
-
-    //pages settings
-    Route::resource('page', PageController::class);
-    Route::resource('page_setting', PageSettingController::class);
-
     // ============================================
     // BOOKING MODULE ROUTES
     // ============================================
@@ -325,13 +313,11 @@ Route::group(['middleware' => ['auth']], function () {
         });
 
         // Dashboard
-        Route::get('dashboard', function () {
-            $trainer = \App\Models\Trainer::where('created_by', auth()->id())->first();
-            if (!$trainer) {
-                return 'No trainer record found for user ID: ' . auth()->id();
-            }
-            return 'Dashboard route works! Trainer: ' . $trainer->name;
-        })->name('dashboard');
+        Route::get('dashboard', [\App\Http\Controllers\Trainer\TrainerDashboardController::class, 'index'])->name('dashboard');
+
+        // Profile Management
+        Route::get('profile', [\App\Http\Controllers\Trainer\TrainerDashboardController::class, 'profile'])->name('profile.edit');
+        Route::post('profile', [\App\Http\Controllers\Trainer\TrainerDashboardController::class, 'updateProfile'])->name('profile.update');
 
         // Availability Management
         Route::resource('availability', \App\Http\Controllers\Trainer\TrainerAvailabilityController::class);
@@ -365,6 +351,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('google/disconnect', [\App\Http\Controllers\Trainer\GoogleCalendarController::class, 'disconnect'])->name('google.disconnect');
         Route::post('google/test', [\App\Http\Controllers\Trainer\GoogleCalendarController::class, 'test'])->name('google.test');
     });
+
+    //Trainers
+    Route::resource('trainer', TrainerController::class);
 
     // Customer Routes (for authenticated users)
     Route::prefix('customer')->name('customer.')->group(function () {

@@ -23,10 +23,18 @@ class GoogleCalendarController extends Controller
 
     protected function initializeGoogleClient()
     {
+        $clientId = config('services.google.client_id');
+        $clientSecret = config('services.google.client_secret');
+        $redirectUri = config('services.google.redirect');
+
+        if (!$clientId || !$clientSecret) {
+            return;
+        }
+
         $this->client = new GoogleClient();
-        $this->client->setClientId(config('services.google.client_id'));
-        $this->client->setClientSecret(config('services.google.client_secret'));
-        $this->client->setRedirectUri(config('services.google.redirect'));
+        $this->client->setClientId($clientId);
+        $this->client->setClientSecret($clientSecret);
+        $this->client->setRedirectUri($redirectUri);
         $this->client->addScope(GoogleCalendar::CALENDAR);
         $this->client->setAccessType('offline');
         $this->client->setPrompt('consent');
@@ -40,6 +48,10 @@ class GoogleCalendarController extends Controller
         $trainer = Trainer::where('created_by', Auth::id())->firstOrFail();
         $googleAccount = $trainer->googleAccount;
 
+        if (!$this->client) {
+            session()->flash('error', 'Google Calendar API credentials are not configured. Please contact the administrator.');
+        }
+
         return view('trainer.google.connect', compact('trainer', 'googleAccount'));
     }
 
@@ -48,6 +60,11 @@ class GoogleCalendarController extends Controller
      */
     public function connect()
     {
+        if (!$this->client) {
+            return redirect()->route('trainer.google.index')
+                ->with('error', 'Google Calendar API credentials are not configured.');
+        }
+
         $authUrl = $this->client->createAuthUrl();
         return redirect($authUrl);
     }

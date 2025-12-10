@@ -74,8 +74,11 @@ class SlotGenerationService
         $slotsGenerated = 0;
         $sessionDuration = (int) $availability->session_duration;
 
-        $startTime = Carbon::parse($date->format('Y-m-d') . ' ' . $availability->start_time);
-        $endTime = Carbon::parse($date->format('Y-m-d') . ' ' . $availability->end_time);
+        $startStr = Carbon::parse($availability->start_time)->format('H:i:s');
+        $endStr = Carbon::parse($availability->end_time)->format('H:i:s');
+
+        $startTime = Carbon::parse($date->format('Y-m-d') . ' ' . $startStr);
+        $endTime = Carbon::parse($date->format('Y-m-d') . ' ' . $endStr);
 
         // Skip if the entire time block is in the past
         if ($endTime->isPast()) {

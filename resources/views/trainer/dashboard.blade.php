@@ -1,154 +1,138 @@
-@extends('layouts.app')
+@extends('layouts.trainer.app')
 
 @section('content')
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-md-12">
-                <h2>Trainer Dashboard</h2>
+    <section class="content-header">
+        <h1>
+            Trainer Dashboard
+            <small>Control panel</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box" style="background-color: #004b85; color: white;">
+                    <div class="inner">
+                        <h3>{{ $stats['total_bookings'] }}</h3>
+                        <p>Total Bookings</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-calendar-check-o"></i>
+                    </div>
+                    <a href="{{ route('trainer.bookings.index') }}" class="small-box-footer"
+                        style="background-color: rgba(0,0,0,0.1); color: white;">More info <i
+                            class="fa fa-arrow-circle-right"></i></a>
+                </div>
             </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box" style="background-color: #c58501; color: white;">
+                    <div class="inner">
+                        <h3>{{ $stats['this_month'] }}</h3>
+                        <p>This Month</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-bar-chart"></i>
+                    </div>
+                    <a href="#" class="small-box-footer" style="background-color: rgba(0,0,0,0.1); color: white;">More
+                        info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box" style="background-color: #cc8a00; color: white;">
+                    <div class="inner">
+                        <h3>{{ $stats['pending'] }}</h3>
+                        <p>Pending Bookings</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-clock-o"></i>
+                    </div>
+                    <a href="{{ route('trainer.bookings.index') }}?status=pending" class="small-box-footer"
+                        style="background-color: rgba(0,0,0,0.1); color: white;">More info <i
+                            class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box" style="background-color: #005c9e; color: white;">
+                    <div class="inner">
+                        <h3>${{ number_format($stats['total_revenue'], 2) }}</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-dollar"></i>
+                    </div>
+                    <a href="#" class="small-box-footer" style="background-color: rgba(0,0,0,0.1); color: white;">More
+                        info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
         </div>
+        <!-- /.row -->
 
-        <!-- Statistics Overview -->
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="card bg-primary text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="card-subtitle mb-2">Total Bookings</h6>
-                                <h2 class="mb-0">{{ $stats['total_bookings'] }}</h2>
-                            </div>
-                            <i class="fas fa-calendar-check fa-3x opacity-50"></i>
+        <div class="row">
+            <!-- Left col -->
+            <section class="col-lg-7 connectedSortable">
+                <!-- Upcoming Sessions -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Upcoming Sessions</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                    class="fa fa-times"></i></button>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card bg-success text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="card-subtitle mb-2">This Month</h6>
-                                <h2 class="mb-0">{{ $stats['this_month'] }}</h2>
-                            </div>
-                            <i class="fas fa-chart-line fa-3x opacity-50"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card bg-warning text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="card-subtitle mb-2">Pending</h6>
-                                <h2 class="mb-0">{{ $stats['pending'] }}</h2>
-                            </div>
-                            <i class="fas fa-clock fa-3x opacity-50"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card bg-info text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="card-subtitle mb-2">Total Revenue</h6>
-                                <h2 class="mb-0">${{ number_format($stats['total_revenue'], 2) }}</h2>
-                            </div>
-                            <i class="fas fa-dollar-sign fa-3x opacity-50"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="row mb-4">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Quick Actions</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3 mb-3">
-                                <a href="{{ route('trainer.availability.index') }}" class="btn btn-outline-primary w-100">
-                                    <i class="fas fa-calendar-alt"></i> Manage Availability
-                                </a>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <a href="{{ route('trainer.pricing.index') }}" class="btn btn-outline-success w-100">
-                                    <i class="fas fa-dollar-sign"></i> Update Pricing
-                                </a>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <a href="{{ route('trainer.bookings.index') }}" class="btn btn-outline-info w-100">
-                                    <i class="fas fa-list"></i> View All Bookings
-                                </a>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <a href="{{ route('trainer.google.index') }}" class="btn btn-outline-warning w-100">
-                                    <i class="fab fa-google"></i> Google Calendar
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Upcoming Sessions -->
-        <div class="row mb-4">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5>Upcoming Sessions</h5>
-                        <a href="{{ route('trainer.bookings.index') }}" class="btn btn-sm btn-primary">View All</a>
-                    </div>
-                    <div class="card-body">
+                    <div class="box-body">
                         @if($upcomingBookings->isEmpty())
-                            <p class="text-muted text-center py-4">No upcoming sessions scheduled.</p>
+                            <div class="alert alert-info alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h4><i class="icon fa fa-info"></i> No Upcoming Sessions</h4>
+                                You don't have any sessions scheduled for the next 7 days.
+                            </div>
                         @else
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th>Date & Time</th>
                                             <th>Customer</th>
-                                            <th>Duration</th>
                                             <th>Status</th>
-                                            <th>Actions</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($upcomingBookings as $booking)
                                             <tr>
                                                 <td>
-                                                    <strong>{{ $booking->timeSlot->formatted_date }}</strong><br>
-                                                    <small>{{ $booking->timeSlot->formatted_time }}</small>
+                                                    {{ \Carbon\Carbon::parse($booking->appointment_date)->format('M d, Y') }}<br>
+                                                    <small class="label label-primary"><i class="fa fa-clock-o"></i>
+                                                        {{ \Carbon\Carbon::parse($booking->appointment_time)->format('h:i A') }}</small>
                                                 </td>
+                                                <td>{{ $booking->name ?? ($booking->user->name ?? 'Guest') }}</td>
                                                 <td>
-                                                    {{ $booking->user->name }}<br>
-                                                    <small class="text-muted">{{ $booking->user->email }}</small>
-                                                </td>
-                                                <td>{{ $booking->timeSlot->availability->session_duration ?? 'N/A' }} min</td>
-                                                <td>
-                                                    @if($booking->booking_status == 'confirmed')
-                                                        <span class="badge bg-success">Confirmed</span>
-                                                    @elseif($booking->booking_status == 'pending')
-                                                        <span class="badge bg-warning">Pending</span>
+                                                    @if($booking->status == 'confirmed')
+                                                        <span class="label label-success">Confirmed</span>
+                                                    @elseif($booking->status == 'pending')
+                                                        <span class="label label-warning">Pending</span>
+                                                    @else
+                                                        <span class="label label-default">{{ ucfirst($booking->status) }}</span>
                                                     @endif
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('trainer.bookings.show', $booking->id) }}"
-                                                        class="btn btn-sm btn-info">
-                                                        <i class="fas fa-eye"></i> View
-                                                    </a>
+                                                        class="btn btn-xs btn-info"><i class="fa fa-eye"></i> View</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -157,72 +141,123 @@
                             </div>
                         @endif
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recent Activity -->
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Recent Bookings</h5>
+                    <div class="box-footer clearfix">
+                        <a href="{{ route('trainer.bookings.index') }}"
+                            class="btn btn-sm btn-default btn-flat pull-right">View All Bookings</a>
                     </div>
-                    <div class="card-body">
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="box box-info">
+                    <div class="box-header">
+                        <h3 class="box-title">Quick Actions</h3>
+                    </div>
+                    <div class="box-body text-center">
+                        <a class="btn btn-app" href="{{ route('trainer.availability.index') }}">
+                            <i class="fa fa-calendar-check-o"></i> Availability
+                        </a>
+                        <a class="btn btn-app" href="{{ route('trainer.pricing.index') }}">
+                            <i class="fa fa-usd"></i> Pricing
+                        </a>
+                        <a class="btn btn-app" href="{{ route('trainer.bookings.index') }}">
+                            <i class="fa fa-list"></i> Bookings
+                        </a>
+                        <a class="btn btn-app" href="{{ route('trainer.google.index') }}">
+                            <i class="fa fa-google"></i> Google Sync
+                        </a>
+                        <a class="btn btn-app" href="{{ route('trainer.profile.edit') }}">
+                            <i class="fa fa-user"></i> Profile
+                        </a>
+                    </div>
+                </div>
+            </section>
+            <!-- /.Left col -->
+
+            <!-- Right col -->
+            <section class="col-lg-5 connectedSortable">
+                <!-- Recent Activity -->
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Recent Activity</h3>
+                    </div>
+                    <div class="box-body">
                         @if($recentBookings->isEmpty())
-                            <p class="text-muted text-center py-3">No recent bookings.</p>
+                            <p class="text-muted text-center">No recent activity.</p>
                         @else
-                            <ul class="list-group list-group-flush">
+                            <ul class="products-list product-list-in-box">
                                 @foreach($recentBookings as $booking)
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <strong>{{ $booking->user->name }}</strong><br>
-                                            <small class="text-muted">{{ $booking->created_at->diffForHumans() }}</small>
+                                    <li class="item">
+                                        <div class="product-img">
+                                            <img src="{{ $booking->user && $booking->user->image ? asset('storage/' . $booking->user->image) : asset('assets/images/user-placeholder.png') }}"
+                                                alt="User Image">
                                         </div>
-                                        <span class="badge bg-primary">${{ number_format($booking->price, 2) }}</span>
+                                        <div class="product-info">
+                                            <a href="{{ route('trainer.bookings.show', $booking->id) }}"
+                                                class="product-title">{{ $booking->name ?? ($booking->user->name ?? 'Guest') }}
+                                                <span
+                                                    class="label label-success pull-right">${{ number_format($booking->price, 2) }}</span></a>
+                                            <span class="product-description">
+                                                Booked for {{ \Carbon\Carbon::parse($booking->appointment_date)->format('M d, Y') }}
+                                            </span>
+                                        </div>
                                     </li>
                                 @endforeach
                             </ul>
                         @endif
                     </div>
+                    <div class="box-footer text-center">
+                        <a href="{{ route('trainer.bookings.index') }}" class="uppercase">View All Bookings</a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Availability Status</h5>
+                <!-- Availability Status -->
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Availability Overview</h3>
                     </div>
-                    <div class="card-body">
-                        @if($availabilities->isEmpty())
-                            <div class="alert alert-warning">
-                                <i class="fas fa-exclamation-triangle"></i> You haven't set up your availability yet.
-                                <a href="{{ route('trainer.availability.create') }}">Add availability</a> to start accepting
-                                bookings.
-                            </div>
-                        @else
-                            <ul class="list-group list-group-flush">
-                                @foreach($availabilities as $availability)
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <strong>{{ $availability->day_name }}</strong><br>
-                                            <small class="text-muted">
-                                                {{ \Carbon\Carbon::parse($availability->start_time)->format('h:i A') }} -
-                                                {{ \Carbon\Carbon::parse($availability->end_time)->format('h:i A') }}
-                                            </small>
-                                        </div>
+                    <div class="box-body no-padding">
+                        <table class="table table-condensed">
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Day</th>
+                                <th>Time</th>
+                                <th style="width: 40px">Status</th>
+                            </tr>
+                            @foreach($availabilities as $index => $availability)
+                                <tr>
+                                    <td>{{ $index + 1 }}.</td>
+                                    <td>{{ $availability->day_name }}</td>
+                                    <td>
+                                        {{ \Carbon\Carbon::parse($availability->start_time)->format('h:i A') }} -
+                                        {{ \Carbon\Carbon::parse($availability->end_time)->format('h:i A') }}
+                                    </td>
+                                    <td>
                                         @if($availability->is_active)
-                                            <span class="badge bg-success">Active</span>
+                                            <span class="badge bg-green">Active</span>
                                         @else
-                                            <span class="badge bg-secondary">Inactive</span>
+                                            <span class="badge bg-red">Inactive</span>
                                         @endif
-                                    </li>
-                                @endforeach
-                            </ul>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </table>
+                        @if($availabilities->isEmpty())
+                            <div class="pad margin">
+                                <div class="callout callout-warning" style="margin-bottom: 0!important;">
+                                    <h4><i class="fa fa-info"></i> Note:</h4>
+                                    You have not set up your availability schema yet.
+                                </div>
+                            </div>
                         @endif
                     </div>
+                    <div class="box-footer clearfix">
+                        <a href="{{ route('trainer.availability.create') }}"
+                            class="btn btn-sm btn-info btn-flat pull-right">Manage Availability</a>
+                    </div>
                 </div>
-            </div>
+            </section>
+            <!-- right col -->
         </div>
-    </div>
+        <!-- /.row (main row) -->
+    </section>
 @endsection

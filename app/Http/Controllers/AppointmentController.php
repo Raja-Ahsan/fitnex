@@ -33,7 +33,11 @@ class AppointmentController extends Controller
     public function __construct(GoogleCalendarService $googleCalendarService)
     {
         /* $this->middleware('auth'); */
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        // Use config helper instead of env directly
+        $stripeSecret = config('services.stripe.secret');
+        if ($stripeSecret) {
+            Stripe::setApiKey($stripeSecret);
+        }
         $this->googleCalendarService = $googleCalendarService;
     }
 
@@ -84,7 +88,7 @@ class AppointmentController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
         ];
-        
+
         try {
             $request->validate($validationRules);
         } catch (ValidationException $e) {
@@ -97,7 +101,7 @@ class AppointmentController extends Controller
             }
             throw $e;
         }
-        
+
         // Additional validation for past time slots on today's date
         if ($request->appointment_date === date('Y-m-d')) {
             $currentTime = date('H:i');
@@ -115,7 +119,7 @@ class AppointmentController extends Controller
         }
 
         $trainer = Trainer::findOrFail($request->trainer_id);
-        
+
         // Check for conflicting appointments
         $existingAppointment = Appointment::where('trainer_id', $request->trainer_id)
             ->where('appointment_date', $request->appointment_date)
@@ -132,9 +136,9 @@ class AppointmentController extends Controller
             }
             return redirect()->back()->with('error', 'This time slot is no longer available. Please choose a different time.')->withInput();
         }
-        
-        $user = Auth::user();  
-        
+
+        $user = Auth::user();
+
         // Allow guest bookings - no user account required
         // If authenticated, use the logged-in user, otherwise use guest information
 
@@ -154,14 +158,14 @@ class AppointmentController extends Controller
                 'description' => $request->description,
                 'payment_status' => 'pending',
             ]);
-    
+
             // Create Google Calendar event immediately when booking is created
             try {
                 if ($trainer && $trainer->google_calendar_id) {
                     // Prepare event details using appointment name and email
                     $clientName = $appointment->name;
                     $clientEmail = $appointment->email;
-                    
+
                     if (!$clientEmail) {
                         Log::error("Appointment {$appointment->id} has no email address. Cannot create Google Calendar event.");
                     } else {
@@ -173,12 +177,12 @@ class AppointmentController extends Controller
                         if ($appointment->description) {
                             $eventDescription .= "\nNotes: " . $appointment->description;
                         }
-                        
+
                         // Combine date and time for start datetime
                         $startDateTime = Carbon::parse($appointment->appointment_date . ' ' . $appointment->appointment_time);
                         // Default to 60 minutes duration
                         $endDateTime = $startDateTime->copy()->addMinutes(60);
-                        
+
                         // Add attendees (client and trainer emails)
                         $attendees = [];
                         if ($clientEmail) {
@@ -194,11 +198,11 @@ class AppointmentController extends Controller
                         if ($trainerEmail) {
                             $attendees[] = $trainerEmail;
                         }
-                        
+
                         // Check if calendar ID is a URL (e.g. Calendly) - if so, skip Google Calendar creation
                         $isUrl = filter_var($trainer->google_calendar_id, FILTER_VALIDATE_URL);
                         $isGoogleId = strpos($trainer->google_calendar_id, '@') !== false || !$isUrl;
-                        
+
                         if ($isGoogleId) {
                             Log::info("Creating Google Calendar event for new booking (appointment {$appointment->id})", [
                                 'calendar_id' => $trainer->google_calendar_id,
@@ -207,7 +211,7 @@ class AppointmentController extends Controller
                                 'end' => $endDateTime->toDateTimeString(),
                                 'attendees' => $attendees
                             ]);
-                            
+
                             // Create the event in Google Calendar
                             $calendarEvent = $this->googleCalendarService->createEvent(
                                 $trainer->google_calendar_id,
@@ -217,7 +221,7 @@ class AppointmentController extends Controller
                                 $eventDescription,
                                 $attendees
                             );
-                            
+
                             // Extract event ID from the returned event object
                             $eventId = null;
                             if ($calendarEvent) {
@@ -229,12 +233,12 @@ class AppointmentController extends Controller
                                 } elseif (method_exists($calendarEvent, 'getId')) {
                                     $eventId = $calendarEvent->getId();
                                 }
-                                
+
                                 if ($eventId) {
                                     // Save the Google Calendar event ID to the appointment
                                     $appointment->google_calendar_event_id = $eventId;
                                     $appointment->save();
-                                    
+
                                     Log::info("Google Calendar event created successfully for new booking (appointment {$appointment->id}). Event ID: {$eventId}, Calendar ID: {$trainer->google_calendar_id}");
                                 } else {
                                     Log::warning("Google Calendar event created but ID could not be extracted for appointment {$appointment->id}");
@@ -262,7 +266,7 @@ class AppointmentController extends Controller
                 Log::error('Calendar exception details: ' . $calendarException->getTraceAsString());
                 // Don't fail the booking process if Google Calendar update fails
             }
-    
+
             // Send booking confirmation email to client
             try {
                 $clientEmail = $appointment->email;
@@ -277,7 +281,7 @@ class AppointmentController extends Controller
                 Log::error('Email exception details: ' . $emailException->getTraceAsString());
                 // Don't fail the booking process if email fails
             }
-            
+
             // Send notification email to trainer
             try {
                 $trainer = $appointment->trainer;
@@ -288,7 +292,7 @@ class AppointmentController extends Controller
                     } elseif ($trainer->email) {
                         $trainerEmail = $trainer->email;
                     }
-                    
+
                     if ($trainerEmail) {
                         Mail::to($trainerEmail)->send(new NewAppointmentForTrainerMail($appointment));
                         Log::info('Trainer notification email sent for new booking: ' . $trainerEmail);
@@ -303,7 +307,7 @@ class AppointmentController extends Controller
                 Log::error('Email exception details: ' . $emailException->getTraceAsString());
                 // Don't fail the booking process if email fails
             }
-            
+
             // Send notification to user (only if authenticated)
             if ($user) {
                 try {
@@ -313,7 +317,7 @@ class AppointmentController extends Controller
                     Log::error('Appointment notification failed: ' . $notificationException->getMessage());
                 }
             }
-    
+
             try {
                 // Prepare description for Stripe
                 $stripeDescription = 'Training session with ' . $trainer->name;
@@ -322,20 +326,26 @@ class AppointmentController extends Controller
                 if ($request->description) {
                     $stripeDescription .= ' - Notes: ' . $request->description;
                 }
-                
+
+                if (!config('services.stripe.secret')) {
+                    throw new \Exception('Stripe API key is not configured.');
+                }
+
                 $checkout_session = Session::create([
                     'payment_method_types' => ['card'],
-                    'line_items' => [[
-                        'price_data' => [
-                            'currency' => 'usd',
-                            'product_data' => [
-                                'name' => 'Session with ' . $trainer->name,
-                                'description' => $stripeDescription,
+                    'line_items' => [
+                        [
+                            'price_data' => [
+                                'currency' => 'usd',
+                                'product_data' => [
+                                    'name' => 'Session with ' . $trainer->name,
+                                    'description' => $stripeDescription,
+                                ],
+                                'unit_amount' => $trainer->price * 100,
                             ],
-                            'unit_amount' => $trainer->price * 100,
-                        ],
-                        'quantity' => 1,
-                    ]],
+                            'quantity' => 1,
+                        ]
+                    ],
                     'mode' => 'payment',
                     'success_url' => route('payment.success', ['appointment_id' => $appointment->id]) . '?session_id={CHECKOUT_SESSION_ID}',
                     'cancel_url' => route('payment.cancel', ['appointment_id' => $appointment->id]),
@@ -345,10 +355,10 @@ class AppointmentController extends Controller
                         'description' => $stripeDescription,
                     ],
                 ]);
-    
+
                 $appointment->stripe_session_id = $checkout_session->id;
                 $appointment->save();
-    
+
                 // Notify admins about new paid appointment (pending payment)
                 try {
                     User::role('Admin')->get()->each->notify(new AppointmentBookedNotification($appointment));
@@ -356,7 +366,7 @@ class AppointmentController extends Controller
                 } catch (\Exception $notificationException) {
                     Log::error('Admin notification failed: ' . $notificationException->getMessage());
                 }
-    
+
                 // Return JSON response for AJAX requests, otherwise redirect
                 if ($request->ajax()) {
                     return response()->json([
@@ -366,19 +376,19 @@ class AppointmentController extends Controller
                         'appointment_id' => $appointment->id
                     ]);
                 }
-    
+
                 return redirect($checkout_session->url);
             } catch (\Exception $e) {
                 Log::error('Stripe Checkout Error: ' . $e->getMessage());
                 $appointment->delete();
-                
+
                 if ($request->ajax()) {
                     return response()->json([
                         'success' => false,
                         'message' => 'Could not initiate payment. Please try again.'
                     ], 400);
                 }
-                
+
                 return redirect()->back()->with('error', 'Could not initiate payment. Please try again.');
             }
         } else {
@@ -389,7 +399,7 @@ class AppointmentController extends Controller
                     'message' => 'This trainer does not have a price set. Please contact support.'
                 ], 400);
             }
-            
+
             return redirect()->back()->with('error', 'This trainer does not have a price set. Please contact support.')->withInput();
         }
     }
@@ -397,7 +407,7 @@ class AppointmentController extends Controller
     public function paymentSuccess(Request $request, $appointment_id)
     {
         $sessionId = $request->get('session_id');
-        
+
         if (!$sessionId) {
             return redirect()->route('appointments.index')->with('error', 'Invalid payment session. Please contact support.');
         }
@@ -410,15 +420,15 @@ class AppointmentController extends Controller
         try {
             $session = Session::retrieve($sessionId);
             $appointment = Appointment::find($appointment_id);
-            
+
             if (!$appointment) {
                 return redirect()->route('appointments.index')->with('error', 'Appointment not found. Please contact support.');
             }
 
             // Ensure we are updating the correct appointment
             if ($appointment->stripe_session_id !== $sessionId) {
-                 Log::warning("Mismatched session ID for appointment {$appointment_id}.");
-                 return redirect()->route('appointments.index')->with('error', 'Invalid session ID. Payment confirmation failed.');
+                Log::warning("Mismatched session ID for appointment {$appointment_id}.");
+                return redirect()->route('appointments.index')->with('error', 'Invalid session ID. Payment confirmation failed.');
             }
 
             if ($session->payment_status == 'paid' && $appointment->status === 'pending') {
@@ -438,7 +448,7 @@ class AppointmentController extends Controller
                         // Prepare event details using appointment name and email
                         $clientName = $appointment->name;
                         $clientEmail = $appointment->email;
-                        
+
                         if (!$clientEmail) {
                             Log::error("Appointment {$appointment->id} has no email address. Cannot update Google Calendar event.");
                         } else {
@@ -450,12 +460,12 @@ class AppointmentController extends Controller
                             if ($appointment->description) {
                                 $eventDescription .= "\nNotes: " . $appointment->description;
                             }
-                            
+
                             // Combine date and time for start datetime
                             $startDateTime = Carbon::parse($appointment->appointment_date . ' ' . $appointment->appointment_time);
                             // Default to 60 minutes duration, but you can make this configurable
                             $endDateTime = $startDateTime->copy()->addMinutes(60);
-                            
+
                             // Check if calendar ID is a URL (e.g. Calendly) - if so, skip Google Calendar creation/update
                             $isUrl = filter_var($trainer->google_calendar_id, FILTER_VALIDATE_URL);
                             $isGoogleId = strpos($trainer->google_calendar_id, '@') !== false || !$isUrl;
@@ -469,7 +479,7 @@ class AppointmentController extends Controller
                                         'calendar_id' => $trainer->google_calendar_id,
                                         'title' => $eventTitle
                                     ]);
-                                    
+
                                     $updatedEvent = $this->googleCalendarService->updateEvent(
                                         $appointment->google_calendar_event_id,
                                         $trainer->google_calendar_id,
@@ -480,7 +490,7 @@ class AppointmentController extends Controller
                                             'endDateTime' => $endDateTime
                                         ]
                                     );
-                                    
+
                                     if ($updatedEvent) {
                                         Log::info("Google Calendar event updated successfully for appointment {$appointment->id}. Event ID: {$appointment->google_calendar_event_id}");
                                     } else {
@@ -494,7 +504,7 @@ class AppointmentController extends Controller
                                         'start' => $startDateTime->toDateTimeString(),
                                         'end' => $endDateTime->toDateTimeString()
                                     ]);
-                                    
+
                                     // Add attendees (client and trainer emails)
                                     $attendees = [];
                                     if ($clientEmail) {
@@ -510,7 +520,7 @@ class AppointmentController extends Controller
                                     if ($trainerEmail) {
                                         $attendees[] = $trainerEmail;
                                     }
-                                    
+
                                     // Create the event in Google Calendar
                                     $calendarEvent = $this->googleCalendarService->createEvent(
                                         $trainer->google_calendar_id,
@@ -520,7 +530,7 @@ class AppointmentController extends Controller
                                         $eventDescription,
                                         $attendees
                                     );
-                                    
+
                                     // Extract event ID from the returned event object
                                     $eventId = null;
                                     if ($calendarEvent) {
@@ -532,12 +542,12 @@ class AppointmentController extends Controller
                                         } elseif (method_exists($calendarEvent, 'getId')) {
                                             $eventId = $calendarEvent->getId();
                                         }
-                                        
+
                                         if ($eventId) {
                                             // Save the Google Calendar event ID to the appointment
                                             $appointment->google_calendar_event_id = $eventId;
                                             $appointment->save();
-                                            
+
                                             Log::info("Google Calendar event created successfully for appointment {$appointment->id}. Event ID: {$eventId}, Calendar ID: {$trainer->google_calendar_id}");
                                         } else {
                                             Log::warning("Google Calendar event created but ID could not be extracted for appointment {$appointment->id}");
@@ -576,9 +586,9 @@ class AppointmentController extends Controller
                         Log::info('Appointment ID: ' . $appointment->id);
                         Log::info('Appointment Date: ' . $appointment->appointment_date);
                         Log::info('Appointment Time: ' . $appointment->appointment_time);
-                        
+
                         $mailResult = Mail::to($appointment->email)->send(new AppointmentConfirmedMail($appointment));
-                        
+
                         Log::info('Confirmation email sent successfully to client: ' . $appointment->email);
                         Log::info('Mail result: ' . ($mailResult ? 'Success' : 'Failed'));
                         Log::info('=== EMAIL SENDING END ===');
@@ -593,7 +603,7 @@ class AppointmentController extends Controller
                 } else {
                     Log::warning('Appointment ' . $appointment->id . ' has no email address for client');
                 }
-                
+
                 // Send notification email to trainer
                 if ($appointment->trainer) {
                     // Try to get trainer email from trainer->user relationship first
@@ -604,16 +614,16 @@ class AppointmentController extends Controller
                         // Fallback to trainer email if user relationship doesn't exist
                         $trainerEmail = $appointment->trainer->email;
                     }
-                    
+
                     if ($trainerEmail) {
                         try {
                             Log::info('=== TRAINER EMAIL SENDING START ===');
                             Log::info('Attempting to send notification email to trainer: ' . $trainerEmail);
                             Log::info('Trainer ID: ' . $appointment->trainer->id);
                             Log::info('Trainer Name: ' . $appointment->trainer->name);
-                            
+
                             $mailResult = Mail::to($trainerEmail)->send(new NewAppointmentForTrainerMail($appointment));
-                            
+
                             Log::info('Trainer notification email sent successfully to: ' . $trainerEmail);
                             Log::info('Mail result: ' . ($mailResult ? 'Success' : 'Failed'));
                             Log::info('=== TRAINER EMAIL SENDING END ===');
@@ -633,7 +643,7 @@ class AppointmentController extends Controller
                 } else {
                     Log::error('Appointment ' . $appointment->id . ' has no trainer relationship');
                 }
-                
+
                 // Send notification to user for confirmed appointment (only if authenticated)
                 if ($appointment->user) {
                     try {
@@ -649,8 +659,7 @@ class AppointmentController extends Controller
             } elseif ($appointment->status === 'confirmed') {
                 // Handle cases where the user revisits the success URL
                 return view('website.appointment.payment-success', ['appointment' => $appointment]);
-            }
-            else {
+            } else {
                 // If payment was not successful, redirect to the cancellation page
                 return redirect()->route('payment.cancel', ['appointment_id' => $appointment_id])->with('error', 'Payment was not successful. Please try again.');
             }
@@ -681,19 +690,99 @@ class AppointmentController extends Controller
         return redirect()->route('appointments.index')->with('error', 'Payment was cancelled. Your booking has not been confirmed.');
     }
 
+    public function getAvailableDates($trainer_id, $monthString)
+    {
+        try {
+            // Need to import these models at the top, but for now using fully qualified names or relying on previous imports
+            // Trainer, Appointment are already imported.
+            // Need Availability and BlockedSlot
+
+            $trainer = Trainer::findOrFail($trainer_id);
+
+            // Parse month string (YYYY-MM)
+            $startOfMonth = Carbon::parse($monthString . '-01')->startOfMonth();
+            $endOfMonth = $startOfMonth->copy()->endOfMonth();
+
+            $availableDates = [];
+
+            // Get trainer's weekly availability
+            $availabilities = \App\Models\Availability::where('trainer_id', $trainer_id)
+                ->where('is_active', true)
+                ->get()
+                ->keyBy('day_of_week'); // 0=Sunday, 1=Monday, etc. (Check standard Carbon/PHP day mapping)
+
+            // Note: Carbon::dayOfWeek returns 0 (Sunday) to 6 (Saturday)
+            // Ensure Availability model uses same mapping. 
+            // In many systems Mon=1, Sun=7 or Sun=0. 
+            // Let's assume standard PHP/Carbon mapping for now: 0 (Sunday) - 6 (Saturday)
+
+            // Get blocked dates for this month
+            // Assuming BlockedSlot has date or start_time
+            // If BlockedSlot is 'all day', exclude the date.
+            // If BlockedSlot is partial, we might still show the date as available.
+            // For simplicity, if there are ANY slots unblocked, it's available.
+
+            // Iterate through every day of the month
+            $currentDate = $startOfMonth->copy();
+
+            while ($currentDate <= $endOfMonth) {
+                // Skip past dates
+                if ($currentDate->lt(Carbon::today())) {
+                    $currentDate->addDay();
+                    continue;
+                }
+
+                $dayOfWeek = $currentDate->dayOfWeek; // 0 (Sunday) to 6 (Saturday)
+
+                // Adjust for custom mapping if needed. 
+                // Let's check Availability model usually stores localized day names or integers.
+                // If it stores 'Monday', 'Tuesday', convert.
+                // Assuming integer 0-6 or 1-7.
+
+                // Check if trainer works on this day of week
+                // We need to map Carbon dayOfWeek to whatever is stored in DB.
+                // If Availability stores 'Monday', 'Tuesday'...
+                $dayName = $currentDate->format('l'); // Monday, Tuesday...
+
+                // Let's check if we have availability for this day name
+                $hasAvailability = $availabilities->contains(function ($value, $key) use ($dayName, $dayOfWeek) {
+                    // Check if key is integer or string
+                    return strcasecmp($value->day_of_week, $dayName) === 0 || $value->day_of_week == $dayOfWeek;
+                });
+
+                if ($hasAvailability) {
+                    // Check if date is fully blocked
+                    // This is "Is there at least one slot available?"
+                    // Determining full blockage is complex without checking every slot.
+                    // For now, assume available if they work that day.
+                    // The 'available-times' endpoint will handle the specific slot filtering.
+
+                    $availableDates[] = $currentDate->format('Y-m-d');
+                }
+
+                $currentDate->addDay();
+            }
+
+            return response()->json($availableDates);
+
+        } catch (\Exception $e) {
+            Log::error("Error fetching available dates: " . $e->getMessage());
+            return response()->json(['error' => 'Could not fetch available dates.'], 500);
+        }
+    }
     public function getAvailableTimes($trainer_id, $date)
     {
         try {
             $trainer = Trainer::findOrFail($trainer_id);
-            
+
             // Check if the selected date is in the past
             if (strtotime($date) < strtotime('today')) {
                 return response()->json([]);
             }
-            
+
             // Get Google Calendar ID from trainer
             $googleCalendarId = $trainer->google_calendar_id;
-            
+
             // Get available slots from Google Calendar
             $googleCalendarSlots = [];
             if ($googleCalendarId) {
@@ -710,7 +799,7 @@ class AppointmentController extends Controller
                     // Continue with database check as fallback
                 }
             }
-            
+
             // Also get booked times from database
             $bookedTimes = Appointment::where('trainer_id', $trainer_id)
                 ->where('appointment_date', $date)
@@ -720,32 +809,63 @@ class AppointmentController extends Controller
                     return date('H:i', strtotime($time)); // Ensure H:i format
                 })
                 ->toArray();
-            
+
+            // If we have Google Calendar slots, use them and filter out database bookings
             // If we have Google Calendar slots, use them and filter out database bookings
             if (!empty($googleCalendarSlots)) {
                 $availableSlots = array_diff($googleCalendarSlots, $bookedTimes);
             } else {
-                // Fallback: Generate all slots and filter out booked ones
-                $startTime = strtotime('09:00');
-                $endTime = strtotime('20:00');
-                $slotInterval = 30 * 60; // 30 minutes in seconds
+                // Fallback: Generate slots based on Trainer's Availability configuration
 
-                $allSlots = [];
-                for ($time = $startTime; $time <= $endTime; $time += $slotInterval) {
-                    $allSlots[] = date('H:i', $time);
+                // 1. Get Availability for this day
+                $dayOfWeek = date('w', strtotime($date)); // 0 (Sunday) to 6 (Saturday)
+                $availability = \App\Models\Availability::where('trainer_id', $trainer_id)
+                    ->where('day_of_week', $dayOfWeek)
+                    ->where('is_active', true)
+                    ->first();
+
+                if (!$availability) {
+                    $availableSlots = [];
+                } else {
+                    $startTime = strtotime($availability->start_time);
+                    $endTime = strtotime($availability->end_time);
+                    $slotInterval = 30 * 60; // 30 minutes in seconds
+
+                    $allSlots = [];
+                    // Generate slots from start_time to end_time
+                    for ($time = $startTime; $time < $endTime; $time += $slotInterval) {
+                        $allSlots[] = date('H:i', $time);
+                    }
+
+                    // 2. Filter out past times for today
+                    if ($date === date('Y-m-d')) {
+                        $currentTime = date('H:i');
+                        $allSlots = array_filter($allSlots, function ($slot) use ($currentTime) {
+                            return $slot > $currentTime;
+                        });
+                    }
+
+                    // 3. Filter out Blocked Slots
+                    $blockedSlots = \App\Models\BlockedSlot::where('trainer_id', $trainer_id)
+                        ->where('date', $date)
+                        ->get();
+
+                    if ($blockedSlots->count() > 0) {
+                        $allSlots = array_filter($allSlots, function ($slot) use ($blockedSlots) {
+                            foreach ($blockedSlots as $block) {
+                                if ($block->coversTime($slot)) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        });
+                    }
+
+                    // 4. Filter out Booked Times
+                    $availableSlots = array_diff($allSlots, $bookedTimes);
                 }
-                
-                // Filter out past times for today
-                if ($date === date('Y-m-d')) {
-                    $currentTime = date('H:i');
-                    $allSlots = array_filter($allSlots, function($slot) use ($currentTime) {
-                        return $slot > $currentTime;
-                    });
-                }
-                
-                $availableSlots = array_diff($allSlots, $bookedTimes);
             }
-            
+
             // Sort and return available slots
             sort($availableSlots);
             return response()->json(array_values($availableSlots));
@@ -759,14 +879,14 @@ class AppointmentController extends Controller
     public function show($id)
     {
         $appointment = Appointment::with(['trainer', 'user'])->findOrFail($id);
-        
+
         // Check if user has permission to view this appointment
         // Allow admins to view all appointments
         // Allow users to view their own appointments
         // For guest bookings (user_id is null), check if authenticated user matches the email
         if (Auth::check()) {
             $canView = false;
-            
+
             if (Auth::user()->hasRole('Admin')) {
                 $canView = true;
             } elseif ($appointment->user_id === Auth::id()) {
@@ -775,7 +895,7 @@ class AppointmentController extends Controller
                 // Guest booking but email matches authenticated user
                 $canView = true;
             }
-            
+
             if ($canView) {
                 return view('website.appointment.show', [
                     'appointment' => $appointment,
@@ -783,28 +903,28 @@ class AppointmentController extends Controller
                 ]);
             }
         }
-        
+
         return redirect()->route('appointments.index')->with('error', 'You do not have permission to view this appointment.');
     }
 
     public function confirm($id)
     {
         $appointment = Appointment::findOrFail($id);
-        
+
         // Check if user has permission to confirm this appointment
         if (!Auth::user()->hasRole('Admin')) {
             return redirect()->route('appointments.index')->with('error', 'You do not have permission to confirm appointments.');
         }
-        
+
         if ($appointment->status !== 'pending') {
             return redirect()->route('appointments.index')->with('error', 'Only pending appointments can be confirmed.');
         }
-        
+
         try {
             $appointment->status = 'confirmed';
             $appointment->payment_status = 'completed';
             $appointment->save();
-            
+
             // Send confirmation email
             try {
                 Mail::to($appointment->email)->send(new AppointmentConfirmedMail($appointment));
@@ -812,7 +932,7 @@ class AppointmentController extends Controller
             } catch (\Exception $emailException) {
                 Log::error('Appointment confirmation email failed: ' . $emailException->getMessage());
             }
-            
+
             // Send notification to user (only if authenticated)
             if ($appointment->user) {
                 try {
@@ -822,7 +942,7 @@ class AppointmentController extends Controller
                     Log::error('Appointment confirmed notification failed: ' . $notificationException->getMessage());
                 }
             }
-            
+
             // Send notification to trainer
             try {
                 if ($appointment->trainer && $appointment->trainer->user) {
@@ -832,9 +952,9 @@ class AppointmentController extends Controller
             } catch (\Exception $emailException) {
                 Log::error('Trainer notification email failed: ' . $emailException->getMessage());
             }
-            
+
             return redirect()->route('appointments.index')->with('success', 'Appointment confirmed successfully!');
-            
+
         } catch (\Exception $e) {
             Log::error('Error confirming appointment: ' . $e->getMessage());
             return redirect()->route('appointments.index')->with('error', 'Failed to confirm appointment. Please try again.');
@@ -844,22 +964,22 @@ class AppointmentController extends Controller
     public function complete($id)
     {
         $appointment = Appointment::findOrFail($id);
-        
+
         // Check if user has permission to complete this appointment
         if (!Auth::user()->hasRole('Admin')) {
             return redirect()->route('appointments.index')->with('error', 'You do not have permission to complete appointments.');
         }
-        
+
         if ($appointment->status !== 'confirmed') {
             return redirect()->route('appointments.index')->with('error', 'Only confirmed appointments can be marked as completed.');
         }
-        
+
         try {
             $appointment->status = 'completed';
             $appointment->save();
-            
+
             return redirect()->route('appointments.index')->with('success', 'Appointment marked as completed successfully!');
-            
+
         } catch (\Exception $e) {
             Log::error('Error completing appointment: ' . $e->getMessage());
             return redirect()->route('appointments.index')->with('error', 'Failed to complete appointment. Please try again.');
@@ -869,16 +989,16 @@ class AppointmentController extends Controller
     public function cancel($id)
     {
         $appointment = Appointment::findOrFail($id);
-        
+
         // Check if user has permission to cancel this appointment
         if (!Auth::user()->hasRole('Admin') && $appointment->user_id !== Auth::id()) {
             return redirect()->route('appointments.index')->with('error', 'You do not have permission to cancel this appointment.');
         }
-        
+
         if ($appointment->status === 'cancelled') {
             return redirect()->route('appointments.index')->with('error', 'This appointment is already cancelled.');
         }
-        
+
         try {
             $appointment->status = 'cancelled';
             // Update payment status to cancelled if it was pending or completed
@@ -886,15 +1006,15 @@ class AppointmentController extends Controller
                 $appointment->payment_status = 'cancelled';
             }
             $appointment->save();
-            
+
             return redirect()->route('appointments.index')->with('success', 'Appointment cancelled successfully!');
-            
+
         } catch (\Exception $e) {
             Log::error('Error cancelling appointment: ' . $e->getMessage());
             return redirect()->route('appointments.index')->with('error', 'Failed to cancel appointment. Please try again.');
         }
     }
-    
+
     public function googleCalendarCallback(Request $request)
     {
         // This method handles callbacks from Google Calendar
@@ -903,12 +1023,12 @@ class AppointmentController extends Controller
         $time = $request->get('time');
         $eventId = $request->get('event_id');
         $trainerId = $request->get('trainer_id');
-        
+
         if (!$date || !$time || !$trainerId) {
             return redirect()->route('appointments.create', ['trainer_id' => $trainerId ?? ''])
                 ->with('error', 'Invalid booking data. Please try again.');
         }
-        
+
         // Redirect to appointment creation page with booking data
         return redirect()->route('appointments.create', [
             'trainer_id' => $trainerId,

@@ -12,6 +12,49 @@ class Booking extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'is_paid' => 'boolean',
+    ];
+
+    public function trainer()
+    {
+        return $this->belongsTo(Trainer::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function timeSlot()
+    {
+        return $this->belongsTo(TimeSlot::class);
+    }
+
+    public function reschedules()
+    {
+        return $this->hasMany(BookingReschedule::class);
+    }
+
+    public function scopeForTrainer($query, $trainerId)
+    {
+        return $query->where('trainer_id', $trainerId);
+    }
+
+    public function scopeConfirmed($query)
+    {
+        return $query->where('booking_status', 'confirmed');
+    }
+
+    public function scopeUpcoming($query)
+    {
+        return $query->where('booking_status', '!=', 'cancelled')
+            ->where('booking_status', '!=', 'completed')
+            ->whereHas('timeSlot', function ($q) {
+                $q->where('slot_datetime', '>', now());
+            });
+    }
+
     public function hasProduct()
     {
         return $this->hasOne(Product::class, 'slug', 'product_slug');
@@ -24,16 +67,16 @@ class Booking extends Model
     {
         return $this->hasOne(Payment::class, 'order_number', 'booking_number');
     }
-	 public function hasLocation()
+    public function hasLocation()
     {
         return $this->hasOne(PickDropLocation::class, 'booking_id', 'id');
     }
-	
-	 public function hasPickTime()
+
+    public function hasPickTime()
     {
         return $this->hasOne(City::class, 'id', 'pick_time_zone');
     }
-	 public function hasDropTime()
+    public function hasDropTime()
     {
         return $this->hasOne(City::class, 'id', 'drop_time_zone');
     }
