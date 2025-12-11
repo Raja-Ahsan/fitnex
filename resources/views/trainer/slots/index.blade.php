@@ -30,7 +30,8 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Filter Slots</h3>
                 <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                            class="fa fa-plus"></i></button>
                 </div>
             </div>
             <div class="box-body">
@@ -43,7 +44,8 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request('start_date') }}">
+                                    <input type="date" class="form-control" id="start_date" name="start_date"
+                                        value="{{ request('start_date') }}">
                                 </div>
                             </div>
                         </div>
@@ -54,7 +56,8 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request('end_date') }}">
+                                    <input type="date" class="form-control" id="end_date" name="end_date"
+                                        value="{{ request('end_date') }}">
                                 </div>
                             </div>
                         </div>
@@ -63,13 +66,16 @@
                                 <label for="status">Status</label>
                                 <select class="form-control" id="status" name="status">
                                     <option value="">All Slots</option>
-                                    <option value="available" {{ request('status') == 'available' ? 'selected' : '' }}>Available</option>
-                                    <option value="booked" {{ request('status') == 'booked' ? 'selected' : '' }}>Booked</option>
+                                    <option value="available" {{ request('status') == 'available' ? 'selected' : '' }}>
+                                        Available</option>
+                                    <option value="booked" {{ request('status') == 'booked' ? 'selected' : '' }}>Booked
+                                    </option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-3" style="margin-top: 25px;">
-                            <button type="submit" class="btn btn-primary" style="background-color: #004b85; border-color: #004b85;">
+                            <button type="submit" class="btn btn-primary"
+                                style="background-color: #004b85; border-color: #004b85;">
                                 <i class="fa fa-filter"></i> Filter
                             </button>
                             <a href="{{ route('trainer.slots.index') }}" class="btn btn-default">
@@ -92,8 +98,9 @@
             <div class="box-body table-responsive no-padding">
                 @if($slots->isEmpty())
                     <div class="alert alert-info" style="margin: 20px;">
-                        <i class="icon fa fa-info"></i> No time slots found. 
-                        <a href="{{ route('trainer.availability.create') }}" style="color: #fff; text-decoration: underline;">Add availability</a> to generate slots.
+                        <i class="icon fa fa-info"></i> No time slots found.
+                        <a href="{{ route('trainer.availability.create') }}"
+                            style="color: #fff; text-decoration: underline;">Add availability</a> to generate slots.
                     </div>
                 @else
                     <table class="table table-hover">
@@ -115,7 +122,8 @@
                                         <div class="text-muted">{{ $slot->slot_datetime->format('l') }}</div>
                                     </td>
                                     <td>
-                                        <i class="fa fa-clock-o text-muted"></i> {{ $slot->slot_datetime->format('h:i A') }}
+                                        <i class="fa fa-clock-o text-muted"></i> {{ $slot->slot_datetime->format('h:i A') }} -
+                                        {{ $slot->slot_datetime->copy()->addMinutes((int) ($slot->availability->session_duration ?? 60))->format('h:i A') }}
                                     </td>
                                     <td>{{ $slot->availability->session_duration ?? 'N/A' }} min</td>
                                     <td>
@@ -138,7 +146,8 @@
                                         @if(!$slot->is_booked)
                                             <i class="fa fa-check-circle text-success" title="Available for booking"></i>
                                         @else
-                                            <a href="{{ route('trainer.bookings.show', $slot->booking->id) }}" class="btn btn-xs btn-default">
+                                            <a href="{{ route('trainer.bookings.show', $slot->booking->id) }}"
+                                                class="btn btn-xs btn-default">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         @endif

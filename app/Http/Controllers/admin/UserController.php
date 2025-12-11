@@ -308,8 +308,8 @@ class UserController extends Controller
                 /* if ($user->hasRole('Admin')) {
                     return redirect()->route('dashboard');
                 } else */
-                if ($user->hasRole('Trainer')) {
-                    return redirect()->route('dashboard');
+                if ($user->hasRole('trainer')) {
+                    return redirect()->route('trainer.dashboard');
                 } else {
                     Auth::logout();
                     return redirect()->back()->with('error', 'Unauthorized role.');

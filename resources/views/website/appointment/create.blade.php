@@ -624,7 +624,7 @@
                 }
             }
 
-            // Generate time slots (9 AM to 8 PM) - now fetches from backend
+            // Generate time slots - fetches from backend and renders
             async function generateTimeSlots() {
                 timeSlotsContainer.innerHTML = '<div class="text-white text-center py-4">Loading available times...</div>';
 
@@ -634,61 +634,32 @@
                     return;
                 }
 
-                // Fetch available times from backend
+                // Fetch available times from backend (returns formatted objects now)
                 const availableTimes = await fetchAvailableTimes(selectedDate);
 
                 timeSlotsContainer.innerHTML = '';
 
-                // Generate all possible slots (9 AM to 8 PM, 30-minute intervals)
-                const allSlots = [];
-                for (let hour = 9; hour <= 20; hour++) {
-                    for (let minute = 0; minute < 60; minute += 30) {
-                        const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-                        const time12 = new Date(`2000-01-01T${timeString}`).toLocaleTimeString('en-US', {
-                            hour: 'numeric',
-                            minute: '2-digit',
-                            hour12: true
-                        });
-                        allSlots.push({ value: timeString, display: time12 });
-                    }
-                }
-
-                const now = new Date();
-                const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const selectedDateObj = new Date(selectedDate);
-                selectedDateObj.setHours(0, 0, 0, 0);
-                const isToday = selectedDateObj.getTime() === today.getTime();
-
-                // Display slots - only show available ones from backend
+                // Display slots 
                 if (availableTimes.length === 0) {
                     timeSlotsContainer.innerHTML = '<div class="text-red-400 text-center py-4">No available time slots for this date</div>';
                     return;
                 }
 
-                allSlots.forEach(slot => {
+                availableTimes.forEach(slot => {
                     const slotElement = document.createElement('div');
                     slotElement.className = 'time-slot';
-                    slotElement.textContent = slot.display;
-                    slotElement.dataset.time = slot.value;
 
-                    // Check if this slot is available from backend
-                    const isAvailable = availableTimes.includes(slot.value);
+                    const timeValue = (typeof slot === 'object' && slot.value) ? slot.value : slot;
+                    const displayValue = (typeof slot === 'object' && slot.display) ? slot.display : slot;
 
-                    // Also disable past times if selected date is today
-                    if (isToday && slot.value <= currentTime) {
-                        slotElement.classList.add('disabled');
-                    } else if (!isAvailable) {
-                        // Slot is not available (booked)
-                        slotElement.classList.add('disabled');
-                    }
+                    slotElement.textContent = displayValue;
+                    slotElement.dataset.time = timeValue;
 
                     slotElement.addEventListener('click', function () {
                         if (!this.classList.contains('disabled')) {
                             document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
                             this.classList.add('selected');
-                            selectedTime = slot.value;
+                            selectedTime = timeValue;
                             updateSelectedAppointment();
                         }
                     });

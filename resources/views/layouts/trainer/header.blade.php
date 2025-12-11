@@ -1,5 +1,5 @@
 <header class="main-header">
-    <a href="{{ route('dashboard') }}" class="logo">
+    <a href="{{ route('trainer.dashboard') }}" class="logo">
         <img id="header-logo" src="{{asset('/admin/assets/images/page') }}/{{ $home_page_data['header_logo'] }}"
             style="width: 150px;position:absolute;left: 2%;top: 20%;height: 100px;" alt="">
         <!--  <span class="logo-lg" style="position:absolute;top:230%;left:3%;">{{ Auth::user()->name }} {{ Auth::user()->last_name }}</span> -->

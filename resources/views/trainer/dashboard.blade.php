@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-lg-3 col-xs-6">
                 <!-- small box -->
-                <div class="small-box" style="background-color: #004b85; color: white;">
+                <div class="small-box" style="background-color: #0079d4; color: white;">
                     <div class="inner">
                         <h3>{{ $stats['total_bookings'] }}</h3>
                         <p>Total Bookings</p>
@@ -33,7 +33,7 @@
             <!-- ./col -->
             <div class="col-lg-3 col-xs-6">
                 <!-- small box -->
-                <div class="small-box" style="background-color: #c58501; color: white;">
+                <div class="small-box" style="background-color: #0079d4; color: white;">
                     <div class="inner">
                         <h3>{{ $stats['this_month'] }}</h3>
                         <p>This Month</p>
@@ -48,7 +48,7 @@
             <!-- ./col -->
             <div class="col-lg-3 col-xs-6">
                 <!-- small box -->
-                <div class="small-box" style="background-color: #cc8a00; color: white;">
+                <div class="small-box" style="background-color: #0079d4; color: white;">
                     <div class="inner">
                         <h3>{{ $stats['pending'] }}</h3>
                         <p>Pending Bookings</p>
@@ -64,7 +64,7 @@
             <!-- ./col -->
             <div class="col-lg-3 col-xs-6">
                 <!-- small box -->
-                <div class="small-box" style="background-color: #005c9e; color: white;">
+                <div class="small-box" style="background-color: #0079d4; color: white;">
                     <div class="inner">
                         <h3>${{ number_format($stats['total_revenue'], 2) }}</h3>
                         <p>Total Revenue</p>

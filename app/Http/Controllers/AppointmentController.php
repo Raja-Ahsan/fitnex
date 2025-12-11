@@ -824,12 +824,14 @@ class AppointmentController extends Controller
                     ->where('is_active', true)
                     ->first();
 
+                $sessionDuration = $availability->session_duration ?? 60;
+
                 if (!$availability) {
                     $availableSlots = [];
                 } else {
                     $startTime = strtotime($availability->start_time);
                     $endTime = strtotime($availability->end_time);
-                    $slotInterval = 30 * 60; // 30 minutes in seconds
+                    $slotInterval = $sessionDuration * 60;
 
                     $allSlots = [];
                     // Generate slots from start_time to end_time
@@ -866,9 +868,27 @@ class AppointmentController extends Controller
                 }
             }
 
-            // Sort and return available slots
+            // Sort available slots
             sort($availableSlots);
-            return response()->json(array_values($availableSlots));
+
+            // Fetch session duration if not already set (e.g. Google Calendar path)
+            if (!isset($sessionDuration)) {
+                $availability = \App\Models\Availability::where('trainer_id', $trainer_id)->first();
+                $sessionDuration = $availability->session_duration ?? 60;
+            }
+
+            // Map to objects with display range
+            $formattedSlots = array_map(function ($slot) use ($sessionDuration) {
+                $startTime = Carbon::createFromFormat('H:i', $slot);
+                $endTime = $startTime->copy()->addMinutes((int) $sessionDuration);
+
+                return [
+                    'value' => $slot,
+                    'display' => $startTime->format('g:i A') . ' - ' . $endTime->format('g:i A')
+                ];
+            }, array_values($availableSlots));
+
+            return response()->json($formattedSlots);
 
         } catch (\Exception $e) {
             Log::error("Error fetching available times: " . $e->getMessage());

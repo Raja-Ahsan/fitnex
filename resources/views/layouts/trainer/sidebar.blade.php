@@ -17,11 +17,11 @@
                     <i class="fa fa-calendar-check-o" aria-hidden="true"></i> <span>Availability</span>
                 </a>
             </li>
-            <li class="{{ request()->is('trainer/pricing*') ? 'active' : '' }}">
+            {{-- <li class="{{ request()->is('trainer/pricing*') ? 'active' : '' }}">
                 <a href="{{ route('trainer.pricing.index') }}">
                     <i class="fa fa-usd" aria-hidden="true"></i> <span>Pricing</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="{{ request()->is('trainer/slots*') ? 'active' : '' }}">
                 <a href="{{ route('trainer.slots.index') }}">
                     <i class="fa fa-th-list" aria-hidden="true"></i> <span>My Slots</span>
