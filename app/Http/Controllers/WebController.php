@@ -208,7 +208,7 @@ class WebController extends Controller
     public function TrainerDetail($id)
     {
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
-        $trainer = Trainer::with(['city', 'state'])->where('id', $id)->where('status', 1)->firstOrFail();
+        $trainer = Trainer::with(['city', 'state', 'user'])->where('id', $id)->where('status', 1)->firstOrFail();
         $page_title = $trainer->name . ' Details';
         $cities = City::where('status', 1)->get();
         $states = State::where('status', 1)->get();
