@@ -84,7 +84,10 @@
                                 </td>
                                 <td>
                                     <strong>{{ $booking->user->name ?? 'Guest' }}</strong><br>
-                                    <small class="text-muted">{{ $booking->user->email ?? '-' }}</small>
+                                    <small class="text-muted">{{ $booking->user->email ?? '-' }}</small><br>
+                                    @if($booking->phone || ($booking->user && $booking->user->phone))
+                                        <small class="text-muted"><i class="fa fa-phone"></i> {{ $booking->phone ?? $booking->user->phone }}</small>
+                                    @endif
                                 </td>
                                 <td>
                                     @if($booking->timeSlot)
@@ -179,7 +182,10 @@
                                 </td>
                                 <td>
                                     <strong>{{ $appointment->user->name ?? $appointment->name }}</strong><br>
-                                    <small class="text-muted">{{ $appointment->user->email ?? $appointment->email }}</small>
+                                    <small class="text-muted">{{ $appointment->user->email ?? $appointment->email }}</small><br>
+                                    @if($appointment->phone || ($appointment->user && $appointment->user->phone))
+                                        <small class="text-muted"><i class="fa fa-phone"></i> {{ $appointment->phone ?? $appointment->user->phone }}</small>
+                                    @endif
                                 </td>
                                 <td>
                                     @php

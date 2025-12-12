@@ -61,7 +61,7 @@
                                     </tr>
                                     <tr>
                                         <th>Phone</th>
-                                        <td>{{ $booking->user->phone ?? 'N/A' }}</td>
+                                        <td>{{ $booking->phone ?? ($booking->user->phone ?? 'N/A') }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -205,6 +205,9 @@
                             <ul class="list-group list-group-unbordered">
                                 <li class="list-group-item">
                                     <b>Email</b> <a class="pull-right">{{ Str::limit($booking->user->email, 20) }}</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Phone</b> <a class="pull-right">{{ $booking->phone ?? ($booking->user->phone ?? 'N/A') }}</a>
                                 </li>
                                 <li class="list-group-item">
                                     <b>Joined</b> <a class="pull-right">{{ $booking->user->created_at->format('M Y') }}</a>

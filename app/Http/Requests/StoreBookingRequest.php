@@ -24,6 +24,7 @@ class StoreBookingRequest extends FormRequest
         return [
             'trainer_id' => ['required', 'exists:trainers,id'],
             'time_slot_id' => ['required', 'exists:time_slots,id'],
+            'phone' => ['required', 'string', 'max:20'],
             'notes' => ['nullable', 'string', 'max:1000'],
         ];
     }

@@ -88,6 +88,7 @@ class AppointmentController extends Controller
             'time_zone' => 'required|string',
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
         ];
 
         try {
@@ -150,6 +151,7 @@ class AppointmentController extends Controller
                 'user_id' => $user ? $user->id : null,
                 'name' => $request->name,
                 'email' => $request->email,
+                'phone' => $request->phone,
                 'trainer_id' => $trainer->id,
                 'appointment_date' => $request->appointment_date,
                 'appointment_time' => $request->appointment_time,
@@ -782,9 +784,12 @@ class AppointmentController extends Controller
             }
 
             // PRIORITY 1: Check TimeSlot table first (slots generated from availability)
+            // Note: We use where('is_booked', false) instead of available() scope
+            // because available() filters by slot_datetime > now(), which is too restrictive
+            // when querying for a specific date. We'll filter past times manually below.
             $timeSlots = \App\Models\TimeSlot::forTrainer($trainer_id)
                 ->forDate($date)
-                ->available()
+                ->where('is_booked', false)
                 ->with('availability')
                 ->orderBy('slot_datetime')
                 ->get();
@@ -793,6 +798,11 @@ class AppointmentController extends Controller
             if ($timeSlots->count() > 0) {
                 $availableSlots = [];
                 $sessionDurations = [];
+
+                // Get blocked slots for this date
+                $blockedSlots = \App\Models\BlockedSlot::where('trainer_id', $trainer_id)
+                    ->where('date', $date)
+                    ->get();
 
                 foreach ($timeSlots as $slot) {
                     $slotTime = $slot->slot_datetime->format('H:i');
@@ -807,6 +817,19 @@ class AppointmentController extends Controller
                         if ($slotTime <= $currentTime) {
                             continue;
                         }
+                    }
+
+                    // Filter out blocked slots
+                    $isBlocked = false;
+                    foreach ($blockedSlots as $block) {
+                        if ($block->coversTime($slotTime)) {
+                            $isBlocked = true;
+                            break;
+                        }
+                    }
+                    
+                    if ($isBlocked) {
+                        continue;
                     }
 
                     $availableSlots[] = $slotTime;

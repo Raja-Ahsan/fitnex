@@ -167,7 +167,10 @@
                                     <td>#{{ $booking->id }}</td>
                                     <td>
                                         <strong>{{ $booking->name ?? ($booking->user->name ?? 'Guest') }}</strong><br>
-                                        <small class="text-muted">{{ $booking->email ?? ($booking->user->email ?? '-') }}</small>
+                                        <small class="text-muted">{{ $booking->email ?? ($booking->user->email ?? '-') }}</small><br>
+                                        @if($booking->phone || ($booking->user && $booking->user->phone))
+                                            <small class="text-muted"><i class="fa fa-phone"></i> {{ $booking->phone ?? $booking->user->phone }}</small>
+                                        @endif
                                     </td>
                                     <td>
                                         @if($booking->appointment_date)

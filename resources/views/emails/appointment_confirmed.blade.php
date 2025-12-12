@@ -77,6 +77,7 @@
             @endphp
             <p><strong>Time:</strong> {{ $startTime->format('g:i A') }} - {{ $endTime->format('g:i A') }}</p>
             <p><strong>Time Zone:</strong> {{ $appointment->time_zone }}</p>
+            <p><strong>Phone:</strong> {{ $appointment->phone ?? ($user->phone ?? '-') }}</p>
             <p><strong>Trainer:</strong> {{ $trainer->name }}</p>
             <p><strong>Price:</strong> ${{ number_format($appointment->price, 2) }}</p>
             <p><strong>Status:</strong> 

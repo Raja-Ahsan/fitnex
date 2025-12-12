@@ -34,6 +34,10 @@
                             <td>{{ $booking->user->email ?? '-' }}</td>
                         </tr>
                         <tr>
+                            <th>Phone</th>
+                            <td>{{ $booking->phone ?? ($booking->user->phone ?? '-') }}</td>
+                        </tr>
+                        <tr>
                             <th>Session Time</th>
                             <td>
                                 @if($booking->timeSlot)

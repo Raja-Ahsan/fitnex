@@ -34,6 +34,10 @@
                             <td>{{ $appointment->user->email ?? $appointment->email }}</td>
                         </tr>
                         <tr>
+                            <th>Phone</th>
+                            <td>{{ $appointment->phone ?? ($appointment->user->phone ?? '-') }}</td>
+                        </tr>
+                        <tr>
                             <th>Date</th>
                             <td>{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('M d, Y') }}</td>
                         </tr>

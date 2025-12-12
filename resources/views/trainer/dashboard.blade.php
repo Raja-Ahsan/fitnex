@@ -130,7 +130,12 @@
                                                     <small class="label label-primary"><i class="fa fa-clock-o"></i>
                                                         {{ $startTime->format('h:i A') }} - {{ $endTime->format('h:i A') }}</small>
                                                 </td>
-                                                <td>{{ $booking->name ?? ($booking->user->name ?? 'Guest') }}</td>
+                                                <td>
+                                                    {{ $booking->name ?? ($booking->user->name ?? 'Guest') }}<br>
+                                                    @if($booking->phone || ($booking->user && $booking->user->phone))
+                                                        <small class="text-muted"><i class="fa fa-phone"></i> {{ $booking->phone ?? $booking->user->phone }}</small>
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     @if($booking->status == 'confirmed')
                                                         <span class="label label-success">Confirmed</span>

@@ -79,6 +79,7 @@
             <h3>Client Information:</h3>
             <p><strong>Name:</strong> {{ $clientName ?? ($user->name ?? $appointment->name) }}</p>
             <p><strong>Email:</strong> {{ $clientEmail ?? ($user->email ?? $appointment->email) }}</p>
+            <p><strong>Phone:</strong> {{ $appointment->phone ?? ($user->phone ?? '-') }}</p>
         </div>
         
         <div class="appointment-details">

@@ -423,6 +423,20 @@
                                     class="w-full bg-gray-800 border-gray-600 rounded p-3" placeholder="Enter your email"
                                     required>
                             </div>
+                            <div class="mb-4">
+                                <label for="phone" class="block text-lg font-medium mb-2">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" class="w-full bg-gray-800 border-gray-600 rounded p-3"
+                                    placeholder="Enter your phone number" required>
+                            </div>
+                        @else
+                            <!-- For authenticated users, use their info but allow phone update -->
+                            <input type="hidden" name="name" value="{{ Auth::user()->name }}">
+                            <input type="hidden" name="email" value="{{ Auth::user()->email }}">
+                            <div class="mb-4">
+                                <label for="phone" class="block text-lg font-medium mb-2">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" class="w-full bg-gray-800 border-gray-600 rounded p-3"
+                                    placeholder="Enter your phone number" value="{{ Auth::user()->phone ?? '' }}" required>
+                            </div>
                         @endguest
 
                         <!-- Hidden inputs for form submission -->
@@ -586,6 +600,7 @@
             let currentDate = new Date();
             let selectedDate = null;
             let selectedTime = null;
+            let selectedTimeDisplay = null; // Store the display value (time range)
 
             const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             const calendarDays = document.getElementById('calendar-days');
@@ -654,12 +669,14 @@
 
                     slotElement.textContent = displayValue;
                     slotElement.dataset.time = timeValue;
+                    slotElement.dataset.display = displayValue; // Store display value
 
                     slotElement.addEventListener('click', function () {
                         if (!this.classList.contains('disabled')) {
                             document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
                             this.classList.add('selected');
                             selectedTime = timeValue;
+                            selectedTimeDisplay = this.dataset.display || displayValue; // Store display value
                             updateSelectedAppointment();
                         }
                     });
@@ -771,6 +788,7 @@
                                         d.classList.add('selected');
                                         selectedDate = targetDate;
                                         selectedTime = null;
+                                        selectedTimeDisplay = null;
                                         document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
                                         updateTimeSlotsForDate();
                                         updateSelectedAppointment();
@@ -809,6 +827,7 @@
                                     this.classList.add('selected');
                                     selectedDate = this.dataset.date;
                                     selectedTime = null; // Reset time when date changes
+                                    selectedTimeDisplay = null;
                                     document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
                                     updateTimeSlotsForDate();
                                     updateSelectedAppointment();
@@ -863,6 +882,7 @@
                                         d.classList.add('selected');
                                         selectedDate = targetDate;
                                         selectedTime = null;
+                                        selectedTimeDisplay = null;
                                         document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
                                         updateTimeSlotsForDate();
                                         updateSelectedAppointment();
@@ -886,13 +906,15 @@
                         month: 'long',
                         day: 'numeric'
                     });
-                    const formattedTime = dateObj.toLocaleTimeString('en-US', {
+                    
+                    // Use the display value (time range) if available, otherwise format just the start time
+                    const timeDisplay = selectedTimeDisplay || dateObj.toLocaleTimeString('en-US', {
                         hour: '2-digit',
                         minute: '2-digit',
                         hour12: true
                     });
 
-                    selectedAppointmentText.textContent = `${formattedDate} at ${formattedTime}`;
+                    selectedAppointmentText.textContent = `${formattedDate} at ${timeDisplay}`;
                     selectedAppointment.style.display = 'block';
 
                     // Update hidden inputs
@@ -923,6 +945,7 @@
                 clearSelectionBtn.addEventListener('click', function () {
                     selectedDate = null;
                     selectedTime = null;
+                    selectedTimeDisplay = null;
                     document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
                     document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
                     selectedAppointment.style.display = 'none';
@@ -968,7 +991,8 @@
                     month: 'long',
                     day: 'numeric'
                 });
-                const formattedTime = selectedDateObj.toLocaleTimeString('en-US', {
+                // Use the display value (time range) if available, otherwise format just the start time
+                const formattedTime = selectedTimeDisplay || selectedDateObj.toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit',
                     hour12: true
@@ -1027,6 +1051,8 @@
                     if (data.success) {
                         // If there's a redirect URL, it means payment is required - redirect to Stripe
                         if (data.redirect_url) {
+                            // Use the display value (time range) if available
+                            const displayTime = selectedTimeDisplay || formattedTime;
                             // Show message before redirecting to Stripe
                             Swal.fire({
                                 icon: 'info',
@@ -1036,7 +1062,7 @@
                                 <p class="mt-2">After payment is completed, your booking will be confirmed and updated in Google Calendar.</p>
                                 <div style="text-align: left; margin-top: 15px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border-left: 4px solid #0079D4;">
                                     <p style="margin: 5px 0;"><strong>Date:</strong> ${formattedDate}</p>
-                                    <p style="margin: 5px 0;"><strong>Time:</strong> ${formattedTime}</p>
+                                    <p style="margin: 5px 0;"><strong>Time:</strong> ${displayTime}</p>
                                     <p style="margin: 5px 0;"><strong>Amount to Pay:</strong> ${{ $trainer->price ?? 0 }}</p>
                                 </div>
                             `,
@@ -1050,6 +1076,8 @@
                             });
                         } else {
                             // For free appointments, show confirmation directly
+                            // Use the display value (time range) if available
+                            const displayTime = selectedTimeDisplay || formattedTime;
                             const bookingConfirmed = await Swal.fire({
                                 icon: 'success',
                                 title: 'Booking Confirmed!',
@@ -1057,7 +1085,7 @@
                                 <p>${data.message || 'Your appointment has been confirmed successfully!'}</p>
                                 <div style="text-align: left; margin-top: 15px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border-left: 4px solid #28a745;">
                                     <p style="margin: 5px 0;"><strong>Date:</strong> ${formattedDate}</p>
-                                    <p style="margin: 5px 0;"><strong>Time:</strong> ${formattedTime}</p>
+                                    <p style="margin: 5px 0;"><strong>Time:</strong> ${displayTime}</p>
                                 </div>
                                 <p class="mt-3">Would you like to view your appointments?</p>
                             `,

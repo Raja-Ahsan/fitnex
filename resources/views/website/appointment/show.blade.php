@@ -203,6 +203,10 @@
                                     <span class="font-semibold text-gray-900">{{ $appointment->user ? $appointment->user->name : $appointment->name }}</span>
                                 </div>
                                 <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Phone:</span>
+                                    <span class="font-semibold text-gray-900">{{ $appointment->phone ?? ($appointment->user->phone ?? '-') }}</span>
+                                </div>
+                                <div class="flex justify-between items-center">
                                     <span class="text-gray-600">Booked on:</span>
                                     <span class="font-semibold text-gray-900">{{ \Carbon\Carbon::parse($appointment->created_at)->format('M d, Y g:i A') }}</span>
                                 </div>
