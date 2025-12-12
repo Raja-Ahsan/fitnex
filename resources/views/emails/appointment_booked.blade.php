@@ -71,7 +71,17 @@
         <div class="appointment-details">
             <h3>Appointment Details:</h3>
             <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('l, F j, Y') }}</p>
-            <p><strong>Time:</strong> {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</p>
+            @php
+                $startTime = \Carbon\Carbon::parse($appointment->appointment_time);
+                $dayOfWeek = \Carbon\Carbon::parse($appointment->appointment_date)->dayOfWeek;
+                $availability = \App\Models\Availability::where('trainer_id', $appointment->trainer_id)
+                    ->where('day_of_week', $dayOfWeek)
+                    ->where('is_active', true)
+                    ->first();
+                $sessionDuration = (int) ($availability->session_duration ?? 60); // Cast to int
+                $endTime = $startTime->copy()->addMinutes($sessionDuration);
+            @endphp
+            <p><strong>Time:</strong> {{ $startTime->format('g:i A') }} - {{ $endTime->format('g:i A') }}</p>
             <p><strong>Time Zone:</strong> {{ $appointment->time_zone }}</p>
             <p><strong>Trainer:</strong> {{ $trainer->name }}</p>
             <p><strong>Price:</strong> ${{ number_format($appointment->price, 2) }}</p>

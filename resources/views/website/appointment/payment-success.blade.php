@@ -31,7 +31,21 @@
                     </div>
                     <div class="flex items-center">
                         <i class="fas fa-clock text-blue-400 mr-3 w-6"></i>
-                        <span class="text-gray-300"><strong class="text-white">Time:</strong> {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</span>
+                        <span class="text-gray-300">
+                            <strong class="text-white">Time:</strong> 
+                            @php
+                                $startTime = \Carbon\Carbon::parse($appointment->appointment_time);
+                                // Get session duration from trainer's availability for this day
+                                $dayOfWeek = \Carbon\Carbon::parse($appointment->appointment_date)->dayOfWeek;
+                                $availability = \App\Models\Availability::where('trainer_id', $appointment->trainer_id)
+                                    ->where('day_of_week', $dayOfWeek)
+                                    ->where('is_active', true)
+                                    ->first();
+                                $sessionDuration = (int) ($availability->session_duration ?? 60); // Default to 60 minutes, cast to int
+                                $endTime = $startTime->copy()->addMinutes($sessionDuration);
+                            @endphp
+                            {{ $startTime->format('g:i A') }} - {{ $endTime->format('g:i A') }}
+                        </span>
                     </div>
                     <div class="flex items-center">
                         <i class="fas fa-dollar-sign text-blue-400 mr-3 w-6"></i>
@@ -72,7 +86,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #dee2e6;">
                     <p style="margin: 5px 0;"><strong>Trainer:</strong> {{ $appointment->trainer->name ?? 'N/A' }}</p>
                     <p style="margin: 5px 0;"><strong>Date:</strong> {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('F d, Y') }}</p>
-                    <p style="margin: 5px 0;"><strong>Time:</strong> {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</p>
+                    @php
+                        $startTime = \Carbon\Carbon::parse($appointment->appointment_time);
+                        $dayOfWeek = \Carbon\Carbon::parse($appointment->appointment_date)->dayOfWeek;
+                        $availability = \App\Models\Availability::where('trainer_id', $appointment->trainer_id)
+                            ->where('day_of_week', $dayOfWeek)
+                            ->where('is_active', true)
+                            ->first();
+                        $sessionDuration = (int) ($availability->session_duration ?? 60); // Cast to int
+                        $endTime = $startTime->copy()->addMinutes($sessionDuration);
+                    @endphp
+                    <p style="margin: 5px 0;"><strong>Time:</strong> {{ $startTime->format('g:i A') }} - {{ $endTime->format('g:i A') }}</p>
                 </div>
                 @endif
             </div>

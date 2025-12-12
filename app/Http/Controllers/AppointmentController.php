@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Appointment;
+use App\Models\Booking;
 use App\Models\Trainer;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -780,10 +781,93 @@ class AppointmentController extends Controller
                 return response()->json([]);
             }
 
-            // Get Google Calendar ID from trainer
-            $googleCalendarId = $trainer->google_calendar_id;
+            // PRIORITY 1: Check TimeSlot table first (slots generated from availability)
+            $timeSlots = \App\Models\TimeSlot::forTrainer($trainer_id)
+                ->forDate($date)
+                ->available()
+                ->with('availability')
+                ->orderBy('slot_datetime')
+                ->get();
 
-            // Get available slots from Google Calendar
+            // If we have TimeSlot records, use them
+            if ($timeSlots->count() > 0) {
+                $availableSlots = [];
+                $sessionDurations = [];
+
+                foreach ($timeSlots as $slot) {
+                    $slotTime = $slot->slot_datetime->format('H:i');
+                    
+                    // Get session duration from availability or default
+                    $sessionDuration = $slot->availability->session_duration ?? 60;
+                    $sessionDurations[$slotTime] = $sessionDuration;
+
+                    // Filter out past times for today
+                    if ($date === date('Y-m-d')) {
+                        $currentTime = date('H:i');
+                        if ($slotTime <= $currentTime) {
+                            continue;
+                        }
+                    }
+
+                    $availableSlots[] = $slotTime;
+                }
+
+                // Also get booked times from both Appointment and Booking tables
+                $bookedTimes = [];
+                
+                // Get booked appointments
+                $appointmentBookings = Appointment::where('trainer_id', $trainer_id)
+                    ->where('appointment_date', $date)
+                    ->whereIn('status', ['confirmed', 'pending'])
+                    ->pluck('appointment_time')
+                    ->map(function ($time) {
+                        return date('H:i', strtotime($time));
+                    })
+                    ->toArray();
+
+                // Get booked bookings (from Booking model)
+                $bookingBookings = Booking::where('trainer_id', $trainer_id)
+                    ->whereHas('timeSlot', function($query) use ($date) {
+                        $query->whereDate('slot_datetime', $date);
+                    })
+                    ->whereIn('booking_status', ['confirmed', 'pending'])
+                    ->pluck('time_slot_id')
+                    ->toArray();
+
+                // Get booked slot times
+                $bookedSlotTimes = \App\Models\TimeSlot::whereIn('id', $bookingBookings)
+                    ->pluck('slot_datetime')
+                    ->map(function ($datetime) {
+                        return Carbon::parse($datetime)->format('H:i');
+                    })
+                    ->toArray();
+
+                $bookedTimes = array_merge($appointmentBookings, $bookedSlotTimes);
+
+                // Filter out booked times
+                $availableSlots = array_diff($availableSlots, $bookedTimes);
+                $availableSlots = array_values($availableSlots);
+
+                // Sort available slots
+                sort($availableSlots);
+
+                // Map to objects with display range using correct session duration
+                $formattedSlots = array_map(function ($slot) use ($sessionDurations) {
+                    $sessionDuration = $sessionDurations[$slot] ?? 60;
+                    $startTime = Carbon::createFromFormat('H:i', $slot);
+                    $endTime = $startTime->copy()->addMinutes((int) $sessionDuration);
+
+                    return [
+                        'value' => $slot,
+                        'display' => $startTime->format('g:i A') . ' - ' . $endTime->format('g:i A')
+                    ];
+                }, $availableSlots);
+
+                return response()->json($formattedSlots);
+            }
+
+            // PRIORITY 2: Fallback to Google Calendar if no TimeSlot records exist
+            $googleCalendarId = $trainer->google_calendar_id;
             $googleCalendarSlots = [];
             if ($googleCalendarId) {
                 try {
@@ -811,12 +895,10 @@ class AppointmentController extends Controller
                 ->toArray();
 
             // If we have Google Calendar slots, use them and filter out database bookings
-            // If we have Google Calendar slots, use them and filter out database bookings
             if (!empty($googleCalendarSlots)) {
                 $availableSlots = array_diff($googleCalendarSlots, $bookedTimes);
             } else {
-                // Fallback: Generate slots based on Trainer's Availability configuration
-
+                // PRIORITY 3: Fallback to generating slots based on Trainer's Availability configuration
                 // 1. Get Availability for this day
                 $dayOfWeek = date('w', strtotime($date)); // 0 (Sunday) to 6 (Saturday)
                 $availability = \App\Models\Availability::where('trainer_id', $trainer_id)

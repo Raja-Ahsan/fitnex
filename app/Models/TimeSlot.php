@@ -88,11 +88,21 @@ class TimeSlot extends Model
     }
 
     /**
-     * Get formatted time for display.
+     * Get formatted time for display (time range).
      */
     public function getFormattedTimeAttribute(): string
     {
-        return $this->slot_datetime->format('h:i A');
+        $startTime = $this->slot_datetime;
+        $sessionDuration = 60; // Default duration
+        
+        // Get session duration from availability if available
+        if ($this->availability) {
+            $sessionDuration = (int) ($this->availability->session_duration ?? 60);
+        }
+        
+        $endTime = $startTime->copy()->addMinutes($sessionDuration);
+        
+        return $startTime->format('g:i A') . ' - ' . $endTime->format('g:i A');
     }
 
     /**
