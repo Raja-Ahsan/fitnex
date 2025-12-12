@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 09, 2025 at 09:44 PM
+-- Host: 127.0.0.1:3307
+-- Generation Time: Dec 13, 2025 at 12:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -131,6 +131,7 @@ CREATE TABLE `appointments` (
   `trainer_id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
   `google_calendar_event_id` varchar(255) DEFAULT NULL,
   `appointment_date` date NOT NULL,
   `appointment_time` time NOT NULL,
@@ -148,10 +149,46 @@ CREATE TABLE `appointments` (
 -- Dumping data for table `appointments`
 --
 
-INSERT INTO `appointments` (`id`, `user_id`, `trainer_id`, `name`, `email`, `google_calendar_event_id`, `appointment_date`, `appointment_time`, `time_zone`, `price`, `status`, `description`, `payment_status`, `stripe_session_id`, `created_at`, `updated_at`) VALUES
-(1, NULL, 2, 'Quintessa Greer', 'asjadmmc67@gmail.com', NULL, '2025-12-10', '10:00:00', 'Asia/Karachi', 40.00, 'confirmed', 'Saepe in magni adipi', 'completed', 'cs_test_a118vJeugSsLfH1IcvmSMRl2Q9qRhiDUe95v33edBGqY82twaPjTVX8pad', '2025-12-03 16:37:09', '2025-12-03 16:37:55'),
-(2, NULL, 2, 'Muhammad Asjad', 'asjadmmc67@gmail.com', NULL, '2025-12-10', '09:00:00', 'Asia/Karachi', 40.00, 'confirmed', 'testing', 'completed', 'cs_test_a11ETJIaLBKkYP1ADkR1ELb9XOlCEIu7sJuaFCFGaXj66gJWLP8JYh9luu', '2025-12-03 17:08:12', '2025-12-03 17:08:45'),
-(3, NULL, 3, 'Calvin Terry', 'asjadmmc67@gmail.com', NULL, '2025-12-10', '12:00:00', 'Asia/Karachi', 35.00, 'confirmed', 'Assumenda lorem iste', 'completed', 'cs_test_a1th0OEgqDhZEBBtlWUYK1yyFJVd3Iu0MP9o102o5sZMElfGjMQletQORt', '2025-12-09 10:37:14', '2025-12-09 10:38:50');
+INSERT INTO `appointments` (`id`, `user_id`, `trainer_id`, `name`, `email`, `phone`, `google_calendar_event_id`, `appointment_date`, `appointment_time`, `time_zone`, `price`, `status`, `description`, `payment_status`, `stripe_session_id`, `created_at`, `updated_at`) VALUES
+(1, NULL, 2, 'Quintessa Greer', 'asjadmmc67@gmail.com', NULL, NULL, '2025-12-10', '10:00:00', 'Asia/Karachi', 40.00, 'confirmed', 'Saepe in magni adipi', 'completed', 'cs_test_a118vJeugSsLfH1IcvmSMRl2Q9qRhiDUe95v33edBGqY82twaPjTVX8pad', '2025-12-03 16:37:09', '2025-12-03 16:37:55'),
+(2, NULL, 2, 'Muhammad Asjad', 'asjadmmc67@gmail.com', NULL, NULL, '2025-12-10', '09:00:00', 'Asia/Karachi', 40.00, 'confirmed', 'testing', 'completed', 'cs_test_a11ETJIaLBKkYP1ADkR1ELb9XOlCEIu7sJuaFCFGaXj66gJWLP8JYh9luu', '2025-12-03 17:08:12', '2025-12-03 17:08:45'),
+(3, NULL, 3, 'Calvin Terry', 'asjadmmc67@gmail.com', NULL, NULL, '2025-12-10', '12:00:00', 'Asia/Karachi', 35.00, 'confirmed', 'Assumenda lorem iste', 'completed', 'cs_test_a1th0OEgqDhZEBBtlWUYK1yyFJVd3Iu0MP9o102o5sZMElfGjMQletQORt', '2025-12-09 10:37:14', '2025-12-09 10:38:50'),
+(4, NULL, 3, 'testing', 'asdasdas@gmail.com', NULL, NULL, '2025-12-11', '14:30:00', 'Asia/Karachi', 35.00, 'confirmed', 'testing', 'completed', 'cs_test_a18Vu2yXgqg2cw2eoLdvd2YpiiEOMfyuUr6ZIBztU9JwVXYgbBfN02P9jV', '2025-12-09 17:55:34', '2025-12-09 17:56:14'),
+(7, NULL, 9, 'test', 'test@dfsfsd.cvd', NULL, NULL, '2025-12-30', '13:30:00', 'Asia/Karachi', 80.00, 'completed', NULL, 'completed', 'cs_test_a1ykC0hYDBXGZKSEyVAHUTujTITP5K6KNQGJT8bRjtjwdMb07IGHUR9qaA', '2025-12-10 14:48:29', '2025-12-11 11:34:57'),
+(8, NULL, 9, 'asja', 'asjadmmc67@gmail.com', NULL, NULL, '2025-12-23', '13:00:00', 'Asia/Karachi', 80.00, 'confirmed', 'testing', 'completed', 'cs_test_a1a9AqEJsL4Jh5VDoTIlBHLgsoScSKfrseaVA9rKbJJetfY3FkRJwWDgG9', '2025-12-11 11:30:34', '2025-12-11 11:31:20'),
+(9, NULL, 10, 'John Cena', 'production8430@gmail.com', NULL, NULL, '2025-12-15', '20:00:00', 'Asia/Karachi', 80.00, 'confirmed', 'Testing', 'completed', 'cs_test_a1CZOSZE3YfEE4kQjDNJTRFeRtYT5LLQ2VM2LgccVC3lyKCDfr0gxjsZsb', '2025-12-12 10:50:39', '2025-12-12 10:51:39'),
+(10, NULL, 10, 'Kimberly Bishop', 'production8430@gmail.com', '+1 (153) 265-9149', NULL, '2025-12-22', '22:00:00', 'Asia/Karachi', 80.00, 'confirmed', 'Dolorum expedita rei', 'completed', 'cs_test_a1R0sZR26k6uEkFcr6X8nhOwfuYguw0IbloeodllYC0fJyJbiZH3fq26HF', '2025-12-12 17:48:55', '2025-12-12 17:49:35'),
+(11, NULL, 10, 'Laurel Stuart', 'wuga@mailinator.com', '+1 (446) 892-2164', NULL, '2026-01-26', '22:00:00', 'Asia/Karachi', 80.00, 'confirmed', 'Et velit error est e', 'completed', 'cs_test_a19NTFLRYnajefLJxKZD2R8ncyLshf2FwWZZAkg9zQ4qcAsU4TGO8Ffle8', '2025-12-12 17:58:04', '2025-12-12 17:58:44');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `availabilities`
+--
+
+CREATE TABLE `availabilities` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `trainer_id` bigint(20) UNSIGNED NOT NULL,
+  `day_of_week` tinyint(4) NOT NULL COMMENT '0=Sunday, 1=Monday, ..., 6=Saturday',
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
+  `session_duration` enum('30','45','60') NOT NULL DEFAULT '60' COMMENT 'Duration in minutes',
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `availabilities`
+--
+
+INSERT INTO `availabilities` (`id`, `trainer_id`, `day_of_week`, `start_time`, `end_time`, `session_duration`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 9, 1, '22:00:00', '23:00:00', '60', 1, '2025-12-10 11:40:57', '2025-12-10 11:40:57'),
+(3, 9, 2, '13:00:00', '14:00:00', '45', 1, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
+(4, 10, 1, '22:00:00', '23:00:00', '60', 1, '2025-12-11 11:21:10', '2025-12-11 11:21:10'),
+(5, 10, 5, '22:00:00', '23:00:00', '60', 1, '2025-12-11 11:26:56', '2025-12-11 11:26:56'),
+(6, 10, 1, '20:00:00', '21:00:00', '60', 1, '2025-12-12 10:31:08', '2025-12-12 10:31:35'),
+(7, 10, 2, '22:00:00', '22:45:00', '45', 1, '2025-12-12 15:14:45', '2025-12-12 15:15:16');
 
 -- --------------------------------------------------------
 
@@ -185,6 +222,31 @@ INSERT INTO `banners` (`id`, `name`, `slug`, `short_description`, `description`,
 (7, 'Login Your Account', 'login', NULL, NULL, '25-07-18-174534.webp', '1', NULL, '2025-07-18 12:45:34', '2025-07-18 12:45:34'),
 (8, 'Contact Us', 'contact-us', NULL, NULL, '25-07-23-164952.webp', '1', NULL, '2025-07-23 11:49:53', '2025-07-23 11:49:53'),
 (9, 'Blogs', 'blogs', NULL, NULL, '25-07-25-224823.webp', '1', NULL, '2025-07-25 17:48:23', '2025-07-25 17:48:23');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blocked_slots`
+--
+
+CREATE TABLE `blocked_slots` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `trainer_id` bigint(20) UNSIGNED NOT NULL,
+  `date` date NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
+  `reason` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `blocked_slots`
+--
+
+INSERT INTO `blocked_slots` (`id`, `trainer_id`, `date`, `start_time`, `end_time`, `reason`, `created_at`, `updated_at`) VALUES
+(1, 9, '2025-12-25', '01:00:00', '14:00:00', 'test', '2025-12-10 14:08:52', '2025-12-10 14:08:52'),
+(4, 9, '2025-12-25', '02:00:00', '03:00:00', NULL, '2025-12-10 14:13:24', '2025-12-10 14:13:24');
 
 -- --------------------------------------------------------
 
@@ -243,6 +305,52 @@ INSERT INTO `blog_categories` (`id`, `created_by`, `name`, `slug`, `description`
 (4, 1, 'Lifestyle', 'lifestyle', NULL, 1, NULL, '2025-07-28 13:38:36', '2025-07-28 13:38:36'),
 (5, 1, 'Motivation', 'motivation', NULL, 1, NULL, '2025-07-28 13:38:48', '2025-07-28 13:38:48'),
 (6, 1, 'Events', 'events', NULL, 1, NULL, '2025-07-28 13:39:00', '2025-07-28 13:39:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bookings`
+--
+
+CREATE TABLE `bookings` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `trainer_id` bigint(20) UNSIGNED NOT NULL,
+  `time_slot_id` bigint(20) UNSIGNED NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `currency` varchar(3) NOT NULL DEFAULT 'USD',
+  `payment_status` enum('pending','paid','failed','refunded') NOT NULL DEFAULT 'pending',
+  `stripe_payment_intent` varchar(255) DEFAULT NULL,
+  `stripe_session_id` varchar(255) DEFAULT NULL,
+  `booking_status` enum('pending','confirmed','cancelled','completed') NOT NULL DEFAULT 'pending',
+  `google_event_id` varchar(255) DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `cancelled_at` timestamp NULL DEFAULT NULL,
+  `cancelled_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `cancellation_reason` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `booking_reschedules`
+--
+
+CREATE TABLE `booking_reschedules` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `booking_id` bigint(20) UNSIGNED NOT NULL,
+  `old_slot_id` bigint(20) UNSIGNED NOT NULL,
+  `new_slot_id` bigint(20) UNSIGNED NOT NULL,
+  `rescheduled_by` bigint(20) UNSIGNED NOT NULL,
+  `reason` text DEFAULT NULL,
+  `price_difference` decimal(10,2) DEFAULT NULL COMMENT 'Positive if customer owes more, negative if refund needed',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -912,7 +1020,17 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (171, '2022_03_09_150337_create_blogs_table', 106),
 (172, '2022_05_09_190227_blog_categories', 107),
 (175, '2022_05_18_203240_create_appointments_table', 108),
-(176, '2025_12_09_204500_add_google_calendar_id_to_trainers_table', 109);
+(176, '2025_12_09_204500_add_google_calendar_id_to_trainers_table', 109),
+(177, '2025_12_10_000001_create_availabilities_table', 110),
+(178, '2025_12_10_000002_create_time_slots_table', 111),
+(179, '2025_12_10_000003_create_bookings_table', 112),
+(180, '2025_12_10_000004_create_booking_reschedules_table', 113),
+(181, '2025_12_10_000005_create_trainer_google_accounts_table', 113),
+(182, '2025_12_10_000006_create_blocked_slots_table', 113),
+(183, '2025_12_10_000007_create_trainer_pricing_table', 113),
+(184, '2025_12_12_221316_remove_duplicate_columns_from_trainers_table', 114),
+(185, '2025_12_12_224450_add_phone_to_appointments_table', 115),
+(186, '2025_12_12_224452_add_phone_to_bookings_table', 115);
 
 -- --------------------------------------------------------
 
@@ -944,13 +1062,20 @@ CREATE TABLE `model_has_roles` (
 
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (1, 'App\\Models\\User', 1),
+(1, 'App\\Models\\User', 19),
 (2, 'App\\Models\\User', 4),
 (2, 'App\\Models\\User', 7),
 (2, 'App\\Models\\User', 14),
 (2, 'App\\Models\\User', 16),
+(2, 'App\\Models\\User', 20),
 (2, 'App\\Models\\User', 21),
+(2, 'App\\Models\\User', 22),
+(2, 'App\\Models\\User', 27),
+(2, 'App\\Models\\User', 28),
+(2, 'App\\Models\\User', 29),
 (2, 'App\\Models\\User', 30),
 (2, 'App\\Models\\User', 31),
+(2, 'App\\Models\\User', 32),
 (2, 'App\\Models\\User', 34),
 (2, 'App\\Models\\User', 35),
 (2, 'App\\Models\\User', 36),
@@ -970,59 +1095,6 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (2, 'App\\Models\\User', 70),
 (2, 'App\\Models\\User', 72),
 (2, 'App\\Models\\User', 75),
-(4, 'App\\Models\\User', 2),
-(4, 'App\\Models\\User', 3),
-(4, 'App\\Models\\User', 5),
-(4, 'App\\Models\\User', 6),
-(4, 'App\\Models\\User', 8),
-(4, 'App\\Models\\User', 10),
-(4, 'App\\Models\\User', 11),
-(4, 'App\\Models\\User', 13),
-(4, 'App\\Models\\User', 17),
-(4, 'App\\Models\\User', 18),
-(4, 'App\\Models\\User', 19),
-(4, 'App\\Models\\User', 20),
-(4, 'App\\Models\\User', 22),
-(4, 'App\\Models\\User', 23),
-(4, 'App\\Models\\User', 24),
-(4, 'App\\Models\\User', 25),
-(4, 'App\\Models\\User', 26),
-(4, 'App\\Models\\User', 27),
-(4, 'App\\Models\\User', 28),
-(4, 'App\\Models\\User', 29),
-(4, 'App\\Models\\User', 32),
-(4, 'App\\Models\\User', 33),
-(4, 'App\\Models\\User', 37),
-(4, 'App\\Models\\User', 38),
-(4, 'App\\Models\\User', 41),
-(4, 'App\\Models\\User', 42),
-(4, 'App\\Models\\User', 43),
-(4, 'App\\Models\\User', 44),
-(4, 'App\\Models\\User', 50),
-(4, 'App\\Models\\User', 51),
-(4, 'App\\Models\\User', 52),
-(4, 'App\\Models\\User', 53),
-(4, 'App\\Models\\User', 54),
-(4, 'App\\Models\\User', 59),
-(4, 'App\\Models\\User', 60),
-(4, 'App\\Models\\User', 61),
-(4, 'App\\Models\\User', 68),
-(4, 'App\\Models\\User', 69),
-(4, 'App\\Models\\User', 74),
-(4, 'App\\Models\\User', 76),
-(4, 'App\\Models\\User', 77),
-(4, 'App\\Models\\User', 78),
-(4, 'App\\Models\\User', 79),
-(4, 'App\\Models\\User', 81),
-(4, 'App\\Models\\User', 85),
-(4, 'App\\Models\\User', 87),
-(4, 'App\\Models\\User', 89),
-(4, 'App\\Models\\User', 92),
-(4, 'App\\Models\\User', 93),
-(4, 'App\\Models\\User', 95),
-(4, 'App\\Models\\User', 97),
-(4, 'App\\Models\\User', 101),
-(4, 'App\\Models\\User', 108),
 (5, 'App\\Models\\User', 2),
 (5, 'App\\Models\\User', 3),
 (5, 'App\\Models\\User', 4),
@@ -1181,7 +1253,19 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `type`, `notifiable_type`, `notifiable_id`, `data`, `read_at`, `created_at`, `updated_at`) VALUES
+('18a73203-8e92-494e-b532-5a40c9cde11d', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":11,\"trainer_name\":\"Sarah Johnson \",\"appointment_date\":\"2026-01-26\",\"appointment_time\":\"22:00\",\"status\":\"pending\",\"message\":\"Your appointment with Sarah Johnson  has been booked successfully!\"}', NULL, '2025-12-12 17:58:12', '2025-12-12 17:58:12'),
+('1a7a88d0-b922-4df4-a3e6-79e978be5b6c', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 19, '{\"type\":\"appointment_booked\",\"appointment_id\":11,\"trainer_name\":\"Sarah Johnson \",\"appointment_date\":\"2026-01-26\",\"appointment_time\":\"22:00\",\"status\":\"pending\",\"message\":\"Your appointment with Sarah Johnson  has been booked successfully!\"}', NULL, '2025-12-12 17:58:12', '2025-12-12 17:58:12'),
 ('3c4a75b2-d1b6-4960-99d4-3d7467b5db35', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":3,\"trainer_name\":\"Amelia Rose\",\"appointment_date\":\"2025-12-10\",\"appointment_time\":\"12:00\",\"status\":\"pending\",\"message\":\"Your appointment with Amelia Rose has been booked successfully!\"}', NULL, '2025-12-09 10:37:34', '2025-12-09 10:37:34'),
+('5c25263a-57ef-48ab-97a9-8fe5ef230559', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":9,\"trainer_name\":\"Sarah Johnson\",\"appointment_date\":\"2025-12-15\",\"appointment_time\":\"20:00\",\"status\":\"pending\",\"message\":\"Your appointment with Sarah Johnson has been booked successfully!\"}', NULL, '2025-12-12 10:50:59', '2025-12-12 10:50:59'),
+('791ebde2-8b52-48f3-a1a2-ab865a1fe686', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 19, '{\"type\":\"appointment_booked\",\"appointment_id\":4,\"trainer_name\":\"Amelia Rose\",\"appointment_date\":\"2025-12-11\",\"appointment_time\":\"14:30\",\"status\":\"pending\",\"message\":\"Your appointment with Amelia Rose has been booked successfully!\"}', NULL, '2025-12-09 17:55:43', '2025-12-09 17:55:43'),
+('8f054232-4dba-4ae1-99fc-5d97dc4451f1', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":7,\"trainer_name\":\"John Smith\",\"appointment_date\":\"2025-12-30\",\"appointment_time\":\"13:30\",\"status\":\"pending\",\"message\":\"Your appointment with John Smith has been booked successfully!\"}', NULL, '2025-12-10 14:48:47', '2025-12-10 14:48:47'),
+('940ffa74-71cc-4ee7-937d-75c96535a1ad', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 19, '{\"type\":\"appointment_booked\",\"appointment_id\":7,\"trainer_name\":\"John Smith\",\"appointment_date\":\"2025-12-30\",\"appointment_time\":\"13:30\",\"status\":\"pending\",\"message\":\"Your appointment with John Smith has been booked successfully!\"}', NULL, '2025-12-10 14:48:47', '2025-12-10 14:48:47'),
+('9cc7fd4b-c7da-4bb9-ae25-6e5a30523075', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":8,\"trainer_name\":\"John Smith\",\"appointment_date\":\"2025-12-23\",\"appointment_time\":\"13:00\",\"status\":\"pending\",\"message\":\"Your appointment with John Smith has been booked successfully!\"}', NULL, '2025-12-11 11:30:54', '2025-12-11 11:30:54'),
+('a4e082c4-17ee-4903-9b3f-d3259b680acf', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 19, '{\"type\":\"appointment_booked\",\"appointment_id\":8,\"trainer_name\":\"John Smith\",\"appointment_date\":\"2025-12-23\",\"appointment_time\":\"13:00\",\"status\":\"pending\",\"message\":\"Your appointment with John Smith has been booked successfully!\"}', NULL, '2025-12-11 11:30:54', '2025-12-11 11:30:54'),
+('a974b52c-5bcf-4415-ac40-7e05addf3e78', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 19, '{\"type\":\"appointment_booked\",\"appointment_id\":10,\"trainer_name\":\"Sarah Johnson \",\"appointment_date\":\"2025-12-22\",\"appointment_time\":\"22:00\",\"status\":\"pending\",\"message\":\"Your appointment with Sarah Johnson  has been booked successfully!\"}', NULL, '2025-12-12 17:49:03', '2025-12-12 17:49:03'),
+('b8122bbc-de85-445b-b42d-809f075c5e1e', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":4,\"trainer_name\":\"Amelia Rose\",\"appointment_date\":\"2025-12-11\",\"appointment_time\":\"14:30\",\"status\":\"pending\",\"message\":\"Your appointment with Amelia Rose has been booked successfully!\"}', NULL, '2025-12-09 17:55:43', '2025-12-09 17:55:43'),
+('e16be858-2579-4a7c-9003-7a5eacfb43a8', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 19, '{\"type\":\"appointment_booked\",\"appointment_id\":9,\"trainer_name\":\"Sarah Johnson\",\"appointment_date\":\"2025-12-15\",\"appointment_time\":\"20:00\",\"status\":\"pending\",\"message\":\"Your appointment with Sarah Johnson has been booked successfully!\"}', NULL, '2025-12-12 10:51:00', '2025-12-12 10:51:00'),
+('e482c512-23da-44e6-b8cc-f7470dd77a9a', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":10,\"trainer_name\":\"Sarah Johnson \",\"appointment_date\":\"2025-12-22\",\"appointment_time\":\"22:00\",\"status\":\"pending\",\"message\":\"Your appointment with Sarah Johnson  has been booked successfully!\"}', NULL, '2025-12-12 17:49:03', '2025-12-12 17:49:03'),
 ('f14eaf2d-0b36-484e-8357-246f031cfe48', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":1,\"trainer_name\":\"Liam Daniel\",\"appointment_date\":\"2025-12-10\",\"appointment_time\":\"10:00\",\"status\":\"pending\",\"message\":\"Your appointment with Liam Daniel has been booked successfully!\"}', NULL, '2025-12-03 16:37:18', '2025-12-03 16:37:18'),
 ('fd068b16-9bf4-4859-9262-bad16443abbe', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":2,\"trainer_name\":\"Liam Daniel\",\"appointment_date\":\"2025-12-10\",\"appointment_time\":\"09:00\",\"status\":\"pending\",\"message\":\"Your appointment with Liam Daniel has been booked successfully!\"}', NULL, '2025-12-03 17:08:20', '2025-12-03 17:08:20');
 
@@ -2046,10 +2130,9 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `name`, `guard_name`, `description`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'web', 'Admin Role Permissions', NULL, '2022-04-06 14:41:39', '2024-07-10 13:27:58'),
-(2, 'Contractor', 'web', 'Contractor Role Permissions', NULL, '2022-04-22 14:46:54', '2024-07-10 13:28:47'),
-(4, 'EPC Developer', 'web', 'EPC Developer Role Permissions', NULL, '2024-06-21 18:28:35', '2025-04-28 10:57:45'),
-(5, 'Member', 'web', 'Member Role Permissions', NULL, '2025-05-07 19:38:04', '2025-05-07 19:40:02');
+(1, 'admin', 'web', 'Admin Role Permissions', NULL, '2022-04-06 14:41:39', '2024-07-10 13:27:58'),
+(2, 'trainer', 'web', 'Trainer Role Permissions', NULL, '2022-04-22 14:46:54', '2024-07-10 13:28:47'),
+(5, 'customer', 'web', 'Customer Role Permissions', NULL, '2025-05-07 19:38:04', '2025-05-07 19:40:02');
 
 -- --------------------------------------------------------
 
@@ -2102,11 +2185,8 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (55, 1),
 (56, 1),
 (57, 1),
-(57, 4),
 (58, 1),
-(58, 4),
 (59, 1),
-(59, 4),
 (60, 1),
 (61, 1),
 (62, 1),
@@ -2148,7 +2228,6 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (104, 1),
 (105, 1),
 (105, 2),
-(105, 4),
 (106, 1),
 (107, 1),
 (108, 1),
@@ -2171,16 +2250,11 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (144, 1),
 (173, 1),
 (173, 2),
-(173, 4),
-(174, 4),
 (176, 1),
 (177, 1),
 (177, 2),
-(177, 4),
-(178, 4),
 (197, 1),
 (197, 2),
-(197, 4),
 (198, 1),
 (198, 2),
 (199, 1),
@@ -2196,38 +2270,26 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (211, 1),
 (212, 1),
 (229, 1),
-(229, 4),
 (230, 1),
-(230, 4),
 (231, 1),
-(231, 4),
 (232, 1),
-(232, 4),
 (233, 1),
-(233, 4),
 (233, 5),
 (234, 1),
-(234, 4),
 (235, 1),
-(235, 4),
 (236, 1),
-(236, 4),
 (237, 1),
 (238, 1),
 (239, 1),
 (240, 1),
 (241, 1),
 (242, 1),
-(242, 4),
 (242, 5),
 (243, 1),
-(243, 4),
 (243, 5),
 (244, 1),
-(244, 4),
 (244, 5),
 (245, 1),
-(245, 4),
 (245, 5),
 (246, 1),
 (246, 5),
@@ -2242,16 +2304,18 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (259, 1),
 (260, 1),
 (261, 1),
-(262, 4),
-(265, 4),
 (274, 1),
 (275, 1),
 (276, 1),
 (277, 1),
 (278, 1),
+(278, 2),
 (279, 1),
+(279, 2),
 (280, 1),
+(280, 2),
 (281, 1),
+(281, 2),
 (282, 1),
 (283, 1),
 (284, 1),
@@ -3399,30 +3463,95 @@ INSERT INTO `testimonials` (`id`, `name`, `slug`, `designation`, `rating`, `imag
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `time_slots`
+--
+
+CREATE TABLE `time_slots` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `trainer_id` bigint(20) UNSIGNED NOT NULL,
+  `availability_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `slot_datetime` datetime NOT NULL,
+  `is_booked` tinyint(1) NOT NULL DEFAULT 0,
+  `booking_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `time_slots`
+--
+
+INSERT INTO `time_slots` (`id`, `trainer_id`, `availability_id`, `slot_datetime`, `is_booked`, `booking_id`, `created_at`, `updated_at`) VALUES
+(9, 9, 1, '2025-12-15 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
+(10, 9, 1, '2025-12-22 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
+(11, 9, 1, '2025-12-29 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
+(12, 9, 1, '2026-01-05 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
+(13, 9, 1, '2026-01-12 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
+(14, 9, 1, '2026-01-19 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
+(15, 9, 1, '2026-01-26 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
+(16, 9, 1, '2026-02-02 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
+(17, 9, 3, '2025-12-16 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
+(18, 9, 3, '2025-12-23 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
+(19, 9, 3, '2025-12-30 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
+(20, 9, 3, '2026-01-06 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
+(21, 9, 3, '2026-01-13 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
+(22, 9, 3, '2026-01-20 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
+(23, 9, 3, '2026-01-27 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
+(24, 9, 3, '2026-02-03 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
+(79, 10, 5, '2025-12-12 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(80, 10, 4, '2025-12-15 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(81, 10, 6, '2025-12-15 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(82, 10, 7, '2025-12-16 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(83, 10, 5, '2025-12-19 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(84, 10, 4, '2025-12-22 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(85, 10, 6, '2025-12-22 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(86, 10, 7, '2025-12-23 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(87, 10, 5, '2025-12-26 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(88, 10, 4, '2025-12-29 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(89, 10, 6, '2025-12-29 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(90, 10, 7, '2025-12-30 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(91, 10, 5, '2026-01-02 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(92, 10, 4, '2026-01-05 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(93, 10, 6, '2026-01-05 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(94, 10, 7, '2026-01-06 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(95, 10, 5, '2026-01-09 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(96, 10, 4, '2026-01-12 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(97, 10, 6, '2026-01-12 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(98, 10, 7, '2026-01-13 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(99, 10, 5, '2026-01-16 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(100, 10, 4, '2026-01-19 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(101, 10, 6, '2026-01-19 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(102, 10, 7, '2026-01-20 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(103, 10, 5, '2026-01-23 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(104, 10, 4, '2026-01-26 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(105, 10, 6, '2026-01-26 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(106, 10, 7, '2026-01-27 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(107, 10, 5, '2026-01-30 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(108, 10, 4, '2026-02-02 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(109, 10, 6, '2026-02-02 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(110, 10, 7, '2026-02-03 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(111, 10, 5, '2026-02-06 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(112, 10, 4, '2026-02-09 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(113, 10, 6, '2026-02-09 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
+(114, 10, 7, '2026-02-10 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `trainers`
 --
 
 CREATE TABLE `trainers` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `created_by` bigint(20) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
   `trainer_type` varchar(255) DEFAULT NULL,
   `google_calendar_id` varchar(255) DEFAULT NULL,
-  `designation` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `phone` varchar(255) DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
   `description` text DEFAULT NULL,
   `price` varchar(255) DEFAULT NULL,
   `rating` varchar(255) DEFAULT NULL,
   `specialization` mediumtext DEFAULT NULL,
   `city` varchar(255) DEFAULT NULL,
   `state` varchar(255) DEFAULT NULL,
-  `facebook` varchar(255) DEFAULT NULL,
-  `twitter` varchar(255) DEFAULT NULL,
-  `instagram` varchar(255) DEFAULT NULL,
-  `linkedin` varchar(255) DEFAULT NULL,
-  `youtube` varchar(255) DEFAULT NULL,
   `status` varchar(255) NOT NULL DEFAULT '1' COMMENT '0=inactive , 1=active',
   `deleted_at` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -3433,14 +3562,66 @@ CREATE TABLE `trainers` (
 -- Dumping data for table `trainers`
 --
 
-INSERT INTO `trainers` (`id`, `created_by`, `name`, `trainer_type`, `google_calendar_id`, `designation`, `email`, `phone`, `image`, `description`, `price`, `rating`, `specialization`, `city`, `state`, `facebook`, `twitter`, `instagram`, `linkedin`, `youtube`, `status`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(2, 1, 'Liam Daniel', 'Gym Trainer', 'AYqNkNDybjf6wYGH9', 'Gym Trainer', NULL, NULL, '25-07-08-222641.png', 'Personalized workout plans and strength training sessions tailored to your fitness goals, whether you\'re a beginner or advanced.', '40', '4', '[\"Strength & Conditioning\",\"Bodybuilding\",\"Functional Training\",\"Weight Loss\"]', '0', '0', NULL, '#', '#', NULL, NULL, '1', NULL, '2025-07-08 17:26:41', '2025-12-03 16:31:30'),
-(3, 1, 'Amelia Rose', 'Yoga Trainer', 'asjadmmc67@gmail.com', 'Yoga Trainer', 'asjadmmc67@gmail.com', NULL, '25-07-08-230921.png', 'Guided yoga sessions focusing on flexibility, mindfulness, and relaxation for all skill levels, from beginners to experienced yogis.', '35', '4', '[\"Vinyasa & Hatha Yoga\",\"Flexibility & Mobility\",\"Mindfulness & Meditation\",\"Stress Relief & Recovery\"]', '0', '0', NULL, '#', '#', NULL, NULL, '1', NULL, '2025-07-08 18:09:21', '2025-12-03 14:19:52'),
-(4, 1, 'William Garcia', 'Kickfit Trainer', NULL, 'Kickfit Trainer', NULL, NULL, '25-07-08-231044.png', 'High-energy kickboxing fitness classes designed to boost your cardio, coordination, and strength while burning calories.', '45', '4', '[\"Kickboxing & Cardio Conditioning\",\"Agility & Coordination\",\"Combat Fitness\",\"Fat Burn & Endurance\"]', '0', '0', NULL, '#', '#', NULL, NULL, '1', NULL, '2025-07-08 18:10:44', '2025-07-08 18:10:44'),
-(5, 1, 'Evelyn Clarke', 'Group-X Trainer', NULL, 'Group-X Trainer', NULL, NULL, '25-07-08-231226.png', 'Motivating group exercise classes including aerobics, dance, and functional training to keep you energized and socially connected.', '30', '4', '[\"Group Aerobics & Dance\",\"Circuit & HIIT Training\",\"Team Motivation\",\"Total Body Conditioning\"]', '0', '0', NULL, '#', '#', NULL, NULL, '1', NULL, '2025-07-08 18:12:26', '2025-07-08 18:12:26'),
-(6, 1, 'Sarah Culver', 'In-Person Only', NULL, 'Menopause Coach & Personal Trainer', 'info@imagine-believe-achieve.co.uk', '07349908233', '15-07-2025-195534.jpg', 'Personalized coaching tailored for women going through menopause, as well as individuals\r\n managing obesity and long-term health challenges. Sarah provides empathetic, focused guidance\r\n for fitness and wellness goals.', '35', '4', '[\"Menopause Coaching\",\"Personal Training\",\"Weight Management\",\"Health for Chronic Conditions\"]', 'Bolton Le Sands', 'England', NULL, NULL, '@imagine.believe.achieve.be.fit', NULL, NULL, '1', NULL, '2025-07-15 14:05:52', '2025-07-15 17:12:29'),
-(7, 1, 'Lance Riley', 'In-Person & Online', NULL, 'Personal Trainer & Nutrition Coach', 'elevateperformancefitness7@gmail.com', '4075361152', '15-07-2025-215046.webp', 'Offering tailored personal training and nutrition guidance in both small-group and individual formats.\r\n Lance helps clients build consistency in their fitness journey-whether in person or online.', '40', '4', '[\"Personal Training\",\"Nutrition Coaching\",\"Semi-private\\/Small Group Training\",\"Online Training\"]', 'Sanford', 'Florida', NULL, NULL, 'Elevate Performance Fitness', NULL, NULL, '1', NULL, '2025-07-15 16:34:00', '2025-07-15 17:11:56'),
-(8, 1, 'Kaushik Thool', 'In-Person Only', NULL, 'Personal Trainer', 'thoolkaushik1@gmail.com', '9637335798', '25-07-15-223200.jpg', 'Helping individuals transform their fitness with in-person sessions focused on strength, endurance,\r\n and overall wellness. Kaushik is passionate about building visibility and empowering others to build\r\n healthier habits.', '30', '4', '[\"Functional Fitness\",\"General Conditioning\",\"Strength Building\",\"Fitness for Beginners\"]', 'Oshiwara', 'India', NULL, NULL, '@kaushik_thool', NULL, NULL, '1', NULL, '2025-07-15 17:32:00', '2025-07-15 17:32:00');
+INSERT INTO `trainers` (`id`, `created_by`, `trainer_type`, `google_calendar_id`, `description`, `price`, `rating`, `specialization`, `city`, `state`, `status`, `deleted_at`, `created_at`, `updated_at`) VALUES
+(2, 1, 'Gym Trainer', 'AYqNkNDybjf6wYGH9', 'Personalized workout plans and strength training sessions tailored to your fitness goals, whether you\'re a beginner or advanced.', '40', '4', '[\"Strength & Conditioning\",\"Bodybuilding\",\"Functional Training\",\"Weight Loss\"]', '0', '0', '1', NULL, '2025-07-08 17:26:41', '2025-12-03 16:31:30'),
+(3, 1, 'Yoga Trainer', 'asjadmmc67@gmail.com', 'Guided yoga sessions focusing on flexibility, mindfulness, and relaxation for all skill levels, from beginners to experienced yogis.', '35', '4', '[\"Vinyasa & Hatha Yoga\",\"Flexibility & Mobility\",\"Mindfulness & Meditation\",\"Stress Relief & Recovery\"]', '0', '0', '1', NULL, '2025-07-08 18:09:21', '2025-12-03 14:19:52'),
+(4, 1, 'Kickfit Trainer', NULL, 'High-energy kickboxing fitness classes designed to boost your cardio, coordination, and strength while burning calories.', '45', '4', '[\"Kickboxing & Cardio Conditioning\",\"Agility & Coordination\",\"Combat Fitness\",\"Fat Burn & Endurance\"]', '0', '0', '1', NULL, '2025-07-08 18:10:44', '2025-07-08 18:10:44'),
+(5, 1, 'Group-X Trainer', NULL, 'Motivating group exercise classes including aerobics, dance, and functional training to keep you energized and socially connected.', '30', '4', '[\"Group Aerobics & Dance\",\"Circuit & HIIT Training\",\"Team Motivation\",\"Total Body Conditioning\"]', '0', '0', '1', NULL, '2025-07-08 18:12:26', '2025-07-08 18:12:26'),
+(6, 1, 'In-Person Only', NULL, 'Personalized coaching tailored for women going through menopause, as well as individuals\r\n managing obesity and long-term health challenges. Sarah provides empathetic, focused guidance\r\n for fitness and wellness goals.', '35', '4', '[\"Menopause Coaching\",\"Personal Training\",\"Weight Management\",\"Health for Chronic Conditions\"]', 'Bolton Le Sands', 'England', '1', NULL, '2025-07-15 14:05:52', '2025-07-15 17:12:29'),
+(7, 1, 'In-Person & Online', NULL, 'Offering tailored personal training and nutrition guidance in both small-group and individual formats.\r\n Lance helps clients build consistency in their fitness journey-whether in person or online.', '40', '4', '[\"Personal Training\",\"Nutrition Coaching\",\"Semi-private\\/Small Group Training\",\"Online Training\"]', 'Sanford', 'Florida', '1', NULL, '2025-07-15 16:34:00', '2025-07-15 17:11:56'),
+(8, 1, 'In-Person Only', NULL, 'Helping individuals transform their fitness with in-person sessions focused on strength, endurance,\r\n and overall wellness. Kaushik is passionate about building visibility and empowering others to build\r\n healthier habits.', '30', '4', '[\"Functional Fitness\",\"General Conditioning\",\"Strength Building\",\"Fitness for Beginners\"]', 'Oshiwara', 'India', '1', NULL, '2025-07-15 17:32:00', '2025-07-15 17:32:00'),
+(9, 20, NULL, NULL, 'Specialized in strength training and weight loss with 10+ years of experience.', '80', NULL, NULL, NULL, NULL, '1', NULL, '2025-12-09 17:30:52', '2025-12-09 17:30:52'),
+(10, 21, NULL, NULL, 'Expert in yoga, pilates, and flexibility training. Certified instructor since 2015.', '80', NULL, NULL, NULL, NULL, '1', NULL, '2025-12-09 17:30:52', '2025-12-11 11:03:18'),
+(11, 22, NULL, NULL, 'High-intensity interval training and CrossFit specialist. Former athlete.', '62', NULL, NULL, NULL, NULL, '1', NULL, '2025-12-09 17:30:52', '2025-12-09 17:30:52'),
+(12, 27, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', NULL, '2025-12-12 16:08:09', '2025-12-12 16:08:09'),
+(13, 28, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', NULL, '2025-12-12 16:17:11', '2025-12-12 16:17:11'),
+(14, 29, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', NULL, '2025-12-12 16:20:48', '2025-12-12 16:20:48'),
+(15, 30, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', NULL, '2025-12-12 16:45:10', '2025-12-12 16:46:00'),
+(17, 32, 'Trainer', NULL, 'Nisi dolore illum e', '70', '1', '[\"test\",\"testing\"]', 'Karachi', 'Sindh', '1', NULL, '2025-12-12 17:31:40', '2025-12-12 17:31:43');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trainer_google_accounts`
+--
+
+CREATE TABLE `trainer_google_accounts` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `trainer_id` bigint(20) UNSIGNED NOT NULL,
+  `access_token` text NOT NULL,
+  `refresh_token` text NOT NULL,
+  `calendar_id` varchar(255) DEFAULT NULL,
+  `token_expiry` timestamp NULL DEFAULT NULL,
+  `is_connected` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trainer_pricing`
+--
+
+CREATE TABLE `trainer_pricing` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `trainer_id` bigint(20) UNSIGNED NOT NULL,
+  `session_duration` enum('30','45','60') NOT NULL COMMENT 'Duration in minutes',
+  `price` decimal(10,2) NOT NULL,
+  `currency` varchar(3) NOT NULL DEFAULT 'USD',
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `trainer_pricing`
+--
+
+INSERT INTO `trainer_pricing` (`id`, `trainer_id`, `session_duration`, `price`, `currency`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 9, '30', 40.00, 'USD', 1, '2025-12-10 11:53:50', '2025-12-10 11:53:50'),
+(2, 9, '45', 90.00, 'USD', 1, '2025-12-10 11:53:50', '2025-12-10 11:53:50'),
+(3, 9, '60', 120.00, 'USD', 1, '2025-12-10 11:53:50', '2025-12-10 11:53:50');
 
 -- --------------------------------------------------------
 
@@ -3492,7 +3673,16 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `last_name`, `role`, `package_id`, `category_id`, `designation`, `team`, `phone`, `email`, `address`, `top_rated`, `leaderboard`, `about_me`, `date_of_birth`, `gender`, `whatsapp`, `skype`, `facebook`, `twitter`, `instagram`, `linkedin`, `youtube`, `city_id`, `state_id`, `zip_code`, `license`, `image`, `email_verified_at`, `password`, `verify_token`, `deleted_at`, `expiry_date`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin@gmail.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$QowHn04SUEIx8Lo.kQahTehd1cmYS2NnLkwDlqRARD7bVtpnNg/mi', '676f265264ab2', NULL, NULL, '1', NULL, NULL);
+(1, 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin@gmail.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$QowHn04SUEIx8Lo.kQahTehd1cmYS2NnLkwDlqRARD7bVtpnNg/mi', '676f265264ab2', NULL, NULL, '1', NULL, NULL),
+(19, 'Admin User', NULL, 'trainer', NULL, NULL, NULL, NULL, '1234567890', 'admin@fitnex.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$ZQzKLxE9Evo/35EfRPCAV.VMVzQ3Bl5ejz/BuGq7hux5KTjb9S6lK', NULL, NULL, NULL, '1', '2025-12-09 17:30:51', '2025-12-09 17:30:51'),
+(20, 'John Smith', NULL, 'trainer', NULL, NULL, NULL, NULL, '5552445845', 'john.trainer@fitnex.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1765390919.jpg', NULL, '$2y$10$1XY8vEd05xFImtmfln4UfeByNlpg.ZKcSSa4ENIj8BjurGlafW2gS', NULL, NULL, NULL, '1', '2025-12-09 17:30:52', '2025-12-10 13:21:59'),
+(21, 'Sarah Johnson', NULL, 'trainer', NULL, NULL, NULL, NULL, '5559676546', 'sarah.trainer@fitnex.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1765468998.jpg', NULL, '$2y$10$1qPHHqBf5b94ttlez4anxe4MbQfUCj8wYD/5RmfNVO9p4RsaA8TVi', NULL, NULL, NULL, '1', '2025-12-09 17:30:52', '2025-12-11 11:03:18'),
+(22, 'Mike Davis', NULL, 'trainer', NULL, NULL, NULL, NULL, '5557908018', 'mike.trainer@fitnex.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$BVPeMDBSz3oHGQL4AWjsN.Ju3m7BG2Zr2OTLMuZqLDUwyl3ggd.GO', NULL, NULL, NULL, '1', '2025-12-09 17:30:52', '2025-12-09 17:30:52'),
+(23, 'Alice Brown', NULL, 'trainer', NULL, NULL, NULL, NULL, '5553123658', 'alice@example.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$f10PecAoBzrpWttyPplbh.n42.BVvKM0oobRQ0hvo4S3sXmePsfL.', NULL, NULL, NULL, '1', '2025-12-09 17:30:52', '2025-12-09 17:30:52'),
+(24, 'Bob Wilson', NULL, 'trainer', NULL, NULL, NULL, NULL, '5558727390', 'bob@example.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$eWxZLjYo8Fi3BODOD/RxtOI9.Y..E5dZbCapO4NKJ31mLFXmBfx8.', NULL, NULL, NULL, '1', '2025-12-09 17:30:53', '2025-12-09 17:30:53'),
+(25, 'Carol Martinez', NULL, 'trainer', NULL, NULL, NULL, NULL, '5557912722', 'carol@example.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$QMZvxaB2IGRiCHPirGPaXudEcjpm.rqVtsLtUi/aPzREGSvTzllNa', NULL, NULL, NULL, '1', '2025-12-09 17:30:53', '2025-12-09 17:30:53'),
+(30, 'Scarlet', 'Grant', 'trainer', NULL, NULL, NULL, NULL, '+1 (423) 261-4691', 'herryview@yopmail.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1765575960.jpg', '2025-12-12 16:39:15', '$2y$10$jzOT.hcA2yRmpBR7q58XbO0UayeXFOC6ZPTr/Tptg8w2oEDjueI9y', NULL, NULL, NULL, '1', '2025-12-12 16:39:02', '2025-12-12 16:46:00'),
+(32, 'jukoqiji', NULL, 'Trainer', NULL, NULL, 'wumygica@mailinator.com', NULL, '1231231231', 'asjadmmc67@gmail', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '25-12-12-223140.jpg', NULL, '$2y$10$/GYiLXiQk66gknnIWWcUwull6CyKGPNwalz9tZVBBgdfrVX40.lF.', NULL, NULL, NULL, '1', '2025-12-12 17:31:39', '2025-12-12 17:31:40');
 
 --
 -- Indexes for dumped tables
@@ -3525,10 +3715,25 @@ ALTER TABLE `appointments`
   ADD KEY `appointments_trainer_id_foreign` (`trainer_id`);
 
 --
+-- Indexes for table `availabilities`
+--
+ALTER TABLE `availabilities`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `availabilities_trainer_id_day_of_week_index` (`trainer_id`,`day_of_week`),
+  ADD KEY `availabilities_is_active_index` (`is_active`);
+
+--
 -- Indexes for table `banners`
 --
 ALTER TABLE `banners`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `blocked_slots`
+--
+ALTER TABLE `blocked_slots`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `blocked_slots_trainer_id_date_index` (`trainer_id`,`date`);
 
 --
 -- Indexes for table `blogs`
@@ -3541,6 +3746,28 @@ ALTER TABLE `blogs`
 --
 ALTER TABLE `blog_categories`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `bookings`
+--
+ALTER TABLE `bookings`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `bookings_time_slot_id_foreign` (`time_slot_id`),
+  ADD KEY `bookings_cancelled_by_foreign` (`cancelled_by`),
+  ADD KEY `bookings_user_id_booking_status_index` (`user_id`,`booking_status`),
+  ADD KEY `bookings_trainer_id_booking_status_index` (`trainer_id`,`booking_status`),
+  ADD KEY `bookings_payment_status_index` (`payment_status`),
+  ADD KEY `bookings_stripe_session_id_index` (`stripe_session_id`);
+
+--
+-- Indexes for table `booking_reschedules`
+--
+ALTER TABLE `booking_reschedules`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `booking_reschedules_old_slot_id_foreign` (`old_slot_id`),
+  ADD KEY `booking_reschedules_new_slot_id_foreign` (`new_slot_id`),
+  ADD KEY `booking_reschedules_booking_id_index` (`booking_id`),
+  ADD KEY `booking_reschedules_rescheduled_by_index` (`rescheduled_by`);
 
 --
 -- Indexes for table `categories`
@@ -3769,10 +3996,37 @@ ALTER TABLE `testimonials`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `time_slots`
+--
+ALTER TABLE `time_slots`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `time_slots_trainer_id_slot_datetime_unique` (`trainer_id`,`slot_datetime`),
+  ADD KEY `time_slots_availability_id_foreign` (`availability_id`),
+  ADD KEY `time_slots_trainer_id_slot_datetime_index` (`trainer_id`,`slot_datetime`),
+  ADD KEY `time_slots_trainer_id_is_booked_index` (`trainer_id`,`is_booked`),
+  ADD KEY `time_slots_slot_datetime_index` (`slot_datetime`);
+
+--
 -- Indexes for table `trainers`
 --
 ALTER TABLE `trainers`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `trainer_google_accounts`
+--
+ALTER TABLE `trainer_google_accounts`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `trainer_google_accounts_trainer_id_unique` (`trainer_id`),
+  ADD KEY `trainer_google_accounts_is_connected_index` (`is_connected`);
+
+--
+-- Indexes for table `trainer_pricing`
+--
+ALTER TABLE `trainer_pricing`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `trainer_pricing_trainer_id_session_duration_unique` (`trainer_id`,`session_duration`),
+  ADD KEY `trainer_pricing_trainer_id_is_active_index` (`trainer_id`,`is_active`);
 
 --
 -- Indexes for table `users`
@@ -3807,13 +4061,25 @@ ALTER TABLE `agents`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `availabilities`
+--
+ALTER TABLE `availabilities`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `banners`
 --
 ALTER TABLE `banners`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `blocked_slots`
+--
+ALTER TABLE `blocked_slots`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `blogs`
@@ -3826,6 +4092,18 @@ ALTER TABLE `blogs`
 --
 ALTER TABLE `blog_categories`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `bookings`
+--
+ALTER TABLE `bookings`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `booking_reschedules`
+--
+ALTER TABLE `booking_reschedules`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -3921,7 +4199,7 @@ ALTER TABLE `member_directories`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=177;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=187;
 
 --
 -- AUTO_INCREMENT for table `news_letters`
@@ -4014,16 +4292,34 @@ ALTER TABLE `testimonials`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `time_slots`
+--
+ALTER TABLE `time_slots`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
+
+--
 -- AUTO_INCREMENT for table `trainers`
 --
 ALTER TABLE `trainers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `trainer_google_accounts`
+--
+ALTER TABLE `trainer_google_accounts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `trainer_pricing`
+--
+ALTER TABLE `trainer_pricing`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- Constraints for dumped tables
@@ -4035,6 +4331,36 @@ ALTER TABLE `users`
 ALTER TABLE `appointments`
   ADD CONSTRAINT `appointments_trainer_id_foreign` FOREIGN KEY (`trainer_id`) REFERENCES `trainers` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `appointments_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `availabilities`
+--
+ALTER TABLE `availabilities`
+  ADD CONSTRAINT `availabilities_trainer_id_foreign` FOREIGN KEY (`trainer_id`) REFERENCES `trainers` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `blocked_slots`
+--
+ALTER TABLE `blocked_slots`
+  ADD CONSTRAINT `blocked_slots_trainer_id_foreign` FOREIGN KEY (`trainer_id`) REFERENCES `trainers` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `bookings`
+--
+ALTER TABLE `bookings`
+  ADD CONSTRAINT `bookings_cancelled_by_foreign` FOREIGN KEY (`cancelled_by`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `bookings_time_slot_id_foreign` FOREIGN KEY (`time_slot_id`) REFERENCES `time_slots` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `bookings_trainer_id_foreign` FOREIGN KEY (`trainer_id`) REFERENCES `trainers` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `bookings_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `booking_reschedules`
+--
+ALTER TABLE `booking_reschedules`
+  ADD CONSTRAINT `booking_reschedules_booking_id_foreign` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `booking_reschedules_new_slot_id_foreign` FOREIGN KEY (`new_slot_id`) REFERENCES `time_slots` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `booking_reschedules_old_slot_id_foreign` FOREIGN KEY (`old_slot_id`) REFERENCES `time_slots` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `booking_reschedules_rescheduled_by_foreign` FOREIGN KEY (`rescheduled_by`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `document_repositories`
@@ -4060,6 +4386,25 @@ ALTER TABLE `model_has_roles`
 ALTER TABLE `role_has_permissions`
   ADD CONSTRAINT `role_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `role_has_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `time_slots`
+--
+ALTER TABLE `time_slots`
+  ADD CONSTRAINT `time_slots_availability_id_foreign` FOREIGN KEY (`availability_id`) REFERENCES `availabilities` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `time_slots_trainer_id_foreign` FOREIGN KEY (`trainer_id`) REFERENCES `trainers` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `trainer_google_accounts`
+--
+ALTER TABLE `trainer_google_accounts`
+  ADD CONSTRAINT `trainer_google_accounts_trainer_id_foreign` FOREIGN KEY (`trainer_id`) REFERENCES `trainers` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `trainer_pricing`
+--
+ALTER TABLE `trainer_pricing`
+  ADD CONSTRAINT `trainer_pricing_trainer_id_foreign` FOREIGN KEY (`trainer_id`) REFERENCES `trainers` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
