@@ -13,7 +13,21 @@ class TrainerDashboardController extends Controller
 {
     public function index()
     {
-        $trainer = Trainer::where('created_by', Auth::id())->firstOrFail();
+        $user = Auth::user();
+        
+        // Get or create trainer record for the authenticated user
+        $trainer = Trainer::where('created_by', $user->id)->first();
+        
+        // If trainer record doesn't exist, create a basic one
+        if (!$trainer) {
+            $trainer = Trainer::create([
+                'created_by' => $user->id,
+                'name' => $user->name . ' ' . ($user->last_name ?? ''),
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'status' => 0, // Inactive until profile is completed
+            ]);
+        }
 
         // Get statistics
         $stats = [
@@ -92,6 +106,11 @@ class TrainerDashboardController extends Controller
         }
 
         if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($user->image && file_exists(public_path('uploads/user/' . $user->image))) {
+                unlink(public_path('uploads/user/' . $user->image));
+            }
+
             $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('uploads/user'), $imageName);
             $user->image = $imageName;
@@ -99,6 +118,10 @@ class TrainerDashboardController extends Controller
             // Sync with Trainer table
             $trainer = Trainer::where('created_by', $user->id)->first();
             if ($trainer) {
+                // Delete old trainer image if exists
+                if ($trainer->image && file_exists(public_path('admin/assets/images/Trainers/' . $trainer->image))) {
+                    unlink(public_path('admin/assets/images/Trainers/' . $trainer->image));
+                }
                 $trainer->image = $imageName;
                 $trainer->save();
             }

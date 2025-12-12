@@ -103,6 +103,40 @@
                     </a>
                 </li>
             @endcan
+
+            {{-- Trainer Management Section --}}
+            <li class="treeview {{ (request()->is('admin/bookings') || request()->is('admin/bookings/*') || request()->is('admin/appointments/*') || request()->is('admin/slots') || request()->is('admin/slots/*') || request()->is('admin/availability') || request()->is('admin/availability/*')) ? 'active' : '' }}"
+                style="height: auto;">
+                <a href="#"
+                    class="{{ (request()->is('admin/bookings') || request()->is('admin/bookings/*') || request()->is('admin/appointments/*') || request()->is('admin/slots') || request()->is('admin/slots/*') || request()->is('admin/availability') || request()->is('admin/availability/*')) ? 'active' : '' }}">
+                    <i class="fa fa-calendar-check-o"></i>
+                    <span>Trainer Management</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu"
+                    style="display: {{ (request()->is('admin/bookings') || request()->is('admin/bookings/*') || request()->is('admin/appointments/*') || request()->is('admin/slots') || request()->is('admin/slots/*') || request()->is('admin/availability') || request()->is('admin/availability/*')) ? 'block' : 'none' }};">
+                    <li class="treeview mt-2">
+                        <a href="{{ route('admin.bookings.index') }}"
+                            class="{{ request()->is('admin/bookings') || request()->is('admin/bookings/*') || request()->is('admin/appointments/*') ? 'active' : '' }}">
+                            <i class="fa fa-book"></i> <span>All Bookings & Appointments</span>
+                        </a>
+                    </li>
+                    <li class="treeview mt-2">
+                        <a href="{{ route('admin.slots.index') }}"
+                            class="{{ request()->is('admin/slots') || request()->is('admin/slots/*') ? 'active' : '' }}">
+                            <i class="fa fa-clock-o"></i> <span>All Slots</span>
+                        </a>
+                    </li>
+                    <li class="treeview mt-2">
+                        <a href="{{ route('admin.availability.index') }}"
+                            class="{{ request()->is('admin/availability') || request()->is('admin/availability/*') ? 'active' : '' }}">
+                            <i class="fa fa-calendar"></i> <span>All Availability</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             @can('testimonial-list')
                 <li class="treeview">
                     <a href="{{ route('testimonial.index') }}"
@@ -127,14 +161,7 @@
                 </li>
             @endcan
 
-            @can('appointment-list')
-                <li class="treeview">
-                    <a href="{{ route('appointment.index') }}"
-                        class="{{ request()->is('appointment') || request()->is('appointment/create') || request()->is('appointment/*/edit') ? 'active' : '' }}">
-                        <i class="fa fa-calendar"></i> <span>Appointments</span>
-                    </a>
-                </li>
-            @endcan
+            
 
             <li class="treeview {{ (request()->is('blog_category') || request()->is('blog_category/create') || request()->is('blog_category/*/edit') || request()->is('blog') || request()->is('blog/create') || request()->is('blog/*/edit')) ? 'active' : '' }}"
                 style="height: auto;">

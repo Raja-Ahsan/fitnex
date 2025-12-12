@@ -301,6 +301,27 @@ Route::group(['middleware' => ['auth']], function () {
     //Events
     Route::resource('event', EventController::class);
 
+    //Blog Categories
+    Route::resource('blog_category', BlogCategoryController::class);
+
+    //Blogs
+    Route::resource('blog', BlogController::class);
+
+    // Admin Booking Management
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('bookings', [\App\Http\Controllers\admin\AdminBookingController::class, 'index'])->name('bookings.index');
+        Route::get('bookings/{id}', [\App\Http\Controllers\admin\AdminBookingController::class, 'show'])->name('bookings.show');
+        Route::get('appointments/{id}', [\App\Http\Controllers\admin\AdminBookingController::class, 'showAppointment'])->name('appointments.show');
+        
+        // Admin Slot Management
+        Route::get('slots', [\App\Http\Controllers\admin\AdminSlotController::class, 'index'])->name('slots.index');
+        Route::get('slots/blocked', [\App\Http\Controllers\admin\AdminSlotController::class, 'blocked'])->name('slots.blocked');
+        
+        // Admin Availability Management
+        Route::get('availability', [\App\Http\Controllers\admin\AdminAvailabilityController::class, 'index'])->name('availability.index');
+        Route::get('availability/trainer/{trainerId}', [\App\Http\Controllers\admin\AdminAvailabilityController::class, 'show'])->name('availability.show');
+    });
+
     // ============================================
     // BOOKING MODULE ROUTES
     // ============================================

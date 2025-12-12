@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\City;
 use App\Models\State;
 use App\Models\Payment;
+use App\Models\Trainer;
 use App\Models\Role as UserRole;
 use Spatie\Permission\Models\Role;
 use DB;
@@ -302,26 +303,41 @@ class UserController extends Controller
         $credentials = $request->only('email', 'password');
         $user = User::where('email', $request->email)->first();
 
-        if (!empty($user) && $user->status == 1) {
-            if (Auth::attempt($credentials)) {
-                $user = Auth::user();
-                /* if ($user->hasRole('Admin')) {
-                    return redirect()->route('dashboard');
-                } else */
-                if ($user->hasRole('trainer')) {
-                    return redirect()->route('trainer.dashboard');
-                } else {
-                    Auth::logout();
-                    return redirect()->back()->with('error', 'Unauthorized role.');
-                }
-            } else {
-                return redirect()->back()->with('error', 'Failed to login, try again!');
-            }
-        } elseif (!empty($user) && $user->status == 0) {
-            return redirect()->back()->with('error', 'Your account is not active. Please verify your email.');
-        } else {
+        if (empty($user)) {
             return redirect()->back()->with('error', 'User not found!');
         }
+
+        // This authenticate function is ONLY for trainers
+        if (!$user->hasRole('Trainer') && !$user->hasRole('trainer')) {
+            return redirect()->back()->with('error', 'This login is only for trainers. Please use the correct login page.');
+        }
+
+        // Check if user account is verified
+        if ($user->status == 0) {
+            return redirect()->back()->with('error', 'Your account is not active. Please verify your email.');
+        }
+
+        // Attempt authentication
+        if (Auth::attempt($credentials)) {
+            $authenticatedUser = Auth::user();
+            
+            // Ensure Trainer record exists
+            $trainer = Trainer::where('created_by', $authenticatedUser->id)->first();
+            if (!$trainer) {
+                Trainer::create([
+                    'created_by' => $authenticatedUser->id,
+                    'name' => $authenticatedUser->name . ' ' . ($authenticatedUser->last_name ?? ''),
+                    'email' => $authenticatedUser->email,
+                    'phone' => $authenticatedUser->phone,
+                    'status' => 0, // Inactive until profile is completed
+                ]);
+            }
+            
+            // Redirect trainers to trainer dashboard
+            return redirect()->route('trainer.dashboard');
+        }
+        
+        return redirect()->back()->with('error', 'Failed to login, try again!');
     }
 
 

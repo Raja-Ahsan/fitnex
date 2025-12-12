@@ -19,11 +19,18 @@
                     <li><a href="{{ route('trainers') }}" class="px-[20px] {{ request()->routeIs('trainers') ? 'active' : '' }}">Trainers</a></li>
                     <li><a href="{{ route('blogs') }}" class="px-[20px] {{ request()->routeIs('blogs') ? 'active' : '' }}">Blog</a></li>
                     <li><a href="{{ route('contact-us') }}" class="px-[20px] {{ request()->routeIs('contact-us') ? 'active' : '' }}">Contact us</a></li>
+                    @if(!Auth::check())
+                        <li><a href="{{ route('login') }}" class="px-[20px] {{ request()->routeIs('login') ? 'active' : '' }}">Login</a></li>
+                         
+                    @else
+                        <li><a href="{{ route('trainer.dashboard') }}" class="px-[20px] {{ request()->routeIs('trainer.dashboard') ? 'active' : '' }}">Dashboard</a></li>
+                    @endif
+                      
                 </ul>
             </nav>
             <div>
                 <div class="text-end hidden lg:block">
-                    <a href="#" class="btn primary-btn border border-transparent">Try for FREE</a>
+                    <a href="{{ route('registration') }}" class="btn primary-btn border border-transparent">Try for FREE</a>
                 </div>
                 <div class="menu-icon flex justify-end lg:hidden">
                     <i class="fa-solid fa-bars menu-toggle text-white text-[24px] cursor-pointer"></i>

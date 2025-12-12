@@ -12,6 +12,13 @@ class Trainer extends Model
 
     protected $guarded = [];
 
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['user'];
+
     public function hasCreatedBy()
     {
         return $this->hasOne(User::class, 'id', 'created_by');
@@ -83,5 +90,59 @@ class Trainer extends Model
     public function blockedSlots()
     {
         return $this->hasMany(BlockedSlot::class);
+    }
+
+    /**
+     * Accessor methods to get user data through relationship
+     * These replace the removed duplicate columns
+     */
+    public function getNameAttribute()
+    {
+        return $this->user ? ($this->user->name . ' ' . ($this->user->last_name ?? '')) : null;
+    }
+
+    public function getEmailAttribute()
+    {
+        return $this->user ? $this->user->email : null;
+    }
+
+    public function getPhoneAttribute()
+    {
+        return $this->user ? $this->user->phone : null;
+    }
+
+    public function getImageAttribute()
+    {
+        return $this->user ? $this->user->image : null;
+    }
+
+    public function getDesignationAttribute()
+    {
+        return $this->user ? $this->user->designation : null;
+    }
+
+    public function getFacebookAttribute()
+    {
+        return $this->user ? $this->user->facebook : null;
+    }
+
+    public function getTwitterAttribute()
+    {
+        return $this->user ? $this->user->twitter : null;
+    }
+
+    public function getInstagramAttribute()
+    {
+        return $this->user ? $this->user->instagram : null;
+    }
+
+    public function getLinkedinAttribute()
+    {
+        return $this->user ? $this->user->linkedin : null;
+    }
+
+    public function getYoutubeAttribute()
+    {
+        return $this->user ? $this->user->youtube : null;
     }
 }

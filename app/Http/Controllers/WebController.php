@@ -53,17 +53,42 @@ class WebController extends Controller
     {
         $user = User::where('email', $request->email)->first();
 
-        if (!empty($user) && $user->status == 1 && $user->hasRole($request->user_type)) {
-            $credentials = $request->only('email', 'password');
-            if (Auth::attempt($credentials)) {
-                return redirect()->route('dashboard');
-            }
-            return redirect()->back()->with('error', 'Failed to login try again.!');
-        } elseif (!empty($user) && $user->status == 0) {
-            return redirect()->back()->with('error', 'Your account is not active verify your email we have sent you verification link.!');
-        } else {
-            return redirect()->back()->with('error', 'This is only for user login not found your account!');
+        if (empty($user)) {
+            return redirect()->back()->with('error', 'User not found!');
         }
+
+        // This authenticate function is ONLY for trainers
+        if (!$user->hasRole('Trainer') && !$user->hasRole('trainer')) {
+            return redirect()->back()->with('error', 'This login is only for trainers. Please use the correct login page.');
+        }
+
+        // Check if user account is verified
+        if ($user->status == 0) {
+            return redirect()->back()->with('error', 'Your account is not active. Please verify your email. We have sent you a verification link.');
+        }
+
+        // Attempt authentication
+        $credentials = $request->only('email', 'password');
+        if (Auth::attempt($credentials)) {
+            $authenticatedUser = Auth::user();
+            
+            // Ensure Trainer record exists
+            $trainer = Trainer::where('created_by', $authenticatedUser->id)->first();
+            if (!$trainer) {
+                Trainer::create([
+                    'created_by' => $authenticatedUser->id,
+                    'name' => $authenticatedUser->name . ' ' . ($authenticatedUser->last_name ?? ''),
+                    'email' => $authenticatedUser->email,
+                    'phone' => $authenticatedUser->phone,
+                    'status' => 0, // Inactive until profile is completed
+                ]);
+            }
+            
+            // Redirect trainers to trainer dashboard
+            return redirect()->route('trainer.dashboard');
+        }
+        
+        return redirect()->back()->with('error', 'Failed to login. Please check your credentials and try again.');
     }
 
     public function verifyEmail($token)
@@ -382,8 +407,11 @@ class WebController extends Controller
         ]);
 
         try {
-
-            if ($request->amount != 0) {
+            // Check if user is registering as trainer - trainers register for free
+            $isTrainer = strtolower($request->role) === 'trainer';
+            
+            // Only process payment if amount is not 0 AND user is not a trainer
+            if ($request->amount != 0 && !$isTrainer) {
 
                 // Set your Stripe secret key
                 Stripe::setApiKey(config('services.stripe.secret'));
@@ -461,7 +489,7 @@ class WebController extends Controller
                     return back()->withErrors(['error' => 'Payment was not successful. Please try again.'])->withInput();
                 }
             } else {
-                // For the case where no payment is made (amount = 0)
+                // For the case where no payment is made (amount = 0) OR user is registering as Trainer
                 $user = User::create([
                     'name' => $request->name,
                     'last_name' => $request->last_name,
@@ -474,6 +502,7 @@ class WebController extends Controller
                     /* 'package_id' => $request->package_id, */
                 ]);
                 $user->assignRole($request->input('role'));
+                
                 // Generate and save verification token
                 do {
                     $verify_token = uniqid();
@@ -490,52 +519,23 @@ class WebController extends Controller
                 ];
                 Mail::to($user->email)->send(new \App\Mail\Email($details));
 
-                return redirect()->route('login')->with('message', 'Registration successful! Please check your email to verify your account.');
+                $successMessage = $isTrainer 
+                    ? 'Trainer registration successful! Please check your email to verify your account.'
+                    : 'Registration successful! Please check your email to verify your account.';
+                    
+                return redirect()->route('login')->with('message', $successMessage);
             }
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'An error occurred while processing your payment. Please try again.'])->withInput();
+            // Check if it's a trainer registration error (no payment needed)
+            $isTrainer = isset($request->role) && strtolower($request->role) === 'trainer';
+            $errorMessage = $isTrainer 
+                ? 'An error occurred during registration. Please try again.'
+                : 'An error occurred while processing your payment. Please try again.';
+            return back()->withErrors(['error' => $errorMessage])->withInput();
         }
     }
 
 
 
-    public function __construct()
-    {
-        $this->middleware(['auth', 'role:EPC Developer'])->only(['OurContractors', 'AgentDetail']);
-    }
-
-    /* public function OurContractors()
-    {
-        $page_title = 'Our Contractors';
-
-        // Fetch Top Rated Contractors
-        $topRated = User::whereHas('roles', function ($q) {
-            $q->where('name', 'Contractor');
-        })
-            ->where('status', 1)
-            ->where('top_rated', 1)
-            ->get();
-
-        // Fetch All Contractors (excluding top-rated)
-        $allContractors = User::whereHas('roles', function ($q) {
-            $q->where('name', 'Contractor');
-        })
-            ->where('status', 1)
-            ->where('top_rated', 0)
-            ->get();
-
-        // Pass both variables to the view
-        return view('website.our-contractors', compact('page_title', 'topRated', 'allContractors'));
-    } */
-
-    /* public function ServiceDetails($slug)
-    {
-        $category = Category::where('slug', $slug)->where('status', 1)->firstOrFail();
-        $page_title = $category->title . ' Details'; // Or a more generic title if preferred
-        $abouts = AboutUs::where('status', 1)->get();
-        $testimonials = Testimonial::where('status', '=', 1)->get();
-
-        // Assuming you have a 'website.service-details' view to display the details
-        return view('website.service-details', compact('page_title', 'category', 'abouts', 'testimonials'));
-    } */
+     
 }

@@ -60,25 +60,36 @@ class AdminController extends Controller
     public function authenticate(Request $request)
     {
         $user = User::where('email', $request->email)->first();
-
-        if(!empty($user) && $user->hasRole($request->user_type)){
-            $credentials = $request->only('email', 'password');
-            
-            if (Auth::attempt($credentials)) {
-                return redirect()->route('dashboard');
-            }
-            return redirect()->back()->with('error', 'Failed to login try again.!');
-        }else{
-            return redirect()->back()->with('error', 'Something went wrong!');
+        
+        if (empty($user)) {
+            return redirect()->back()->with('error', 'User not found!');
         }
+
+        // This authenticate function is ONLY for admins
+        if (!$user->hasRole('Admin') && !$user->hasRole('admin')) {
+            return redirect()->back()->with('error', 'This login is only for administrators. Please use the correct login page.');
+        }
+
+        // Check if user account is active
+        if ($user->status == 0) {
+            return redirect()->back()->with('error', 'Your account is not active. Please contact administrator.');
+        }
+
+        $credentials = $request->only('email', 'password');
+        
+        if (Auth::attempt($credentials)) {
+            return redirect()->route('dashboard');
+        }
+        
+        return redirect()->back()->with('error', 'Failed to login. Please check your credentials and try again.');
     }
     public function logOut()
     {
         
-        if(Auth::check() && Auth::user()->hasRole('Admin')){
+        if(Auth::check() && Auth::user()->hasRole('admin')){
             Auth::logout();
             return redirect()->route('admin.login');
-        }elseif(Auth::check() && Auth::user()->hasRole('Contractor')){
+        }elseif(Auth::check() && Auth::user()->hasRole('Trainer')){
             Auth::logout();
             return redirect()->route('login');
         }else{

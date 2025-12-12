@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\admin;
 
 use App\Models\Trainer;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\State;
 use Illuminate\Http\Request;
 use File;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use App\Mail\TrainerWelcomeMail;
 
 class TrainerController extends Controller
 {
@@ -28,9 +34,13 @@ class TrainerController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $query = Trainer::orderby('id' , 'desc')->where('id' , '>' , 0);
+            $query = Trainer::with('user')->orderby('id' , 'desc')->where('id' , '>' , 0);
             if($request['search'] != ""){
-                $query->where('name' , 'like' , '%' .$request['search'] .'%');
+                // Search through user relationship since name column is removed
+                $query->whereHas('user', function($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request['search'] . '%')
+                      ->orWhere('email', 'like', '%' . $request['search'] . '%');
+                });
             }
             if($request['status'] != "All"){
                 if($request['status']==2){
@@ -43,7 +53,7 @@ class TrainerController extends Controller
         }
 
         $page_title ='All Trainers';
-        $trainers= Trainer::orderby('id' , 'desc')->paginate(10);
+        $trainers= Trainer::with('user')->orderby('id' , 'desc')->paginate(10);
         return view('admin.trainer.index' , compact('trainers' , 'page_title'));
     }
 
@@ -64,44 +74,65 @@ class TrainerController extends Controller
     $validator = $request->validate([
         'name' => 'required',
         'designation' => 'required',
-        'email' => 'nullable|email',
+        'email' => 'required|email|unique:users,email',
         'phone' => 'nullable',
         'trainer_type' => 'required',
         'description' => 'required',
         'price' => 'required',
         'state' => 'required', 
         'city' => 'required',
-        'google_calendar_id' => 'required',
         'image' => 'required|mimes:jpeg,jpg,png,gif,webp|max:10000',
     ]);
 
-    $trainers = new Trainer();
+    // Generate secure random password
+    $generatedPassword = Str::random(12);
+    
+    // Create user first (for syncing)
+    $user = User::create([
+        'name' => $request->name,
+        'designation' => $request->designation,
+        'phone' => $request->phone,
+        'email' => $request->email,
+        'password' => Hash::make($generatedPassword),
+        'role' => 'Trainer',
+        'status' => 1,
+    ]);
+    
+    // Assign Trainer role
+    $user->assignRole('Trainer');
+    
+    // Handle image upload for user
     if ($request->hasFile('image')) {
         $photo = date('y-m-d-His') . '.' . $request->file('image')->getClientOriginalExtension();
-        $request->image->move(public_path('/admin/assets/images/Trainers'), $photo);
-        $trainers->image = $photo;
+        $request->image->move(public_path('/admin/assets/images/UserImage'), $photo);
+        $user->image = $photo;
+        $user->save();
+    }
+    
+    // Send welcome email with credentials
+    try {
+        Mail::to($user->email)->send(new TrainerWelcomeMail($user, $generatedPassword));
+    } catch (\Exception $e) {
+        // Log error but don't fail the trainer creation
+        Log::error('Failed to send trainer welcome email: ' . $e->getMessage());
     }
 
-    $trainers->created_by = Auth::user()->id;
-    $trainers->name = $request->name;
-    $trainers->designation = $request->designation;
-    $trainers->email = $request->email;
-    $trainers->phone = $request->phone;
-    $trainers->trainer_type = $request->trainer_type;
-    $trainers->description = $request->description;
-    $trainers->price = $request->price;
-    $trainers->rating = $request->rating;
-    $trainers->specialization = json_encode($request->specialization);
-    $trainers->city = $request->city;
-    $trainers->state = $request->state;
-    $trainers->facebook = $request->facebook;
-    $trainers->twitter = $request->twitter;
-    $trainers->instagram = $request->instagram;
-    $trainers->linkedin = $request->linkedin;
-    $trainers->youtube = $request->youtube;
-    // Extract calendar ID from URL if full URL is provided
-    $trainers->google_calendar_id = $this->extractCalendarId($request->google_calendar_id);
-    $trainers->save();
+    // Trainer record will be created automatically via TrainerObserver
+    // But we need to update trainer-specific fields
+    $trainer = Trainer::where('created_by', $user->id)->first();
+    
+    if ($trainer) {
+        $trainer->update([
+            'trainer_type' => $request->trainer_type,
+            'description' => $request->description,
+            'price' => $request->price,
+            'rating' => $request->rating,
+            'specialization' => json_encode($request->specialization),
+            'city' => $request->city,
+            'state' => $request->state,
+            'status' => 1,
+        ]);
+    }
 
     return redirect()->route('trainer.index')->with('message', 'Trainer added Successfully');
 }
@@ -141,39 +172,48 @@ class TrainerController extends Controller
             'description' => 'required',
             'price' => 'required',
             'state' => 'required', 
-            'city' => 'required', 
-            'google_calendar_id' => 'required',
+            'city' => 'required',
         ]);
 
 
-        $updates = Trainer::where('id' , $id)->first();
-        if (isset($request->image)) {
-            $photo = date('d-m-Y-His').'.'.$request->file('image')->getClientOriginalExtension();
-            $Image = $request->image->move(public_path('/admin/assets/images/Trainers'), $photo);
-            $updates->image = $photo;
+        $trainer = Trainer::where('id' , $id)->first();
+        
+        // Update user if trainer has a user (for duplicate fields)
+        if ($trainer->user) {
+            $user = $trainer->user;
+            
+            // Handle image upload for user
+            if (isset($request->image)) {
+                $photo = date('d-m-Y-His').'.'.$request->file('image')->getClientOriginalExtension();
+                $request->image->move(public_path('/admin/assets/images/UserImage'), $photo);
+                $user->image = $photo;
+            }
+            
+            // Update user fields (duplicate fields)
+            $user->update([
+                'name' => $request->name,
+                'designation' => $request->designation,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'facebook' => $request->facebook,
+                'twitter' => $request->twitter,
+                'instagram' => $request->instagram,
+                'linkedin' => $request->linkedin,
+                'youtube' => $request->youtube,
+            ]);
         }
 
-        $updates->created_by = Auth::user()->id;
-        $updates->name = $request->name;
-        $updates->designation = $request->designation;
-        $updates->email = $request->email;
-        $updates->phone = $request->phone;
-        $updates->trainer_type = $request->trainer_type;
-        $updates->description = $request->description;
-        $updates->price = $request->price; 
-        $updates->rating = $request->rating;
-        $updates->specialization = json_encode($request->specialization);
-        $updates->city = $request->city;
-        $updates->state = $request->state;
-        $updates->facebook = $request->facebook;
-        $updates->twitter = $request->twitter;
-        $updates->instagram = $request->instagram; 
-        $updates->linkedin = $request->linkedin;
-        $updates->youtube = $request->youtube;
-        // Extract calendar ID from URL if full URL is provided
-        $updates->google_calendar_id = $this->extractCalendarId($request->google_calendar_id);
-        $updates->status = $request->status;
-        $updates->update();
+        // Update trainer-specific fields only
+        $trainer->update([
+            'trainer_type' => $request->trainer_type,
+            'description' => $request->description,
+            'price' => $request->price, 
+            'rating' => $request->rating,
+            'specialization' => json_encode($request->specialization),
+            'city' => $request->city,
+            'state' => $request->state,
+            'status' => $request->status,
+        ]);
 
         return redirect()->route('trainer.index')->with('message' , 'Trainer updated Successfully');
     }

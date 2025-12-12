@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 use View;
+use App\Models\User;
+use App\Observers\TrainerObserver;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
@@ -38,5 +40,8 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('notifications', collect()); // empty collection if not logged in
             }
         });
+
+        // Register TrainerObserver to sync trainers from users
+        User::observe(TrainerObserver::class);
     }
 }

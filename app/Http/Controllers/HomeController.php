@@ -37,7 +37,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (Auth::check() && Auth::user()->hasRole('Admin')) {
+       
+        if (Auth::check() && Auth::user()->hasRole('admin')) {
             // Admin dashboard
             $page_title = 'Admin Dashboard';
             $total_users = User::where('id', '!=', 1)->count();
@@ -55,7 +56,7 @@ class HomeController extends Controller
             $page_title = 'Dashboard';
             return view('website.member-dashboard.dashboard', compact('page_title'));
         } else {
-            return redirect()->route('/');
+            return redirect('/');
         }
     }
 }

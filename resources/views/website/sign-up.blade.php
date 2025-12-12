@@ -195,13 +195,16 @@
 <!-- Signup Form Section -->
 <section class="signup-section" id="signup-form">
     <div class="signup-container" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
-        <h2 class="form-title"><span>FITNEX Registration</span></h2>
-        <p class="form-subtitle">Join FITNEX to achieve your fitness goals!</p>
+        <h2 class="form-title"><span>FITNEX Trainer Registration</span></h2>
+        <p class="form-subtitle">Join FITNEX as a trainer and start your fitness journey! Registration is free.</p>
         <form method="POST" action="{{ route('user.register.store') }}" id="subscription-form" enctype="multipart/form-data">
             @csrf
+            <!-- Hidden field for Trainer role - trainers register for free -->
+            <input type="hidden" name="role" value="trainer">
+            <input type="hidden" name="amount" value="0">
+            
             <div class="form-row">
                 <!-- First Name -->
-                <input type="hidden" name="role" value="Member">
                 <div class="form-col form-col-half">
                     <div class="form-field-group">
                         <label for="name" class="field-label">First Name</label>
@@ -296,13 +299,11 @@
         var form = document.getElementById('subscription-form');
 
         form.addEventListener('submit', function(event) {
-            // This part is for stripe, if you use it, make sure there is an element with id="card-element"
-            // event.preventDefault(); 
+            // This is trainer registration only - no Stripe payment needed
+            // Skip Stripe processing for trainers
             
             document.getElementById('register-btn').disabled = true;
             document.getElementById('register-spinner').classList.remove('hidden');
-
-            // The Stripe token creation would go here if needed
         });
     });
 </script>
@@ -327,6 +328,16 @@ document.addEventListener('DOMContentLoaded', function () {
             errorMessage.style.display = 'block';
         }
     });
+
+    // This form is for trainer registration only - no payment needed
+    const form = document.getElementById('subscription-form');
+    if (form) {
+        // Ensure amount is always 0 for trainer registration
+        const amountInput = form.querySelector('input[name="amount"]');
+        if (amountInput) {
+            amountInput.value = '0';
+        }
+    }
 });
 </script>
 

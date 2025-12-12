@@ -48,7 +48,8 @@
 						<div class="form-group">
 							<label for="" class="col-sm-2 control-label">Email<span style="color: red">*</span></label>
 							<div class="col-sm-9">
-								<input type="email" autocomplete="off" class="form-control" name="email" value="{{ old('email') }}" placeholder="Enter Email" autocomplete="email">
+								<input type="email" autocomplete="off" class="form-control" name="email" value="{{ old('email') }}" placeholder="Enter Email" autocomplete="email" required>
+								<small class="text-muted">A welcome email with login credentials will be sent to this email address.</small>
 								<span style="color: red">{{ $errors->first('email') }}</span>
 							</div>
 						</div>
@@ -136,14 +137,6 @@
 								<span style="color: red">{{ $errors->first('instagram') }}</span>
 							</div>
 						</div> 
-						<div class="form-group">
-							<label for="" class="col-sm-2 control-label">Google Calendar ID/Link</label>
-							<div class="col-sm-9">
-								<input type="text" autocomplete="off" class="form-control" name="google_calendar_id" id="google_calendar_id" value="{{ old('google_calendar_id') }}" placeholder="Enter Google Calendar ID or paste full URL (e.g., https://calendar.app.google/vqjFXvdZs3cUJxry8)">
-								<small class="text-muted">You can paste the full Google Calendar sharing link or just the calendar ID. The system will automatically extract the ID from the URL.</small>
-								<span style="color: red">{{ $errors->first('google_calendar_id') }}</span>
-							</div>
-						</div>
 						<div class="form-group">
 							<label for="" class="col-sm-2 control-label">Image <span style="color: red">*</span></label>
                             <div class="col-sm-6" style="padding-top:5px">
@@ -237,32 +230,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		}
 
-		// Auto-extract Google Calendar ID from URL
-		const googleCalendarInput = document.getElementById('google_calendar_id');
-		if (googleCalendarInput) {
-			googleCalendarInput.addEventListener('blur', function() {
-				let value = this.value.trim();
-				if (!value) return;
-
-				// If it's a URL, extract the calendar ID
-				if (value.includes('calendar.app.google/')) {
-					const match = value.match(/calendar\.app\.google\/([a-zA-Z0-9_-]+)/);
-					if (match) {
-						this.value = match[1];
-					}
-				} else if (value.includes('calendar.google.com') && value.includes('src=')) {
-					const match = value.match(/[?&]src=([^&]+)/);
-					if (match) {
-						this.value = decodeURIComponent(match[1]);
-					}
-				} else if (value.includes('googleapis.com/calendar/v3/calendars/')) {
-					const match = value.match(/calendars\/([^\/\?]+)/);
-					if (match) {
-						this.value = decodeURIComponent(match[1]);
-					}
-				}
-			});
-		}
 
 		
 		// Initialize stars based on old value if it exists

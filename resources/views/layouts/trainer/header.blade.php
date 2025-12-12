@@ -98,9 +98,11 @@
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         @if (!empty(Auth::user()->image))
-                            <img src="{{asset('/admin/assets/images/UserImage') }}/{{  Auth::user()->image }}"
+                            <img src="{{ asset('uploads/user/' . Auth::user()->image) }}"
                                 style="object-fit: cover;width: 40px;height: 40px;border-radius: 50px;margin-top: -10px;margin-right: 8px;"
-                                alt="">
+                                alt="Profile Image"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+                            <i class="fa fa-user-circle" style="font-size: 20px; display: none;" aria-hidden="true"></i>
                         @else
                             <i class="fa fa-user-circle" style="font-size: 20px;" aria-hidden="true"></i>
                         @endif
