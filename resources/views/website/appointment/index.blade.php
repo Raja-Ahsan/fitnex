@@ -778,7 +778,17 @@
                                             </div>
                                             <div>
                                                 <p class="text-base text-gray-500">Time</p>
-                                                <p class="font-semibold text-gray-900">{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('h:i A') }}</p>
+                                                @php
+                                                    $startTime = \Carbon\Carbon::parse($appointment->appointment_time);
+                                                    $dayOfWeek = \Carbon\Carbon::parse($appointment->appointment_date)->dayOfWeek;
+                                                    $availability = \App\Models\Availability::where('trainer_id', $appointment->trainer_id)
+                                                        ->where('day_of_week', $dayOfWeek)
+                                                        ->where('is_active', true)
+                                                        ->first();
+                                                    $sessionDuration = (int) ($availability->session_duration ?? 60);
+                                                    $endTime = $startTime->copy()->addMinutes($sessionDuration);
+                                                @endphp
+                                                <p class="font-semibold text-gray-900">{{ $startTime->format('h:i A') }} - {{ $endTime->format('h:i A') }}</p>
                                             </div>
                                         </div>
                                         

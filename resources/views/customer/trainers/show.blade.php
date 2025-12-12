@@ -143,7 +143,7 @@
                                         <div class="card border-success">
                                             <div class="card-body text-center p-2">
                                                 <small><strong>{{ $slot->slot_datetime->format('M d, Y') }}</strong></small><br>
-                                                <small>{{ $slot->slot_datetime->format('h:i A') }}</small>
+                                                <small>{{ $slot->formatted_time }}</small>
                                             </div>
                                         </div>
                                     </div>

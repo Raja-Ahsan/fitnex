@@ -173,8 +173,18 @@
                                         @if($booking->appointment_date)
                                             <i class="fa fa-calendar text-muted"></i>
                                             {{ \Carbon\Carbon::parse($booking->appointment_date)->format('M d, Y') }}<br>
+                                            @php
+                                                $startTime = \Carbon\Carbon::parse($booking->appointment_time);
+                                                $dayOfWeek = \Carbon\Carbon::parse($booking->appointment_date)->dayOfWeek;
+                                                $availability = \App\Models\Availability::where('trainer_id', $booking->trainer_id)
+                                                    ->where('day_of_week', $dayOfWeek)
+                                                    ->where('is_active', true)
+                                                    ->first();
+                                                $sessionDuration = (int) ($availability->session_duration ?? 60);
+                                                $endTime = $startTime->copy()->addMinutes($sessionDuration);
+                                            @endphp
                                             <i class="fa fa-clock-o text-muted"></i>
-                                            {{ \Carbon\Carbon::parse($booking->appointment_time)->format('h:i A') }}
+                                            {{ $startTime->format('h:i A') }} - {{ $endTime->format('h:i A') }}
                                         @else
                                             <span class="text-muted">-</span>
                                         @endif

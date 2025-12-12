@@ -76,7 +76,19 @@
                                     </tr>
                                     <tr>
                                         <th>Time</th>
-                                        <td>{{ \Carbon\Carbon::parse($booking->appointment_time)->format('h:i A') }}</td>
+                                        <td>
+                                            @php
+                                                $startTime = \Carbon\Carbon::parse($booking->appointment_time);
+                                                $dayOfWeek = \Carbon\Carbon::parse($booking->appointment_date)->dayOfWeek;
+                                                $availability = \App\Models\Availability::where('trainer_id', $booking->trainer_id)
+                                                    ->where('day_of_week', $dayOfWeek)
+                                                    ->where('is_active', true)
+                                                    ->first();
+                                                $sessionDuration = (int) ($availability->session_duration ?? 60);
+                                                $endTime = $startTime->copy()->addMinutes($sessionDuration);
+                                            @endphp
+                                            {{ $startTime->format('h:i A') }} - {{ $endTime->format('h:i A') }}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Time Zone</th>
