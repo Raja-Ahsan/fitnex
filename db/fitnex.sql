@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Dec 13, 2025 at 12:31 AM
+-- Generation Time: Dec 13, 2025 at 12:52 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -109,16 +109,6 @@ CREATE TABLE `agents` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `agents`
---
-
-INSERT INTO `agents` (`id`, `created_by`, `slug`, `name`, `designation`, `facebook`, `twitter`, `instagram`, `behance`, `youtube`, `image`, `status`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(1, 1, 'janet-richmond', 'Janet Richmond', 'Marketing Manager', 'https://www.facebook.com/', 'https://twitter.com/', 'https://www.instagram.com/', 'https://www.behance.net/', 'https://www.youtube.com/', '05-08-2022-163328.png', '1', NULL, '2022-08-05 11:33:28', '2022-08-05 11:51:52'),
-(2, 1, 'grayson-gabrel', 'Grayson Gabrel', 'Buying Agent', 'https://www.facebook.com/', 'https://twitter.com/', 'https://www.instagram.com/', 'https://www.behance.net/', 'https://www.youtube.com/', '05-08-2022-184647.png', '1', NULL, '2022-08-05 13:46:47', '2022-08-05 13:47:27'),
-(3, 1, 'jack-london', 'Jack London', 'Selling Agent', 'https://www.facebook.com/', 'https://twitter.com/', 'https://www.instagram.com/', 'https://www.behance.net/', 'https://www.youtube.com/', '05-08-2022-184838.png', '1', NULL, '2022-08-05 13:48:38', '2022-08-05 13:48:38'),
-(4, 1, 'grayson-gabriel', 'Grayson Gabriel', 'Agent', 'https://www.facebook.com/', 'https://twitter.com/', 'https://www.instagram.com/', 'https://www.behance.net/', 'https://www.youtube.com/', '05-08-2022-185109.png', '1', NULL, '2022-08-05 13:51:09', '2022-08-05 13:51:09');
-
 -- --------------------------------------------------------
 
 --
@@ -145,21 +135,6 @@ CREATE TABLE `appointments` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `appointments`
---
-
-INSERT INTO `appointments` (`id`, `user_id`, `trainer_id`, `name`, `email`, `phone`, `google_calendar_event_id`, `appointment_date`, `appointment_time`, `time_zone`, `price`, `status`, `description`, `payment_status`, `stripe_session_id`, `created_at`, `updated_at`) VALUES
-(1, NULL, 2, 'Quintessa Greer', 'asjadmmc67@gmail.com', NULL, NULL, '2025-12-10', '10:00:00', 'Asia/Karachi', 40.00, 'confirmed', 'Saepe in magni adipi', 'completed', 'cs_test_a118vJeugSsLfH1IcvmSMRl2Q9qRhiDUe95v33edBGqY82twaPjTVX8pad', '2025-12-03 16:37:09', '2025-12-03 16:37:55'),
-(2, NULL, 2, 'Muhammad Asjad', 'asjadmmc67@gmail.com', NULL, NULL, '2025-12-10', '09:00:00', 'Asia/Karachi', 40.00, 'confirmed', 'testing', 'completed', 'cs_test_a11ETJIaLBKkYP1ADkR1ELb9XOlCEIu7sJuaFCFGaXj66gJWLP8JYh9luu', '2025-12-03 17:08:12', '2025-12-03 17:08:45'),
-(3, NULL, 3, 'Calvin Terry', 'asjadmmc67@gmail.com', NULL, NULL, '2025-12-10', '12:00:00', 'Asia/Karachi', 35.00, 'confirmed', 'Assumenda lorem iste', 'completed', 'cs_test_a1th0OEgqDhZEBBtlWUYK1yyFJVd3Iu0MP9o102o5sZMElfGjMQletQORt', '2025-12-09 10:37:14', '2025-12-09 10:38:50'),
-(4, NULL, 3, 'testing', 'asdasdas@gmail.com', NULL, NULL, '2025-12-11', '14:30:00', 'Asia/Karachi', 35.00, 'confirmed', 'testing', 'completed', 'cs_test_a18Vu2yXgqg2cw2eoLdvd2YpiiEOMfyuUr6ZIBztU9JwVXYgbBfN02P9jV', '2025-12-09 17:55:34', '2025-12-09 17:56:14'),
-(7, NULL, 9, 'test', 'test@dfsfsd.cvd', NULL, NULL, '2025-12-30', '13:30:00', 'Asia/Karachi', 80.00, 'completed', NULL, 'completed', 'cs_test_a1ykC0hYDBXGZKSEyVAHUTujTITP5K6KNQGJT8bRjtjwdMb07IGHUR9qaA', '2025-12-10 14:48:29', '2025-12-11 11:34:57'),
-(8, NULL, 9, 'asja', 'asjadmmc67@gmail.com', NULL, NULL, '2025-12-23', '13:00:00', 'Asia/Karachi', 80.00, 'confirmed', 'testing', 'completed', 'cs_test_a1a9AqEJsL4Jh5VDoTIlBHLgsoScSKfrseaVA9rKbJJetfY3FkRJwWDgG9', '2025-12-11 11:30:34', '2025-12-11 11:31:20'),
-(9, NULL, 10, 'John Cena', 'production8430@gmail.com', NULL, NULL, '2025-12-15', '20:00:00', 'Asia/Karachi', 80.00, 'confirmed', 'Testing', 'completed', 'cs_test_a1CZOSZE3YfEE4kQjDNJTRFeRtYT5LLQ2VM2LgccVC3lyKCDfr0gxjsZsb', '2025-12-12 10:50:39', '2025-12-12 10:51:39'),
-(10, NULL, 10, 'Kimberly Bishop', 'production8430@gmail.com', '+1 (153) 265-9149', NULL, '2025-12-22', '22:00:00', 'Asia/Karachi', 80.00, 'confirmed', 'Dolorum expedita rei', 'completed', 'cs_test_a1R0sZR26k6uEkFcr6X8nhOwfuYguw0IbloeodllYC0fJyJbiZH3fq26HF', '2025-12-12 17:48:55', '2025-12-12 17:49:35'),
-(11, NULL, 10, 'Laurel Stuart', 'wuga@mailinator.com', '+1 (446) 892-2164', NULL, '2026-01-26', '22:00:00', 'Asia/Karachi', 80.00, 'confirmed', 'Et velit error est e', 'completed', 'cs_test_a19NTFLRYnajefLJxKZD2R8ncyLshf2FwWZZAkg9zQ4qcAsU4TGO8Ffle8', '2025-12-12 17:58:04', '2025-12-12 17:58:44');
-
 -- --------------------------------------------------------
 
 --
@@ -177,18 +152,6 @@ CREATE TABLE `availabilities` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `availabilities`
---
-
-INSERT INTO `availabilities` (`id`, `trainer_id`, `day_of_week`, `start_time`, `end_time`, `session_duration`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 9, 1, '22:00:00', '23:00:00', '60', 1, '2025-12-10 11:40:57', '2025-12-10 11:40:57'),
-(3, 9, 2, '13:00:00', '14:00:00', '45', 1, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
-(4, 10, 1, '22:00:00', '23:00:00', '60', 1, '2025-12-11 11:21:10', '2025-12-11 11:21:10'),
-(5, 10, 5, '22:00:00', '23:00:00', '60', 1, '2025-12-11 11:26:56', '2025-12-11 11:26:56'),
-(6, 10, 1, '20:00:00', '21:00:00', '60', 1, '2025-12-12 10:31:08', '2025-12-12 10:31:35'),
-(7, 10, 2, '22:00:00', '22:45:00', '45', 1, '2025-12-12 15:14:45', '2025-12-12 15:15:16');
 
 -- --------------------------------------------------------
 
@@ -239,14 +202,6 @@ CREATE TABLE `blocked_slots` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `blocked_slots`
---
-
-INSERT INTO `blocked_slots` (`id`, `trainer_id`, `date`, `start_time`, `end_time`, `reason`, `created_at`, `updated_at`) VALUES
-(1, 9, '2025-12-25', '01:00:00', '14:00:00', 'test', '2025-12-10 14:08:52', '2025-12-10 14:08:52'),
-(4, 9, '2025-12-25', '02:00:00', '03:00:00', NULL, '2025-12-10 14:13:24', '2025-12-10 14:13:24');
 
 -- --------------------------------------------------------
 
@@ -529,16 +484,6 @@ CREATE TABLE `contact_us` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `contact_us`
---
-
-INSERT INTO `contact_us` (`id`, `name`, `email`, `phone`, `address`, `message`, `service`, `status`, `created_at`, `updated_at`) VALUES
-(33, 'Ina Kim', 'lilyp@mailinator.com', '+1 (562) 716-2537', NULL, NULL, 'body-building', '1', '2025-07-17 11:21:03', '2025-07-17 11:21:03'),
-(34, 'Rogan Zimmerman', 'gadu@mailinator.com', '+1 (759) 967-1155', NULL, NULL, 'personal-training', '1', '2025-07-17 15:27:31', '2025-07-17 15:27:31'),
-(35, 'Madaline Francis', 'humomavy@mailinator.com', NULL, NULL, 'Et irure quasi nostr', NULL, '1', '2025-07-23 14:00:52', '2025-07-23 14:00:52'),
-(36, 'Kaseem Andrews', 'hipeh@mailinator.com', '+1 (846) 895-7207', NULL, NULL, 'sports-performance', '1', '2025-07-23 15:07:27', '2025-07-23 15:07:27');
 
 -- --------------------------------------------------------
 
@@ -1248,27 +1193,6 @@ CREATE TABLE `notifications` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `notifications`
---
-
-INSERT INTO `notifications` (`id`, `type`, `notifiable_type`, `notifiable_id`, `data`, `read_at`, `created_at`, `updated_at`) VALUES
-('18a73203-8e92-494e-b532-5a40c9cde11d', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":11,\"trainer_name\":\"Sarah Johnson \",\"appointment_date\":\"2026-01-26\",\"appointment_time\":\"22:00\",\"status\":\"pending\",\"message\":\"Your appointment with Sarah Johnson  has been booked successfully!\"}', NULL, '2025-12-12 17:58:12', '2025-12-12 17:58:12'),
-('1a7a88d0-b922-4df4-a3e6-79e978be5b6c', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 19, '{\"type\":\"appointment_booked\",\"appointment_id\":11,\"trainer_name\":\"Sarah Johnson \",\"appointment_date\":\"2026-01-26\",\"appointment_time\":\"22:00\",\"status\":\"pending\",\"message\":\"Your appointment with Sarah Johnson  has been booked successfully!\"}', NULL, '2025-12-12 17:58:12', '2025-12-12 17:58:12'),
-('3c4a75b2-d1b6-4960-99d4-3d7467b5db35', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":3,\"trainer_name\":\"Amelia Rose\",\"appointment_date\":\"2025-12-10\",\"appointment_time\":\"12:00\",\"status\":\"pending\",\"message\":\"Your appointment with Amelia Rose has been booked successfully!\"}', NULL, '2025-12-09 10:37:34', '2025-12-09 10:37:34'),
-('5c25263a-57ef-48ab-97a9-8fe5ef230559', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":9,\"trainer_name\":\"Sarah Johnson\",\"appointment_date\":\"2025-12-15\",\"appointment_time\":\"20:00\",\"status\":\"pending\",\"message\":\"Your appointment with Sarah Johnson has been booked successfully!\"}', NULL, '2025-12-12 10:50:59', '2025-12-12 10:50:59'),
-('791ebde2-8b52-48f3-a1a2-ab865a1fe686', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 19, '{\"type\":\"appointment_booked\",\"appointment_id\":4,\"trainer_name\":\"Amelia Rose\",\"appointment_date\":\"2025-12-11\",\"appointment_time\":\"14:30\",\"status\":\"pending\",\"message\":\"Your appointment with Amelia Rose has been booked successfully!\"}', NULL, '2025-12-09 17:55:43', '2025-12-09 17:55:43'),
-('8f054232-4dba-4ae1-99fc-5d97dc4451f1', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":7,\"trainer_name\":\"John Smith\",\"appointment_date\":\"2025-12-30\",\"appointment_time\":\"13:30\",\"status\":\"pending\",\"message\":\"Your appointment with John Smith has been booked successfully!\"}', NULL, '2025-12-10 14:48:47', '2025-12-10 14:48:47'),
-('940ffa74-71cc-4ee7-937d-75c96535a1ad', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 19, '{\"type\":\"appointment_booked\",\"appointment_id\":7,\"trainer_name\":\"John Smith\",\"appointment_date\":\"2025-12-30\",\"appointment_time\":\"13:30\",\"status\":\"pending\",\"message\":\"Your appointment with John Smith has been booked successfully!\"}', NULL, '2025-12-10 14:48:47', '2025-12-10 14:48:47'),
-('9cc7fd4b-c7da-4bb9-ae25-6e5a30523075', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":8,\"trainer_name\":\"John Smith\",\"appointment_date\":\"2025-12-23\",\"appointment_time\":\"13:00\",\"status\":\"pending\",\"message\":\"Your appointment with John Smith has been booked successfully!\"}', NULL, '2025-12-11 11:30:54', '2025-12-11 11:30:54'),
-('a4e082c4-17ee-4903-9b3f-d3259b680acf', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 19, '{\"type\":\"appointment_booked\",\"appointment_id\":8,\"trainer_name\":\"John Smith\",\"appointment_date\":\"2025-12-23\",\"appointment_time\":\"13:00\",\"status\":\"pending\",\"message\":\"Your appointment with John Smith has been booked successfully!\"}', NULL, '2025-12-11 11:30:54', '2025-12-11 11:30:54'),
-('a974b52c-5bcf-4415-ac40-7e05addf3e78', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 19, '{\"type\":\"appointment_booked\",\"appointment_id\":10,\"trainer_name\":\"Sarah Johnson \",\"appointment_date\":\"2025-12-22\",\"appointment_time\":\"22:00\",\"status\":\"pending\",\"message\":\"Your appointment with Sarah Johnson  has been booked successfully!\"}', NULL, '2025-12-12 17:49:03', '2025-12-12 17:49:03'),
-('b8122bbc-de85-445b-b42d-809f075c5e1e', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":4,\"trainer_name\":\"Amelia Rose\",\"appointment_date\":\"2025-12-11\",\"appointment_time\":\"14:30\",\"status\":\"pending\",\"message\":\"Your appointment with Amelia Rose has been booked successfully!\"}', NULL, '2025-12-09 17:55:43', '2025-12-09 17:55:43'),
-('e16be858-2579-4a7c-9003-7a5eacfb43a8', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 19, '{\"type\":\"appointment_booked\",\"appointment_id\":9,\"trainer_name\":\"Sarah Johnson\",\"appointment_date\":\"2025-12-15\",\"appointment_time\":\"20:00\",\"status\":\"pending\",\"message\":\"Your appointment with Sarah Johnson has been booked successfully!\"}', NULL, '2025-12-12 10:51:00', '2025-12-12 10:51:00'),
-('e482c512-23da-44e6-b8cc-f7470dd77a9a', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":10,\"trainer_name\":\"Sarah Johnson \",\"appointment_date\":\"2025-12-22\",\"appointment_time\":\"22:00\",\"status\":\"pending\",\"message\":\"Your appointment with Sarah Johnson  has been booked successfully!\"}', NULL, '2025-12-12 17:49:03', '2025-12-12 17:49:03'),
-('f14eaf2d-0b36-484e-8357-246f031cfe48', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":1,\"trainer_name\":\"Liam Daniel\",\"appointment_date\":\"2025-12-10\",\"appointment_time\":\"10:00\",\"status\":\"pending\",\"message\":\"Your appointment with Liam Daniel has been booked successfully!\"}', NULL, '2025-12-03 16:37:18', '2025-12-03 16:37:18'),
-('fd068b16-9bf4-4859-9262-bad16443abbe', 'App\\Notifications\\AppointmentBookedNotification', 'App\\Models\\User', 1, '{\"type\":\"appointment_booked\",\"appointment_id\":2,\"trainer_name\":\"Liam Daniel\",\"appointment_date\":\"2025-12-10\",\"appointment_time\":\"09:00\",\"status\":\"pending\",\"message\":\"Your appointment with Liam Daniel has been booked successfully!\"}', NULL, '2025-12-03 17:08:20', '2025-12-03 17:08:20');
-
 -- --------------------------------------------------------
 
 --
@@ -1535,132 +1459,6 @@ CREATE TABLE `payments` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `payments`
---
-
-INSERT INTO `payments` (`id`, `customer_id`, `package_id`, `order_number`, `total_payment`, `paid`, `dues`, `payment_status`, `status`, `created_at`, `updated_at`) VALUES
-(1, 77, 3, 15736, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-05-23 15:45:47', '2025-05-23 15:45:47'),
-(2, 78, 3, 60141, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-05-27 10:45:35', '2025-05-27 10:45:35'),
-(3, 79, 3, 17071, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-05-27 10:50:10', '2025-05-27 10:50:10'),
-(4, 80, 2, 26572, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-05-27 11:17:45', '2025-05-27 11:17:45'),
-(5, 81, 3, 93846, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-05-27 12:18:51', '2025-05-27 12:18:51'),
-(6, 82, 1, 71905, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-03 10:34:25', '2025-06-03 10:34:25'),
-(7, 83, 2, 79076, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-03 10:37:11', '2025-06-03 10:37:11'),
-(8, 84, 1, 58723, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-03 12:37:07', '2025-06-03 12:37:07'),
-(9, 85, 2, 82587, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-03 12:40:01', '2025-06-03 12:40:01'),
-(10, 87, 2, 64034, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-03 13:13:43', '2025-06-03 13:13:43'),
-(11, 89, 2, 99409, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-03 13:25:37', '2025-06-03 13:25:37'),
-(12, 92, 2, 29302, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-03 15:11:24', '2025-06-03 15:11:24'),
-(13, 93, 2, 86736, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-03 15:14:21', '2025-06-03 15:14:21'),
-(14, 97, 3, 26337, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-03 15:22:50', '2025-06-03 15:22:50'),
-(15, 98, 2, 43944, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-03 15:25:40', '2025-06-03 15:25:40'),
-(16, 99, 2, 36431, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-03 15:28:54', '2025-06-03 15:28:54'),
-(17, 100, 1, 82679, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-03 15:30:40', '2025-06-03 15:30:40'),
-(18, 101, 3, 28931, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-03 15:45:11', '2025-06-03 15:45:11'),
-(19, 102, 2, 57371, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-10 11:26:17', '2025-06-10 11:26:17'),
-(20, 103, 1, 29788, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-10 11:29:13', '2025-06-10 11:29:13'),
-(21, 104, 1, 90770, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-17 13:28:43', '2025-06-17 13:28:43'),
-(22, 105, 1, 52232, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-24 19:00:02', '2025-06-24 19:00:02'),
-(23, 2, 1, 12857, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-24 19:10:29', '2025-06-24 19:10:29'),
-(24, 3, 2, 74462, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 10:29:37', '2025-06-25 10:29:37'),
-(25, 4, 1, 76324, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 10:33:34', '2025-06-25 10:33:34'),
-(26, 5, 2, 31242, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 10:35:33', '2025-06-25 10:35:33'),
-(27, 6, 1, 56627, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 10:36:35', '2025-06-25 10:36:35'),
-(28, 7, 2, 60832, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 10:37:47', '2025-06-25 10:37:47'),
-(29, 8, 2, 43002, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 10:38:54', '2025-06-25 10:38:54'),
-(30, 9, 1, 92626, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 10:43:07', '2025-06-25 10:43:07'),
-(31, 10, 2, 98641, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 10:50:51', '2025-06-25 10:50:51'),
-(32, 11, 1, 36693, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 10:51:53', '2025-06-25 10:51:53'),
-(33, 12, 1, 16645, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 10:52:58', '2025-06-25 10:52:58'),
-(34, 13, 1, 30681, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 10:54:03', '2025-06-25 10:54:03'),
-(35, 14, 1, 97263, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 10:56:23', '2025-06-25 10:56:23'),
-(36, 15, 2, 73683, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 10:57:32', '2025-06-25 10:57:32'),
-(37, 16, 1, 53321, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 10:58:36', '2025-06-25 10:58:36'),
-(38, 17, 2, 34223, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 12:22:31', '2025-06-25 12:22:31'),
-(39, 18, 1, 13555, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 12:24:12', '2025-06-25 12:24:12'),
-(40, 19, 1, 80010, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 12:25:23', '2025-06-25 12:25:23'),
-(41, 20, 2, 87353, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 12:26:51', '2025-06-25 12:26:51'),
-(42, 21, 2, 29358, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 12:29:09', '2025-06-25 12:29:09'),
-(43, 22, 1, 27456, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 13:25:11', '2025-06-25 13:25:11'),
-(44, 23, 1, 26155, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 13:26:35', '2025-06-25 13:26:35'),
-(45, 24, 2, 96765, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 13:27:59', '2025-06-25 13:27:59'),
-(46, 25, 1, 80084, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 13:29:08', '2025-06-25 13:29:08'),
-(47, 26, 1, 62916, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 13:30:16', '2025-06-25 13:30:16'),
-(48, 27, 2, 38111, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 13:31:45', '2025-06-25 13:31:45'),
-(49, 28, 2, 32759, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 13:33:02', '2025-06-25 13:33:02'),
-(50, 29, 1, 31912, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 13:34:28', '2025-06-25 13:34:28'),
-(51, 30, 1, 10710, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 13:35:38', '2025-06-25 13:35:38'),
-(52, 31, 2, 78419, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 13:36:45', '2025-06-25 13:36:45'),
-(53, 32, 1, 21793, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 13:38:18', '2025-06-25 13:38:18'),
-(54, 33, 2, 80124, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 13:40:18', '2025-06-25 13:40:18'),
-(55, 34, 1, 98835, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 13:41:49', '2025-06-25 13:41:49'),
-(56, 35, 2, 38046, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 13:43:14', '2025-06-25 13:43:14'),
-(57, 36, 1, 25572, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 13:44:47', '2025-06-25 13:44:47'),
-(58, 37, 1, 61052, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 13:46:26', '2025-06-25 13:46:26'),
-(59, 38, 1, 38351, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 13:47:50', '2025-06-25 13:47:50'),
-(60, 39, 1, 72421, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 13:49:14', '2025-06-25 13:49:14'),
-(61, 40, 2, 45517, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 13:50:25', '2025-06-25 13:50:25'),
-(62, 41, 1, 66678, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 13:51:47', '2025-06-25 13:51:47'),
-(63, 42, 2, 88579, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 13:53:05', '2025-06-25 13:53:05'),
-(64, 43, 2, 42570, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 13:54:29', '2025-06-25 13:54:29'),
-(65, 44, 1, 53874, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 13:56:05', '2025-06-25 13:56:05'),
-(66, 45, 2, 58130, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 13:58:40', '2025-06-25 13:58:40'),
-(67, 46, 1, 58235, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 14:56:25', '2025-06-25 14:56:25'),
-(68, 47, 1, 90019, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 15:15:20', '2025-06-25 15:15:20'),
-(69, 48, 2, 78990, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 15:16:39', '2025-06-25 15:16:39'),
-(70, 49, 1, 92892, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 15:18:18', '2025-06-25 15:18:18'),
-(71, 50, 2, 39675, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 15:20:25', '2025-06-25 15:20:25'),
-(72, 51, 2, 72754, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 15:21:32', '2025-06-25 15:21:32'),
-(73, 52, 1, 77866, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 15:22:46', '2025-06-25 15:22:46'),
-(74, 53, 1, 28042, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 15:23:57', '2025-06-25 15:23:57'),
-(75, 54, 1, 50259, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 15:25:07', '2025-06-25 15:25:07'),
-(76, 55, 2, 65690, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 15:26:14', '2025-06-25 15:26:14'),
-(77, 56, 2, 83863, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 15:50:22', '2025-06-25 15:50:22'),
-(78, 57, 1, 17628, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 15:54:25', '2025-06-25 15:54:25'),
-(79, 58, 1, 41273, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 16:08:18', '2025-06-25 16:08:18'),
-(80, 59, 1, 30099, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 16:13:45', '2025-06-25 16:13:45'),
-(81, 60, 1, 84690, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 16:21:00', '2025-06-25 16:21:00'),
-(82, 61, 1, 25484, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 16:22:23', '2025-06-25 16:22:23'),
-(83, 62, 1, 42936, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 17:46:38', '2025-06-25 17:46:38'),
-(84, 63, 1, 61665, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 17:47:55', '2025-06-25 17:47:55'),
-(85, 64, 1, 33144, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 17:49:54', '2025-06-25 17:49:54'),
-(86, 65, 1, 67755, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 17:52:07', '2025-06-25 17:52:07'),
-(87, 66, 1, 30375, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 17:53:29', '2025-06-25 17:53:29'),
-(88, 67, 2, 67174, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 17:54:43', '2025-06-25 17:54:43'),
-(89, 68, 1, 16298, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 18:08:16', '2025-06-25 18:08:16'),
-(90, 69, 1, 85281, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 18:13:01', '2025-06-25 18:13:01'),
-(91, 70, 2, 37774, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:15:15', '2025-06-25 18:15:15'),
-(92, 71, 2, 70378, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:16:38', '2025-06-25 18:16:38'),
-(93, 72, 2, 87871, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:18:23', '2025-06-25 18:18:23'),
-(94, 73, 2, 27704, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:19:43', '2025-06-25 18:19:43'),
-(95, 74, 2, 65390, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:21:32', '2025-06-25 18:21:32'),
-(96, 75, 2, 44367, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:23:35', '2025-06-25 18:23:35'),
-(97, 76, 1, 28146, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 18:24:55', '2025-06-25 18:24:55'),
-(98, 77, 2, 89104, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:26:52', '2025-06-25 18:26:52'),
-(99, 78, 1, 71133, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 18:29:16', '2025-06-25 18:29:16'),
-(100, 79, 2, 99141, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:30:48', '2025-06-25 18:30:48'),
-(101, 80, 2, 58033, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:32:22', '2025-06-25 18:32:22'),
-(102, 81, 1, 98350, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 18:33:49', '2025-06-25 18:33:49'),
-(103, 82, 2, 50022, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:35:05', '2025-06-25 18:35:05'),
-(104, 83, 2, 95185, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:36:23', '2025-06-25 18:36:23'),
-(105, 84, 1, 47116, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 18:37:40', '2025-06-25 18:37:40'),
-(106, 85, 2, 78520, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:44:41', '2025-06-25 18:44:41'),
-(107, 86, 2, 51177, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:46:52', '2025-06-25 18:46:52'),
-(108, 87, 1, 96482, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 18:48:00', '2025-06-25 18:48:00'),
-(109, 88, 2, 92525, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:49:11', '2025-06-25 18:49:11'),
-(110, 89, 1, 63891, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 18:50:26', '2025-06-25 18:50:26'),
-(111, 90, 2, 57009, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:51:40', '2025-06-25 18:51:40'),
-(112, 91, 1, 38804, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 18:53:09', '2025-06-25 18:53:09'),
-(113, 92, 2, 61849, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-25 18:55:09', '2025-06-25 18:55:09'),
-(114, 93, 1, 51246, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 18:56:52', '2025-06-25 18:56:52'),
-(115, 94, 1, 48716, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-25 18:58:56', '2025-06-25 18:58:56'),
-(116, 105, 2, 19396, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-26 10:40:20', '2025-06-26 10:40:20'),
-(117, 106, 1, 66582, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-26 10:41:25', '2025-06-26 10:41:25'),
-(118, 107, 1, 75713, 125.00, 125.00, 0.00, 'succeeded', 1, '2025-06-26 12:14:43', '2025-06-26 12:14:43'),
-(119, 108, 3, 98172, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-26 12:17:40', '2025-06-26 12:17:40'),
-(120, 95, 3, 65763, 300.00, 300.00, 0.00, 'succeeded', 1, '2025-06-30 10:50:29', '2025-06-30 10:50:29');
-
 -- --------------------------------------------------------
 
 --
@@ -1679,132 +1477,6 @@ CREATE TABLE `payment_details` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `payment_details`
---
-
-INSERT INTO `payment_details` (`id`, `order_number`, `transaction_id`, `transaction_status`, `transaction_date`, `name_on_card`, `expiration_month`, `expiration_year`, `created_at`, `updated_at`) VALUES
-(1, 15736, 'ch_3RS2TILXqt7gmBJh03Ho41RX', 'succeeded', '2025-05-23', NULL, '11', '2026', '2025-05-23 15:45:47', '2025-05-23 15:45:47'),
-(2, 60141, 'ch_3RTPgwLXqt7gmBJh0013ewKb', 'succeeded', '2025-05-27', NULL, '11', '2029', '2025-05-27 10:45:35', '2025-05-27 10:45:35'),
-(3, 17071, 'ch_3RTPlSLXqt7gmBJh05rB9I7s', 'succeeded', '2025-05-27', NULL, '11', '2029', '2025-05-27 10:50:10', '2025-05-27 10:50:10'),
-(4, 26572, 'ch_3RTQC9LXqt7gmBJh0meuLKt4', 'succeeded', '2025-05-27', NULL, '11', '2029', '2025-05-27 11:17:45', '2025-05-27 11:17:45'),
-(5, 93846, 'ch_3RTR9GLXqt7gmBJh11eB2kAl', 'succeeded', '2025-05-27', NULL, '11', '2029', '2025-05-27 12:18:51', '2025-05-27 12:18:51'),
-(6, 71905, 'ch_3RVwr0LXqt7gmBJh0tZZghF3', 'succeeded', '2025-06-03', NULL, '11', '2029', '2025-06-03 10:34:25', '2025-06-03 10:34:25'),
-(7, 79076, 'ch_3RVwtjLXqt7gmBJh0M2XepSY', 'succeeded', '2025-06-03', NULL, '11', '2029', '2025-06-03 10:37:11', '2025-06-03 10:37:11'),
-(8, 58723, 'ch_3RVylkLXqt7gmBJh1tReXNDN', 'succeeded', '2025-06-03', NULL, '11', '2029', '2025-06-03 12:37:07', '2025-06-03 12:37:07'),
-(9, 82587, 'ch_3RVyobLXqt7gmBJh1plrf60v', 'succeeded', '2025-06-03', NULL, '11', '2029', '2025-06-03 12:40:01', '2025-06-03 12:40:01'),
-(10, 64034, 'ch_3RVzLCLXqt7gmBJh1FWM9e29', 'succeeded', '2025-06-03', NULL, '11', '2029', '2025-06-03 13:13:43', '2025-06-03 13:13:43'),
-(11, 99409, 'ch_3RVzWiLXqt7gmBJh09rbybwn', 'succeeded', '2025-06-03', NULL, '11', '2029', '2025-06-03 13:25:37', '2025-06-03 13:25:37'),
-(12, 29302, 'ch_3RW1B4LXqt7gmBJh0zPmCm2y', 'succeeded', '2025-06-03', NULL, '11', '2029', '2025-06-03 15:11:24', '2025-06-03 15:11:24'),
-(13, 86736, 'ch_3RW1DxLXqt7gmBJh0lbKO0aI', 'succeeded', '2025-06-03', NULL, '11', '2029', '2025-06-03 15:14:21', '2025-06-03 15:14:21'),
-(14, 26337, 'ch_3RW1MALXqt7gmBJh06Ana1Kv', 'succeeded', '2025-06-03', NULL, '11', '2029', '2025-06-03 15:22:50', '2025-06-03 15:22:50'),
-(15, 43944, 'ch_3RW1OuLXqt7gmBJh0SR2m5rH', 'succeeded', '2025-06-03', NULL, '11', '2029', '2025-06-03 15:25:40', '2025-06-03 15:25:40'),
-(16, 36431, 'ch_3RW1S3LXqt7gmBJh0HyBEqu6', 'succeeded', '2025-06-03', NULL, '11', '2029', '2025-06-03 15:28:54', '2025-06-03 15:28:54'),
-(17, 82679, 'ch_3RW1TkLXqt7gmBJh0kNNWE9P', 'succeeded', '2025-06-03', NULL, '11', '2029', '2025-06-03 15:30:40', '2025-06-03 15:30:40'),
-(18, 28931, 'ch_3RW1hlLXqt7gmBJh01OGEJbo', 'succeeded', '2025-06-03', NULL, '11', '2029', '2025-06-03 15:45:11', '2025-06-03 15:45:11'),
-(19, 57371, 'ch_3RYV02LXqt7gmBJh0KBCgN9a', 'succeeded', '2025-06-10', NULL, '11', '2029', '2025-06-10 11:26:17', '2025-06-10 11:26:17'),
-(20, 29788, 'ch_3RYV2vLXqt7gmBJh1342r7zV', 'succeeded', '2025-06-10', NULL, '11', '2029', '2025-06-10 11:29:13', '2025-06-10 11:29:13'),
-(21, 90770, 'ch_3Rb4FCLXqt7gmBJh06oGj8e5', 'succeeded', '2025-06-17', NULL, '11', '2029', '2025-06-17 13:28:43', '2025-06-17 13:28:43'),
-(22, 52232, 'ch_3RdgkrLXqt7gmBJh1udKL2WH', 'succeeded', '2025-06-25', NULL, '11', '2029', '2025-06-24 19:00:02', '2025-06-24 19:00:02'),
-(23, 12857, 'ch_3Rdgv0LXqt7gmBJh0YHdqW4E', 'succeeded', '2025-06-25', NULL, '11', '2029', '2025-06-24 19:10:29', '2025-06-24 19:10:29'),
-(24, 74462, 'ch_3RdvGQLXqt7gmBJh11hUPoAy', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 10:29:37', '2025-06-25 10:29:37'),
-(25, 76324, 'ch_3RdvKHLXqt7gmBJh1vzxSCeU', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 10:33:34', '2025-06-25 10:33:34'),
-(26, 31242, 'ch_3RdvMCLXqt7gmBJh1smt31Kn', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 10:35:33', '2025-06-25 10:35:33'),
-(27, 56627, 'ch_3RdvNDLXqt7gmBJh1QbaMnFV', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 10:36:35', '2025-06-25 10:36:35'),
-(28, 60832, 'ch_3RdvONLXqt7gmBJh0gWj6Twh', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 10:37:47', '2025-06-25 10:37:47'),
-(29, 43002, 'ch_3RdvPSLXqt7gmBJh1Z3Q8CCm', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 10:38:54', '2025-06-25 10:38:54'),
-(30, 92626, 'ch_3RdvTXLXqt7gmBJh0QfFYB0m', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 10:43:07', '2025-06-25 10:43:07'),
-(31, 98641, 'ch_3Rdvb1LXqt7gmBJh1a1Ih6Ta', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 10:50:51', '2025-06-25 10:50:51'),
-(32, 36693, 'ch_3Rdvc2LXqt7gmBJh0aE0pfzV', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 10:51:53', '2025-06-25 10:51:53'),
-(33, 16645, 'ch_3Rdvd4LXqt7gmBJh02RCjwam', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 10:52:58', '2025-06-25 10:52:58'),
-(34, 30681, 'ch_3Rdve7LXqt7gmBJh0gqd8YJI', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 10:54:03', '2025-06-25 10:54:03'),
-(35, 97263, 'ch_3RdvgNLXqt7gmBJh1WebczZv', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 10:56:23', '2025-06-25 10:56:23'),
-(36, 73683, 'ch_3RdvhULXqt7gmBJh0COjc2lt', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 10:57:32', '2025-06-25 10:57:32'),
-(37, 53321, 'ch_3RdviWLXqt7gmBJh1lYpOoWO', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 10:58:36', '2025-06-25 10:58:36'),
-(38, 34223, 'ch_3Rdx1hLXqt7gmBJh1D5nZ6uO', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 12:22:32', '2025-06-25 12:22:32'),
-(39, 13555, 'ch_3Rdx3MLXqt7gmBJh06UaCl9Q', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 12:24:12', '2025-06-25 12:24:12'),
-(40, 80010, 'ch_3Rdx4VLXqt7gmBJh0zhmLF3B', 'succeeded', '2025-06-25', NULL, '11', '2029', '2025-06-25 12:25:23', '2025-06-25 12:25:23'),
-(41, 87353, 'ch_3Rdx5vLXqt7gmBJh0iZdMZk9', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 12:26:51', '2025-06-25 12:26:51'),
-(42, 29358, 'ch_3Rdx89LXqt7gmBJh0veUWCuY', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 12:29:09', '2025-06-25 12:29:09'),
-(43, 27456, 'ch_3Rdy0MLXqt7gmBJh1ArnYr81', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:25:11', '2025-06-25 13:25:11'),
-(44, 26155, 'ch_3Rdy1kLXqt7gmBJh0acJ25lZ', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:26:35', '2025-06-25 13:26:35'),
-(45, 96765, 'ch_3Rdy35LXqt7gmBJh0Hho5Flh', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:27:59', '2025-06-25 13:27:59'),
-(46, 80084, 'ch_3Rdy4CLXqt7gmBJh0xYYYgCn', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:29:08', '2025-06-25 13:29:08'),
-(47, 62916, 'ch_3Rdy5ILXqt7gmBJh07XhPxY1', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:30:16', '2025-06-25 13:30:16'),
-(48, 38111, 'ch_3Rdy6kLXqt7gmBJh08Sw9NpU', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:31:46', '2025-06-25 13:31:46'),
-(49, 32759, 'ch_3Rdy7zLXqt7gmBJh0aPd36mV', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:33:03', '2025-06-25 13:33:03'),
-(50, 31912, 'ch_3Rdy9MLXqt7gmBJh0WyeQn5E', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:34:28', '2025-06-25 13:34:28'),
-(51, 10710, 'ch_3RdyAULXqt7gmBJh1fIFrjTh', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:35:38', '2025-06-25 13:35:38'),
-(52, 78419, 'ch_3RdyBZLXqt7gmBJh1Vt7ACuw', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:36:45', '2025-06-25 13:36:45'),
-(53, 21793, 'ch_3RdyD5LXqt7gmBJh1fzp4O47', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:38:18', '2025-06-25 13:38:18'),
-(54, 80124, 'ch_3RdyF0LXqt7gmBJh15ALbaw9', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:40:18', '2025-06-25 13:40:18'),
-(55, 98835, 'ch_3RdyGULXqt7gmBJh0CNbUSql', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:41:49', '2025-06-25 13:41:49'),
-(56, 38046, 'ch_3RdyHqLXqt7gmBJh0Bwgdwnt', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:43:14', '2025-06-25 13:43:14'),
-(57, 25572, 'ch_3RdyJMLXqt7gmBJh1sgXkWEg', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:44:47', '2025-06-25 13:44:47'),
-(58, 61052, 'ch_3RdyKwLXqt7gmBJh0nP3HqOC', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:46:26', '2025-06-25 13:46:26'),
-(59, 38351, 'ch_3RdyMJLXqt7gmBJh1Xfccf6w', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:47:50', '2025-06-25 13:47:50'),
-(60, 72421, 'ch_3RdyNfLXqt7gmBJh0qFV2CFX', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:49:14', '2025-06-25 13:49:14'),
-(61, 45517, 'ch_3RdyOnLXqt7gmBJh172CJER6', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:50:25', '2025-06-25 13:50:25'),
-(62, 66678, 'ch_3RdyQ8LXqt7gmBJh1IPNxguf', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:51:47', '2025-06-25 13:51:47'),
-(63, 88579, 'ch_3RdyRNLXqt7gmBJh1NalrWFT', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:53:05', '2025-06-25 13:53:05'),
-(64, 42570, 'ch_3RdySjLXqt7gmBJh1ic7ryeL', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:54:29', '2025-06-25 13:54:29'),
-(65, 53874, 'ch_3RdyUHLXqt7gmBJh1nEJVQZc', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:56:05', '2025-06-25 13:56:05'),
-(66, 58130, 'ch_3RdyWnLXqt7gmBJh0P1bBjz3', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 13:58:40', '2025-06-25 13:58:40'),
-(67, 58235, 'ch_3RdzQgLXqt7gmBJh0vLgeoFQ', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 14:56:25', '2025-06-25 14:56:25'),
-(68, 90019, 'ch_3RdzizLXqt7gmBJh1TVUoEqw', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 15:15:20', '2025-06-25 15:15:20'),
-(69, 78990, 'ch_3RdzkGLXqt7gmBJh1x1B5ERX', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 15:16:39', '2025-06-25 15:16:39'),
-(70, 92892, 'ch_3RdzlqLXqt7gmBJh0An2hclL', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 15:18:18', '2025-06-25 15:18:18'),
-(71, 39675, 'ch_3RdznuLXqt7gmBJh11FnuCxu', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 15:20:25', '2025-06-25 15:20:25'),
-(72, 72754, 'ch_3RdzoyLXqt7gmBJh196F4sU0', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 15:21:32', '2025-06-25 15:21:32'),
-(73, 77866, 'ch_3RdzqALXqt7gmBJh1US0QRh5', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 15:22:46', '2025-06-25 15:22:46'),
-(74, 28042, 'ch_3RdzrJLXqt7gmBJh1fxu9TPb', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 15:23:57', '2025-06-25 15:23:57'),
-(75, 50259, 'ch_3RdzsRLXqt7gmBJh0Gbmto4T', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 15:25:07', '2025-06-25 15:25:07'),
-(76, 65690, 'ch_3RdztXLXqt7gmBJh1zjeMOBN', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 15:26:14', '2025-06-25 15:26:14'),
-(77, 83863, 'ch_3Re0GsLXqt7gmBJh1uKBF6PJ', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 15:50:22', '2025-06-25 15:50:22'),
-(78, 17628, 'ch_3Re0KnLXqt7gmBJh0wA5k9IW', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 15:54:25', '2025-06-25 15:54:25'),
-(79, 41273, 'ch_3Re0YELXqt7gmBJh0VrXlJ3H', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 16:08:18', '2025-06-25 16:08:18'),
-(80, 30099, 'ch_3Re0dVLXqt7gmBJh0p8dEaRZ', 'succeeded', '2025-06-25', NULL, '11', '2029', '2025-06-25 16:13:45', '2025-06-25 16:13:45'),
-(81, 84690, 'ch_3Re0kWLXqt7gmBJh0K8UazOj', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 16:21:00', '2025-06-25 16:21:00'),
-(82, 25484, 'ch_3Re0lrLXqt7gmBJh0LduUcE1', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 16:22:23', '2025-06-25 16:22:23'),
-(83, 42936, 'ch_3Re25OLXqt7gmBJh0T36EMMx', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 17:46:38', '2025-06-25 17:46:38'),
-(84, 61665, 'ch_3Re26eLXqt7gmBJh1rI9rfyd', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 17:47:55', '2025-06-25 17:47:55'),
-(85, 33144, 'ch_3Re28ZLXqt7gmBJh0PaDEfS0', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 17:49:54', '2025-06-25 17:49:54'),
-(86, 67755, 'ch_3Re2AiLXqt7gmBJh1Lkw4o61', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 17:52:07', '2025-06-25 17:52:07'),
-(87, 30375, 'ch_3Re2C1LXqt7gmBJh03cDtuHV', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 17:53:29', '2025-06-25 17:53:29'),
-(88, 67174, 'ch_3Re2DDLXqt7gmBJh0BvqVaYE', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 17:54:43', '2025-06-25 17:54:43'),
-(89, 16298, 'ch_3Re2QOLXqt7gmBJh0dlCYEfZ', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:08:17', '2025-06-25 18:08:17'),
-(90, 85281, 'ch_3Re2UzLXqt7gmBJh1gf9SHQM', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:13:01', '2025-06-25 18:13:01'),
-(91, 37774, 'ch_3Re2X8LXqt7gmBJh1bv6kefm', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:15:15', '2025-06-25 18:15:15'),
-(92, 70378, 'ch_3Re2YTLXqt7gmBJh1J7hFhPb', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:16:38', '2025-06-25 18:16:38'),
-(93, 87871, 'ch_3Re2aALXqt7gmBJh0uwkEhyp', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:18:23', '2025-06-25 18:18:23'),
-(94, 27704, 'ch_3Re2bSLXqt7gmBJh1ke38WGm', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:19:43', '2025-06-25 18:19:43'),
-(95, 65390, 'ch_3Re2dDLXqt7gmBJh1oPDzOyj', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:21:32', '2025-06-25 18:21:32'),
-(96, 44367, 'ch_3Re2fCLXqt7gmBJh0ZTcKpKT', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:23:35', '2025-06-25 18:23:35'),
-(97, 28146, 'ch_3Re2gVLXqt7gmBJh0rsw2pWQ', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:24:55', '2025-06-25 18:24:55'),
-(98, 89104, 'ch_3Re2iOLXqt7gmBJh1Yo4TUie', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:26:52', '2025-06-25 18:26:52'),
-(99, 71133, 'ch_3Re2khLXqt7gmBJh1a7pT3jq', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:29:16', '2025-06-25 18:29:16'),
-(100, 99141, 'ch_3Re2mCLXqt7gmBJh1EvqXNVY', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:30:48', '2025-06-25 18:30:48'),
-(101, 58033, 'ch_3Re2niLXqt7gmBJh0LMY9HHk', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:32:22', '2025-06-25 18:32:22'),
-(102, 98350, 'ch_3Re2p7LXqt7gmBJh0YOtr6y7', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:33:49', '2025-06-25 18:33:49'),
-(103, 50022, 'ch_3Re2qLLXqt7gmBJh1N5ACdwr', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:35:05', '2025-06-25 18:35:05'),
-(104, 95185, 'ch_3Re2raLXqt7gmBJh1mcakqFe', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:36:23', '2025-06-25 18:36:23'),
-(105, 47116, 'ch_3Re2sqLXqt7gmBJh1KL9Zfbr', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:37:40', '2025-06-25 18:37:40'),
-(106, 78520, 'ch_3Re2zcLXqt7gmBJh1qDKLIk5', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:44:41', '2025-06-25 18:44:41'),
-(107, 51177, 'ch_3Re31kLXqt7gmBJh0N735dD8', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:46:52', '2025-06-25 18:46:52'),
-(108, 96482, 'ch_3Re32pLXqt7gmBJh0a5M1SKF', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:48:00', '2025-06-25 18:48:00'),
-(109, 92525, 'ch_3Re33yLXqt7gmBJh0gAC3Wjh', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:49:11', '2025-06-25 18:49:11'),
-(110, 63891, 'ch_3Re35CLXqt7gmBJh1eniFDJX', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:50:26', '2025-06-25 18:50:26'),
-(111, 57009, 'ch_3Re36NLXqt7gmBJh07vMGVJ7', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:51:40', '2025-06-25 18:51:40'),
-(112, 38804, 'ch_3Re37pLXqt7gmBJh17GIIVLY', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:53:09', '2025-06-25 18:53:09'),
-(113, 61849, 'ch_3Re39lLXqt7gmBJh0tmp6TaS', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:55:09', '2025-06-25 18:55:09'),
-(114, 51246, 'ch_3Re3BQLXqt7gmBJh1793JEOy', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:56:52', '2025-06-25 18:56:52'),
-(115, 48716, 'ch_3Re3DPLXqt7gmBJh1tFFyH3D', 'succeeded', '2025-06-25', NULL, '11', '2026', '2025-06-25 18:58:56', '2025-06-25 18:58:56'),
-(116, 19396, 'ch_3ReHuLLXqt7gmBJh0t9ZYLry', 'succeeded', '2025-06-26', NULL, '11', '2026', '2025-06-26 10:40:20', '2025-06-26 10:40:20'),
-(117, 66582, 'ch_3ReHvQLXqt7gmBJh1TjxvdKI', 'succeeded', '2025-06-26', NULL, '11', '2026', '2025-06-26 10:41:25', '2025-06-26 10:41:25'),
-(118, 75713, 'ch_3ReJNjLXqt7gmBJh0YZcT2o6', 'succeeded', '2025-06-26', NULL, '11', '2026', '2025-06-26 12:14:43', '2025-06-26 12:14:43'),
-(119, 98172, 'ch_3ReJQaLXqt7gmBJh1Ew57725', 'succeeded', '2025-06-26', NULL, '11', '2026', '2025-06-26 12:17:40', '2025-06-26 12:17:40'),
-(120, 65763, 'ch_3RfjyOLXqt7gmBJh1ZPWK58d', 'succeeded', '2025-06-30', NULL, '11', '2026', '2025-06-30 10:50:29', '2025-06-30 10:50:29');
 
 -- --------------------------------------------------------
 
@@ -3477,64 +3149,6 @@ CREATE TABLE `time_slots` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `time_slots`
---
-
-INSERT INTO `time_slots` (`id`, `trainer_id`, `availability_id`, `slot_datetime`, `is_booked`, `booking_id`, `created_at`, `updated_at`) VALUES
-(9, 9, 1, '2025-12-15 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
-(10, 9, 1, '2025-12-22 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
-(11, 9, 1, '2025-12-29 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
-(12, 9, 1, '2026-01-05 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
-(13, 9, 1, '2026-01-12 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
-(14, 9, 1, '2026-01-19 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
-(15, 9, 1, '2026-01-26 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
-(16, 9, 1, '2026-02-02 22:00:00', 0, NULL, '2025-12-10 13:38:49', '2025-12-10 13:38:49'),
-(17, 9, 3, '2025-12-16 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
-(18, 9, 3, '2025-12-23 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
-(19, 9, 3, '2025-12-30 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
-(20, 9, 3, '2026-01-06 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
-(21, 9, 3, '2026-01-13 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
-(22, 9, 3, '2026-01-20 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
-(23, 9, 3, '2026-01-27 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
-(24, 9, 3, '2026-02-03 13:00:00', 0, NULL, '2025-12-10 14:26:12', '2025-12-10 14:26:12'),
-(79, 10, 5, '2025-12-12 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(80, 10, 4, '2025-12-15 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(81, 10, 6, '2025-12-15 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(82, 10, 7, '2025-12-16 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(83, 10, 5, '2025-12-19 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(84, 10, 4, '2025-12-22 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(85, 10, 6, '2025-12-22 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(86, 10, 7, '2025-12-23 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(87, 10, 5, '2025-12-26 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(88, 10, 4, '2025-12-29 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(89, 10, 6, '2025-12-29 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(90, 10, 7, '2025-12-30 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(91, 10, 5, '2026-01-02 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(92, 10, 4, '2026-01-05 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(93, 10, 6, '2026-01-05 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(94, 10, 7, '2026-01-06 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(95, 10, 5, '2026-01-09 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(96, 10, 4, '2026-01-12 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(97, 10, 6, '2026-01-12 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(98, 10, 7, '2026-01-13 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(99, 10, 5, '2026-01-16 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(100, 10, 4, '2026-01-19 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(101, 10, 6, '2026-01-19 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(102, 10, 7, '2026-01-20 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(103, 10, 5, '2026-01-23 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(104, 10, 4, '2026-01-26 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(105, 10, 6, '2026-01-26 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(106, 10, 7, '2026-01-27 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(107, 10, 5, '2026-01-30 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(108, 10, 4, '2026-02-02 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(109, 10, 6, '2026-02-02 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(110, 10, 7, '2026-02-03 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(111, 10, 5, '2026-02-06 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(112, 10, 4, '2026-02-09 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(113, 10, 6, '2026-02-09 20:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17'),
-(114, 10, 7, '2026-02-10 22:00:00', 0, NULL, '2025-12-12 15:15:17', '2025-12-12 15:15:17');
-
 -- --------------------------------------------------------
 
 --
@@ -3557,27 +3171,6 @@ CREATE TABLE `trainers` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `trainers`
---
-
-INSERT INTO `trainers` (`id`, `created_by`, `trainer_type`, `google_calendar_id`, `description`, `price`, `rating`, `specialization`, `city`, `state`, `status`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(2, 1, 'Gym Trainer', 'AYqNkNDybjf6wYGH9', 'Personalized workout plans and strength training sessions tailored to your fitness goals, whether you\'re a beginner or advanced.', '40', '4', '[\"Strength & Conditioning\",\"Bodybuilding\",\"Functional Training\",\"Weight Loss\"]', '0', '0', '1', NULL, '2025-07-08 17:26:41', '2025-12-03 16:31:30'),
-(3, 1, 'Yoga Trainer', 'asjadmmc67@gmail.com', 'Guided yoga sessions focusing on flexibility, mindfulness, and relaxation for all skill levels, from beginners to experienced yogis.', '35', '4', '[\"Vinyasa & Hatha Yoga\",\"Flexibility & Mobility\",\"Mindfulness & Meditation\",\"Stress Relief & Recovery\"]', '0', '0', '1', NULL, '2025-07-08 18:09:21', '2025-12-03 14:19:52'),
-(4, 1, 'Kickfit Trainer', NULL, 'High-energy kickboxing fitness classes designed to boost your cardio, coordination, and strength while burning calories.', '45', '4', '[\"Kickboxing & Cardio Conditioning\",\"Agility & Coordination\",\"Combat Fitness\",\"Fat Burn & Endurance\"]', '0', '0', '1', NULL, '2025-07-08 18:10:44', '2025-07-08 18:10:44'),
-(5, 1, 'Group-X Trainer', NULL, 'Motivating group exercise classes including aerobics, dance, and functional training to keep you energized and socially connected.', '30', '4', '[\"Group Aerobics & Dance\",\"Circuit & HIIT Training\",\"Team Motivation\",\"Total Body Conditioning\"]', '0', '0', '1', NULL, '2025-07-08 18:12:26', '2025-07-08 18:12:26'),
-(6, 1, 'In-Person Only', NULL, 'Personalized coaching tailored for women going through menopause, as well as individuals\r\n managing obesity and long-term health challenges. Sarah provides empathetic, focused guidance\r\n for fitness and wellness goals.', '35', '4', '[\"Menopause Coaching\",\"Personal Training\",\"Weight Management\",\"Health for Chronic Conditions\"]', 'Bolton Le Sands', 'England', '1', NULL, '2025-07-15 14:05:52', '2025-07-15 17:12:29'),
-(7, 1, 'In-Person & Online', NULL, 'Offering tailored personal training and nutrition guidance in both small-group and individual formats.\r\n Lance helps clients build consistency in their fitness journey-whether in person or online.', '40', '4', '[\"Personal Training\",\"Nutrition Coaching\",\"Semi-private\\/Small Group Training\",\"Online Training\"]', 'Sanford', 'Florida', '1', NULL, '2025-07-15 16:34:00', '2025-07-15 17:11:56'),
-(8, 1, 'In-Person Only', NULL, 'Helping individuals transform their fitness with in-person sessions focused on strength, endurance,\r\n and overall wellness. Kaushik is passionate about building visibility and empowering others to build\r\n healthier habits.', '30', '4', '[\"Functional Fitness\",\"General Conditioning\",\"Strength Building\",\"Fitness for Beginners\"]', 'Oshiwara', 'India', '1', NULL, '2025-07-15 17:32:00', '2025-07-15 17:32:00'),
-(9, 20, NULL, NULL, 'Specialized in strength training and weight loss with 10+ years of experience.', '80', NULL, NULL, NULL, NULL, '1', NULL, '2025-12-09 17:30:52', '2025-12-09 17:30:52'),
-(10, 21, NULL, NULL, 'Expert in yoga, pilates, and flexibility training. Certified instructor since 2015.', '80', NULL, NULL, NULL, NULL, '1', NULL, '2025-12-09 17:30:52', '2025-12-11 11:03:18'),
-(11, 22, NULL, NULL, 'High-intensity interval training and CrossFit specialist. Former athlete.', '62', NULL, NULL, NULL, NULL, '1', NULL, '2025-12-09 17:30:52', '2025-12-09 17:30:52'),
-(12, 27, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', NULL, '2025-12-12 16:08:09', '2025-12-12 16:08:09'),
-(13, 28, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', NULL, '2025-12-12 16:17:11', '2025-12-12 16:17:11'),
-(14, 29, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', NULL, '2025-12-12 16:20:48', '2025-12-12 16:20:48'),
-(15, 30, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', NULL, '2025-12-12 16:45:10', '2025-12-12 16:46:00'),
-(17, 32, 'Trainer', NULL, 'Nisi dolore illum e', '70', '1', '[\"test\",\"testing\"]', 'Karachi', 'Sindh', '1', NULL, '2025-12-12 17:31:40', '2025-12-12 17:31:43');
 
 -- --------------------------------------------------------
 
@@ -3613,15 +3206,6 @@ CREATE TABLE `trainer_pricing` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `trainer_pricing`
---
-
-INSERT INTO `trainer_pricing` (`id`, `trainer_id`, `session_duration`, `price`, `currency`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 9, '30', 40.00, 'USD', 1, '2025-12-10 11:53:50', '2025-12-10 11:53:50'),
-(2, 9, '45', 90.00, 'USD', 1, '2025-12-10 11:53:50', '2025-12-10 11:53:50'),
-(3, 9, '60', 120.00, 'USD', 1, '2025-12-10 11:53:50', '2025-12-10 11:53:50');
 
 -- --------------------------------------------------------
 
@@ -3673,16 +3257,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `last_name`, `role`, `package_id`, `category_id`, `designation`, `team`, `phone`, `email`, `address`, `top_rated`, `leaderboard`, `about_me`, `date_of_birth`, `gender`, `whatsapp`, `skype`, `facebook`, `twitter`, `instagram`, `linkedin`, `youtube`, `city_id`, `state_id`, `zip_code`, `license`, `image`, `email_verified_at`, `password`, `verify_token`, `deleted_at`, `expiry_date`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin@gmail.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$QowHn04SUEIx8Lo.kQahTehd1cmYS2NnLkwDlqRARD7bVtpnNg/mi', '676f265264ab2', NULL, NULL, '1', NULL, NULL),
-(19, 'Admin User', NULL, 'trainer', NULL, NULL, NULL, NULL, '1234567890', 'admin@fitnex.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$ZQzKLxE9Evo/35EfRPCAV.VMVzQ3Bl5ejz/BuGq7hux5KTjb9S6lK', NULL, NULL, NULL, '1', '2025-12-09 17:30:51', '2025-12-09 17:30:51'),
-(20, 'John Smith', NULL, 'trainer', NULL, NULL, NULL, NULL, '5552445845', 'john.trainer@fitnex.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1765390919.jpg', NULL, '$2y$10$1XY8vEd05xFImtmfln4UfeByNlpg.ZKcSSa4ENIj8BjurGlafW2gS', NULL, NULL, NULL, '1', '2025-12-09 17:30:52', '2025-12-10 13:21:59'),
-(21, 'Sarah Johnson', NULL, 'trainer', NULL, NULL, NULL, NULL, '5559676546', 'sarah.trainer@fitnex.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1765468998.jpg', NULL, '$2y$10$1qPHHqBf5b94ttlez4anxe4MbQfUCj8wYD/5RmfNVO9p4RsaA8TVi', NULL, NULL, NULL, '1', '2025-12-09 17:30:52', '2025-12-11 11:03:18'),
-(22, 'Mike Davis', NULL, 'trainer', NULL, NULL, NULL, NULL, '5557908018', 'mike.trainer@fitnex.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$BVPeMDBSz3oHGQL4AWjsN.Ju3m7BG2Zr2OTLMuZqLDUwyl3ggd.GO', NULL, NULL, NULL, '1', '2025-12-09 17:30:52', '2025-12-09 17:30:52'),
-(23, 'Alice Brown', NULL, 'trainer', NULL, NULL, NULL, NULL, '5553123658', 'alice@example.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$f10PecAoBzrpWttyPplbh.n42.BVvKM0oobRQ0hvo4S3sXmePsfL.', NULL, NULL, NULL, '1', '2025-12-09 17:30:52', '2025-12-09 17:30:52'),
-(24, 'Bob Wilson', NULL, 'trainer', NULL, NULL, NULL, NULL, '5558727390', 'bob@example.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$eWxZLjYo8Fi3BODOD/RxtOI9.Y..E5dZbCapO4NKJ31mLFXmBfx8.', NULL, NULL, NULL, '1', '2025-12-09 17:30:53', '2025-12-09 17:30:53'),
-(25, 'Carol Martinez', NULL, 'trainer', NULL, NULL, NULL, NULL, '5557912722', 'carol@example.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$QMZvxaB2IGRiCHPirGPaXudEcjpm.rqVtsLtUi/aPzREGSvTzllNa', NULL, NULL, NULL, '1', '2025-12-09 17:30:53', '2025-12-09 17:30:53'),
-(30, 'Scarlet', 'Grant', 'trainer', NULL, NULL, NULL, NULL, '+1 (423) 261-4691', 'herryview@yopmail.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1765575960.jpg', '2025-12-12 16:39:15', '$2y$10$jzOT.hcA2yRmpBR7q58XbO0UayeXFOC6ZPTr/Tptg8w2oEDjueI9y', NULL, NULL, NULL, '1', '2025-12-12 16:39:02', '2025-12-12 16:46:00'),
-(32, 'jukoqiji', NULL, 'Trainer', NULL, NULL, 'wumygica@mailinator.com', NULL, '1231231231', 'asjadmmc67@gmail', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '25-12-12-223140.jpg', NULL, '$2y$10$/GYiLXiQk66gknnIWWcUwull6CyKGPNwalz9tZVBBgdfrVX40.lF.', NULL, NULL, NULL, '1', '2025-12-12 17:31:39', '2025-12-12 17:31:40');
+(1, 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin@gmail.com', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$QowHn04SUEIx8Lo.kQahTehd1cmYS2NnLkwDlqRARD7bVtpnNg/mi', NULL, NULL, NULL, '1', '2025-12-12 23:41:49', '2025-12-12 23:41:58');
 
 --
 -- Indexes for dumped tables
@@ -4055,19 +3630,19 @@ ALTER TABLE `advertisements`
 -- AUTO_INCREMENT for table `agents`
 --
 ALTER TABLE `agents`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `availabilities`
 --
 ALTER TABLE `availabilities`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `banners`
@@ -4079,7 +3654,7 @@ ALTER TABLE `banners`
 -- AUTO_INCREMENT for table `blocked_slots`
 --
 ALTER TABLE `blocked_slots`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `blogs`
@@ -4133,7 +3708,7 @@ ALTER TABLE `contacts`
 -- AUTO_INCREMENT for table `contact_us`
 --
 ALTER TABLE `contact_us`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `coupons`
@@ -4229,13 +3804,13 @@ ALTER TABLE `page_settings`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `payment_details`
 --
 ALTER TABLE `payment_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `permissions`
@@ -4295,13 +3870,13 @@ ALTER TABLE `testimonials`
 -- AUTO_INCREMENT for table `time_slots`
 --
 ALTER TABLE `time_slots`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `trainers`
 --
 ALTER TABLE `trainers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `trainer_google_accounts`
@@ -4313,13 +3888,13 @@ ALTER TABLE `trainer_google_accounts`
 -- AUTO_INCREMENT for table `trainer_pricing`
 --
 ALTER TABLE `trainer_pricing`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
