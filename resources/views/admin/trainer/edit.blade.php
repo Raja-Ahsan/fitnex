@@ -147,7 +147,7 @@
                                 <span style="color: red">{{ $errors->first('image') }}</span>
                             </div>
                             <div class="col-sm-4" >
-                                <img style="width: 80px" id="banner_preview"  src="{{ $trainer->image ? asset('admin/assets/images/Trainers/'.$trainer->image) : asset('/admin/assets/images/default.jpg') }}"  alt="Image Not Found ">
+                                <img style="width: 80px" id="banner_preview"  src="{{ $trainer->image ? asset('admin/assets/images/UserImage/'.$trainer->image) : asset('/admin/assets/images/default.jpg') }}"  alt="Image Not Found ">
                             </div>
                         </div>
 						<div class="form-group">
@@ -231,10 +231,10 @@ document.addEventListener('DOMContentLoaded', function () {
 			});
 		}
 
-		image.onchange = evt => {
-			const [file] = image.files
+		document.getElementById('image').onchange = function(evt) {
+			const [file] = this.files;
 			if (file) {
-				banner_preview.src = URL.createObjectURL(file)
+				document.getElementById('banner_preview').src = URL.createObjectURL(file);
 			}
 		}
 
