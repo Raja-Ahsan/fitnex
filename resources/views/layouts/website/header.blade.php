@@ -23,7 +23,13 @@
                         <li><a href="{{ route('login') }}" class="px-[20px] {{ request()->routeIs('login') ? 'active' : '' }}">Login</a></li>
                          
                     @else
-                        <li><a href="{{ route('trainer.dashboard') }}" class="px-[20px] {{ request()->routeIs('trainer.dashboard') ? 'active' : '' }}">Dashboard</a></li>
+                        @if(Auth::user()->hasRole('trainer'))
+                            <li><a href="{{ route('trainer.dashboard') }}" class="px-[20px] {{ request()->routeIs('trainer.dashboard') ? 'active' : '' }}">Dashboard</a></li>
+                        @elseif(Auth::user()->hasRole('admin'))
+                            <li><a href="{{ route('dashboard') }}" class="px-[20px] {{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a></li>
+                        @else
+                            <li><a href="{{ route('registration') }}" class="px-[20px] {{ request()->routeIs('registration') ? 'active' : '' }}">Sign Up</a></li>
+                        @endif
                     @endif
                       
                 </ul>
