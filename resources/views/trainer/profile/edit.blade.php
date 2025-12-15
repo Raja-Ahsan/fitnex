@@ -29,7 +29,7 @@
                                         <label class="form-label">Profile Image</label>
                                         <div class="mt-2">
                                             @if ($user->image)
-                                                <img src="{{ asset('uploads/user/' . $user->image) }}" alt="Profile Image"
+                                                <img src="{{ asset('admin/assets/images/UserImage/' . $user->image) }}" alt="Profile Image"
                                                     class="img-thumbnail"
                                                     style="width: 150px; height: 150px; object-fit: cover;">
                                             @else

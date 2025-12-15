@@ -49,10 +49,15 @@
                         <div class="card h-100">
                             <div class="card-body">
                                 <div class="d-flex align-items-center mb-3">
-                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
-                                        style="width: 60px; height: 60px; font-size: 24px;">
-                                        {{ strtoupper(substr($trainer->name, 0, 1)) }}
-                                    </div>
+                                    @if($trainer->image && file_exists(public_path('admin/assets/images/UserImage/' . $trainer->image)))
+                                        <img src="{{ asset('admin/assets/images/UserImage/' . $trainer->image) }}"
+                                            alt="{{ $trainer->name }}" class="rounded-circle"
+                                            style="width: 60px; height: 60px; object-fit: cover;">
+                                    @else
+                                        <img src="{{ asset('admin/assets/images/default.jpg') }}"
+                                            alt="{{ $trainer->name }}" class="rounded-circle"
+                                            style="width: 60px; height: 60px; object-fit: cover;">
+                                    @endif
                                     <div class="ms-3">
                                         <h5 class="mb-0">{{ $trainer->name }}</h5>
                                         <small class="text-muted">{{ $trainer->designation }}</small>

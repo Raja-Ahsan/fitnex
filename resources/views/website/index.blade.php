@@ -272,7 +272,7 @@
                     <a href="{{ route('trainer.detail', $trainer->id) }}" class="no-underline">
                     <div class="relative overflow-hidden rounded-lg h-[450px] w-[300px] flex-shrink-0">
                         @if($trainer->image)
-                            <img src="{{ asset('/admin/assets/images/Trainers/'.$trainer->image ) }}" class="w-full h-full object-cover object-top" alt="{{ $trainer->name }}">
+                            <img src="{{ asset('/admin/assets/images/UserImage/'.$trainer->image ) }}" class="w-full h-full object-cover object-top" alt="{{ $trainer->name }}">
                         @else
                             <img src="{{ asset('/admin/assets/images/trainers/no-photo1.jpg') }}" class="w-full h-full object-cover object-top" alt="{{ $trainer->name }}">
                         @endif

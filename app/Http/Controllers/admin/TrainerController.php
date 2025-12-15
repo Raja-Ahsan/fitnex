@@ -96,6 +96,11 @@ class TrainerController extends Controller
         'password' => Hash::make($generatedPassword),
         'role' => 'Trainer',
         'status' => 1,
+        'twitter' => $request->twitter ?? null,
+        'instagram' => $request->instagram ?? null,
+        'facebook' => $request->facebook ?? null,
+        'linkedin' => $request->linkedin ?? null,
+        'youtube' => $request->youtube ?? null,
     ]);
     
     // Assign Trainer role

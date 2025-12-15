@@ -223,10 +223,10 @@ document.addEventListener('DOMContentLoaded', function () {
 			});
 		}
 
-		image.onchange = evt => {
-			const [file] = image.files
+		document.getElementById('image').onchange = function(evt) {
+			const [file] = this.files;
 			if (file) {
-				banner_preview.src = URL.createObjectURL(file)
+				document.getElementById('banner_preview').src = URL.createObjectURL(file);
 			}
 		}
 

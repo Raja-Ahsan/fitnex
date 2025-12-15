@@ -34,7 +34,7 @@
         @endif
     </td> 
     <td>{{ $trainer->instagram }}</td> 
-    <td>{{ $trainer->google_calendar_id }}</td>
+    <!-- <td>{{ $trainer->google_calendar_id }}</td> -->
     <td>
         @if($trainer->status)
         <span class="label label-success">Active</span>

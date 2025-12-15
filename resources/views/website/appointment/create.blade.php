@@ -376,17 +376,11 @@
                 <div>
                     <h2 class="text-3xl font-bold mb-4">Trainer Information</h2>
                     <div class="flex items-center space-x-4 mb-6">
-                        @php
-                            $trainerImage = $trainer->user->image ?? $trainer->image;
-                        @endphp
-                        @if($trainerImage && file_exists(public_path('uploads/user/' . $trainerImage)))
-                            <img src="{{ asset('uploads/user/' . $trainerImage) }}" alt="{{ $trainer->name }}"
-                                class="w-24 h-24 rounded-full object-cover">
-                        @elseif($trainerImage && file_exists(public_path('admin/assets/images/Trainers/' . $trainerImage)))
-                            <img src="{{ asset('/admin/assets/images/Trainers/' . $trainerImage) }}" alt="{{ $trainer->name }}"
+                        @if($trainer->user->image && file_exists(public_path('admin/assets/images/UserImage/' . $trainer->user->image)))
+                            <img src="{{ asset('admin/assets/images/UserImage/' . $trainer->user->image) }}" alt="{{ $trainer->name }}"
                                 class="w-24 h-24 rounded-full object-cover">
                         @else
-                            <img src="{{ asset('/admin/assets/images/Trainers/no-photo1.jpg') }}" alt="{{ $trainer->name }}"
+                            <img src="{{ asset('admin/assets/images/default.jpg') }}" alt="{{ $trainer->name }}"
                                 class="w-24 h-24 rounded-full object-cover">
                         @endif
                         <div>

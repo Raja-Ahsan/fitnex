@@ -34,8 +34,8 @@
                     @if ($image && file_exists(public_path('uploads/user/' . $image)))
                         <img src="{{ asset('uploads/user/' . $image) }}" class="rounded-lg trainer-details-img"
                             alt="{{ $trainer->name }}">
-                    @elseif($image && file_exists(public_path('admin/assets/images/Trainers/' . $image)))
-                        <img src="{{ asset('/admin/assets/images/Trainers/' . $image) }}" class="rounded-lg trainer-details-img"
+                    @elseif($image && file_exists(public_path('admin/assets/images/UserImage/' . $image)))
+                        <img src="{{ asset('/admin/assets/images/UserImage/' . $image) }}" class="rounded-lg trainer-details-img"
                             alt="{{ $trainer->name }}">
                     @else
                         <img src="{{ asset('/admin/assets/images/Trainers/no-photo1.jpg') }}"

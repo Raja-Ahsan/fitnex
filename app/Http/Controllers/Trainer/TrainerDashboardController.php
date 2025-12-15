@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Trainer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Trainer;
+use App\Models\User;
 use App\Models\TrainerBooking;
 use App\Models\Availability;
 use Illuminate\Support\Facades\Auth;
@@ -107,20 +108,20 @@ class TrainerDashboardController extends Controller
 
         if ($request->hasFile('image')) {
             // Delete old image if exists
-            if ($user->image && file_exists(public_path('uploads/user/' . $user->image))) {
-                unlink(public_path('uploads/user/' . $user->image));
+            if ($user->image && file_exists(public_path('admin/assets/images/UserImage' . $user->image))) {
+                unlink(public_path('admin/assets/images/UserImage' . $user->image));
             }
 
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('uploads/user'), $imageName);
+            $request->image->move(public_path('admin/assets/images/UserImage'), $imageName);
             $user->image = $imageName;
 
             // Sync with Trainer table
-            $trainer = Trainer::where('created_by', $user->id)->first();
+            $trainer = User::where('id', $user->id)->first();
             if ($trainer) {
                 // Delete old trainer image if exists
-                if ($trainer->image && file_exists(public_path('admin/assets/images/Trainers/' . $trainer->image))) {
-                    unlink(public_path('admin/assets/images/Trainers/' . $trainer->image));
+                if ($trainer->image && file_exists(public_path('admin/assets/images/UserImage/' . $trainer->image))) {
+                    unlink(public_path('admin/assets/images/UserImage/' . $trainer->image));
                 }
                 $trainer->image = $imageName;
                 $trainer->save();

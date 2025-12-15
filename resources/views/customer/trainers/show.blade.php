@@ -13,10 +13,15 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-2">
-                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
-                                    style="width: 100px; height: 100px; font-size: 48px;">
-                                    {{ strtoupper(substr($trainer->name, 0, 1)) }}
-                                </div>
+                                @if($trainer->image && file_exists(public_path('admin/assets/images/UserImage/' . $trainer->image)))
+                                    <img src="{{ asset('admin/assets/images/UserImage/' . $trainer->image) }}"
+                                        alt="{{ $trainer->name }}" class="rounded-circle"
+                                        style="width: 100px; height: 100px; object-fit: cover;">
+                                @else
+                                    <img src="{{ asset('admin/assets/images/default.jpg') }}"
+                                        alt="{{ $trainer->name }}" class="rounded-circle"
+                                        style="width: 100px; height: 100px; object-fit: cover;">
+                                @endif
                             </div>
                             <div class="col-md-10">
                                 <h2>{{ $trainer->name }}</h2>
