@@ -62,8 +62,8 @@
                                     @if ($image && file_exists(public_path('uploads/user/' . $image)))
                                         <img src="{{ asset('uploads/user/' . $image) }}"
                                             class="w-full h-full object-cover object-top" alt="{{ $trainer->name }}">
-                                    @elseif($image && file_exists(public_path('admin/assets/images/Trainers/' . $image)))
-                                        <img src="{{ asset('/admin/assets/images/Trainers/' . $image) }}"
+                                    @elseif($image && file_exists(public_path('admin/assets/images/UserImage/' . $image)))
+                                        <img src="{{ asset('/admin/assets/images/UserImage/' . $image) }}"
                                             class="w-full h-full object-cover object-top" alt="{{ $trainer->name }}">
                                     @else
                                         <img src="{{ asset('/admin/assets/images/Trainers/no-photo1.jpg') }}"
