@@ -22,7 +22,7 @@
             </h1>
         </div>
     </section>
-
+  
     <section class="trainer-details-sec py-[50px] md:py-[100px] bg-black text-white">
         <div class="container">
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-x-12 items-center">
@@ -102,6 +102,8 @@
 
                         <a href="{{ route('appointments.create', ['trainer_id' => $trainer->id]) }}"
                             class="btn primary-btn">Book a Session</a>
+                        {{-- <a href="{{ route('appointments.create', ['trainer_id' => $trainer->id]) }}"
+                            class="btn primary-btn">Book a Session</a> --}}
                     </div>
                 </div>
             </div>
