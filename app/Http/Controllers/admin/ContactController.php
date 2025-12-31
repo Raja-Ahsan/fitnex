@@ -60,11 +60,12 @@ class ContactController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created contact
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // store contact
     public function store(Request $request)
     {
         $validator = $request->validate([

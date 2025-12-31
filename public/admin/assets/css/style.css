@@ -34,7 +34,7 @@ input#file_name {
     cursor: not-allowed;
 }
 
-
+/* error */
 .error {
     color: red !important;
     border: 0;

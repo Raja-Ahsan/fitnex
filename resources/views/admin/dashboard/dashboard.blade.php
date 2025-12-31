@@ -26,6 +26,7 @@
 @endpush
 
 @section('content')
+<!-- dashboard -->
 <section class="content-header">
     <h1>Dashboard <small>Overview & Statistics</small></h1>
     <ol class="breadcrumb">

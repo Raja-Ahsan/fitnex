@@ -80,6 +80,7 @@
     </style>
 </head>
 <body>
+    <!-- trainer welcome -->
     <div class="header">
         <h1>Welcome to FITNEX!</h1>
         <p>Your Trainer Account Has Been Created</p>

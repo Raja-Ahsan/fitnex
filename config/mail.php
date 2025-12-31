@@ -97,7 +97,7 @@ return [
     | used globally for all e-mails that are sent by your application.
     |
     */
-
+    // from address
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'joinfitnex@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'FITNEX'),

@@ -47,7 +47,7 @@ use App\Http\Controllers\admin\BlogController;
 |
 */
 
-
+// route clear
 
 Route::get('/route-clear', function () {
     Artisan::call('route:clear');

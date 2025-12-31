@@ -74,7 +74,7 @@ class PageController extends Controller
         $page_title = 'Edit '.$model->title;
         return View('admin.page.edit', compact("model", "page_title"));
     }
-
+    // update page
     public function update(Request $request, $slug)
     {
         $validator = $request->validate([

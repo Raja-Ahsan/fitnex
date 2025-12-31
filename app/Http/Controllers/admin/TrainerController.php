@@ -226,6 +226,7 @@ class TrainerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    // destroy trainer
     public function destroy($id)
     {
         $trainers = Trainer::where('id', $id)->first();
@@ -255,7 +256,7 @@ class TrainerController extends Controller
         }
 
         // If it's already a calendar ID format (contains @ or is just an ID), return as is
-        // But only if it DOESN'T look like a generic URL (unless it's a known Google URL)
+        // But only if it DOESN'T look like a generic URL
         $isUrl = filter_var($input, FILTER_VALIDATE_URL);
         if (strpos($input, '@') !== false || !$isUrl) {
             return $input;

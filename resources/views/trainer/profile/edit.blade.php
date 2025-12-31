@@ -15,6 +15,7 @@
         max-width: 1100px;
         margin: 0 auto;
     }
+    /* glass stage */
     .glass-stage {
         position: relative;
         padding: 26px;

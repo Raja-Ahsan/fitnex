@@ -12,6 +12,7 @@
                     <img src="{{ asset('/admin/assets/images/page') }}/{{ $home_page_data['header_logo'] ?? '' }}" alt="logo">
                 </a>
             </div>
+            <!-- header -->
             <nav class="hidden lg:block">
                 <ul class="flex primary-navs font-secondary text-white items-center">
                     <li><a href="{{ route('index') }}" class="px-[20px] {{ request()->routeIs('index') ? 'active' : '' }}">Home</a></li>
