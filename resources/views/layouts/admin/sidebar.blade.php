@@ -25,10 +25,10 @@
                 </li>
             @endcan --}} -->
 
-            <li class="treeview {{ request()->is('page') || request()->is('page/*') || request()->is('page_setting/*') || request()->is('package') || request()->is('package/create') || request()->is('package/*/edit') || request()->is('event') || request()->is('event/create') || request()->is('event/*/edit') || request()->is('event/*') ? 'active' : '' }}"
+            <li class="treeview {{ request()->is('page') || request()->is('page/*') || request()->is('page_setting/*') || request()->is('package') || request()->is('package/create') || request()->is('package/*/edit') || request()->is('event') || request()->is('event/create') || request()->is('event/*/edit') || request()->is('event/*') || request()->is('homeslider') || request()->is('homeslider/create') || request()->is('homeslider/*/edit')|| request()->is('banner') || request()->is('banner/create') || request()->is('banner/*/edit') || request()->is('services') || request()->is('services/create') || request()->is('services/*/edit') || request()->is('testimonial') || request()->is('testimonial/create') || request()->is('testimonial/*/edit') ? 'active' : '' }}"
                 style="height: auto;">
                 <a href="#"
-                    class="{{ request()->is('page') || request()->is('page/*') || request()->is('page_setting/*') || request()->is('package') || request()->is('package/create') || request()->is('package/*/edit') || request()->is('event') || request()->is('event/create') || request()->is('event/*/edit') || request()->is('event/*') ? 'active' : '' }}">
+                    class="{{ request()->is('page') || request()->is('page/*') || request()->is('page_setting/*') || request()->is('package') || request()->is('package/create') || request()->is('package/*/edit') || request()->is('event') || request()->is('event/create') || request()->is('event/*/edit') || request()->is('event/*') || request()->is('homeslider') || request()->is('homeslider/create') || request()->is('homeslider/*/edit') || request()->is('banner') || request()->is('banner/create') || request()->is('banner/*/edit') || request()->is('services') || request()->is('services/create') || request()->is('services/*/edit') || request()->is('testimonial') || request()->is('testimonial/create') || request()->is('testimonial/*/edit') ? 'active' : '' }}">
                     <i class="fa fa-files-o"></i>
                     <span>Website Dashboard</span>
                     <span class="pull-right-container">
@@ -36,7 +36,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu"
-                    style="display: {{ request()->is('page') || request()->is('page/*') || request()->is('page_setting/*') || request()->is('package') || request()->is('package/create') || request()->is('package/*/edit') || request()->is('event') || request()->is('event/create') || request()->is('event/*/edit') || request()->is('event/*') ? 'block' : 'none' }};">
+                    style="display: {{ request()->is('page') || request()->is('page/*') || request()->is('page_setting/*') || request()->is('package') || request()->is('package/create') || request()->is('package/*/edit') || request()->is('event') || request()->is('event/create') || request()->is('event/*/edit') || request()->is('event/*') || request()->is('homeslider') || request()->is('homeslider/create') || request()->is('homeslider/*/edit') || request()->is('banner') || request()->is('banner/create') || request()->is('banner/*/edit') || request()->is('services') || request()->is('services/create') || request()->is('services/*/edit') || request()->is('testimonial') || request()->is('testimonial/create') || request()->is('testimonial/*/edit') ? 'block' : 'none' }};">
                     @can('page-list')
                     <li class="treeview mt-2">
                         <a href="{{ route('page.index') }}"
