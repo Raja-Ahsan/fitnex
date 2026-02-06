@@ -3,7 +3,7 @@
          data-aos-easing="linear"
          data-aos-duration="1500">
         <div class="topbar text-end mb-[5px]">
-            <a href="#" class="text-white font-secondary "><span class="pe-[10px] text-[#0079D4]"><i class="fa-solid fa-envelope"></i></span>youremailhere@.com</a>
+            <a href="mailto:{{ $home_page_data['footer_email'] }}" class="text-white font-secondary "><span class="pe-[10px] text-[#0079D4]"><i class="fa-solid fa-envelope"></i></span>{{ $home_page_data['footer_email'] }}</a>
         </div>
         <div class="border-b border-bottom mb-[10px]"></div>
         <div class="flex items-center justify-between">
