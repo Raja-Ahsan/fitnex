@@ -115,6 +115,39 @@
             padding-top: 20px;
         }
     }
+
+    @media screen and (max-width: 768px) {
+        .section-title {
+            font-size: 2.5rem;
+        }
+    }
+    @media screen and (max-width: 480px) {
+        .section-title {
+            font-size: 2rem;
+        }
+    }
+    @media screen and (max-width: 425px) {
+        .section-title {
+            font-size: 2rem;
+        }
+    }
+
+    @media screen and (max-width: 375px) {
+        .section-title {
+            font-size: 2rem;
+        }
+        .text-content .section-title {
+            font-size: 2.5rem;
+        }
+    }
+    @media screen and (max-width: 320px) {
+        .section-title {
+            font-size: 1.5rem;
+        }
+        .text-content .section-title {
+            font-size: 2.5rem;
+        }
+    }
 </style>
 
 <!-- Banner Section -->

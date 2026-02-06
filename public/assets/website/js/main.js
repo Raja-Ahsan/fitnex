@@ -8,14 +8,17 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-let navs = document.querySelector('.primary-navs')
-let menuIcon = document.querySelectorAll('.menu-toggle')
-console.log(navs, menuIcon);
-menuIcon.forEach(function (e) {
-  e.addEventListener('click', function () {
-    navs.classList.toggle('active');
+// Mobile menu: toggle #mobile-menu panel (hamburger + close icon use .menu-toggle)
+let mobileMenu = document.getElementById('mobile-menu');
+let menuIcons = document.querySelectorAll('.menu-toggle');
+if (mobileMenu && menuIcons.length) {
+  menuIcons.forEach(function (icon) {
+    icon.addEventListener('click', function () {
+      mobileMenu.classList.toggle('menu-open');
+      document.body.classList.toggle('overflow-hidden', mobileMenu.classList.contains('menu-open'));
+    });
   });
-});
+}
 
 $('.fitness-journey-slider').slick({
   dots: true,

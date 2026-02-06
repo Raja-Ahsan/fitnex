@@ -108,6 +108,8 @@ body {
     transform: translateY(0);
 }
 
+ 
+
 .our-services-item::before {
     @apply absolute top-0 left-0 w-full h-full bg-[#00000040] z-[2];
     content: '';
@@ -535,7 +537,93 @@ body {
         padding: 10px 15px !important;
         color: white !important;
     }
+
+    /* Keep mobile menu panel content visible (don't apply slide-out to #mobile-menu's list) */
+    #mobile-menu .primary-navs {
+        transform: translateX(0) !important;
+        position: static;
+        width: 100%;
+        height: auto;
+        padding: 0;
+        box-shadow: none;
+    }
 }
+
+@media screen and (max-width: 768px) {
+    .section-title {
+        font-size: 2.5rem;
+    }
+    .our-services-item .our-services-content {
+        transform: translateY(0);
+    }
+}
+@media screen and (max-width: 425px) {
+    .section-title {
+        font-size: 2rem;
+    }
+    .sec-hd {
+        font-size: 40px;
+    }
+    .our-services-item .our-services-content {
+        transform: translateY(0);
+    }
+    .para {
+        font-size: 20px;
+    }   
+    .our-services-item h4 {
+        font-size: 24px;
+    }
+    .text-rotate{
+        margin-top: 0px !important;
+    }
+}
+@media screen and (max-width: 375px) {
+    .section-title {
+        font-size: 2rem;
+    }
+    .our-services-item .our-services-content {
+        transform: translateY(0);
+    }
+    .para {
+        font-size: 20px;
+    }
+    .our-services-item h4 {
+        font-size: 22px;
+    }
+    .text-rotate{
+        margin-top: 0px !important;
+    }
+}
+@media screen and (max-width: 320px) {
+    .section-title {
+        font-size: 1.5rem;
+    }
+    .sec-hd {
+        font-size: 32px;
+    }
+    .our-services-item .our-services-content {
+        transform: translateY(0);
+    }
+    .para {
+        font-size: 17px;
+    }
+
+    .grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .our-services-item h4 {
+        font-size: 20px;
+    }
+
+    .text-rotate{
+        margin-top: 0px !important;
+    }
+    
+        
+        
+}
+
 
 .slider-01,
 .slider-02 { 
