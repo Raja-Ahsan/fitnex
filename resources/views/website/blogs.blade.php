@@ -256,6 +256,31 @@
             padding: 0 20px 25px;
         }
     }
+     
+    @media screen and (max-width: 425px) {
+        .blog-post-title {
+            font-size: 22px;
+        }
+    }
+    @media screen and (max-width: 375px) {
+        .blog-post-title {
+            font-size: 20px;
+        }
+    }
+    @media screen and (max-width: 320px) {
+        .blog-post-title {
+            font-size: 18px;
+        }
+        .blog-post-meta {
+            padding: 10px 20px;
+        }
+        .blog-post-image {
+             height: auto; 
+        }
+        .custom-tab{
+            font-size: 8px !important;
+        }
+    }
 </style>
 
 
