@@ -130,6 +130,11 @@
         .section-title {
             font-size: 2rem;
         }
+
+        .primary-theme-text, .italic { 
+            font-size: 40px !important;
+        }
+
     }
 
     @media screen and (max-width: 375px) {
