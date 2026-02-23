@@ -576,6 +576,34 @@ body {
     .text-rotate{
         margin-top: 0px !important;
     }
+
+    .text-content p{
+        font-size: 1.0rem !important;
+    }
+
+    .primary-theme-text, .italic { 
+        font-size: 40px !important;
+    }
+
+    .listing-banner {
+        padding-block: 60px !important;
+    }
+    .grid-cols-2 {
+        grid-template-columns: 1fr !important;
+    }
+    .slider-01 {
+        transform: rotate(10deg) !important;
+    }
+    .slider-02 {
+        transform: rotate(-10deg) !important;
+    }
+    .slider-01,
+    .slider-02 {
+        position: relative;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+    }
 }
 @media screen and (max-width: 375px) {
     .section-title {
@@ -593,6 +621,29 @@ body {
     .text-rotate{
         margin-top: 0px !important;
     }
+    .primary-theme-text, .italic { 
+        font-size: 40px !important;
+    }
+
+    .listing-banner {
+        padding-block: 60px !important;
+    }
+    .grid-cols-2 {
+        grid-template-columns: 1fr !important;
+    }
+    .slider-01 {
+        transform: rotate(10deg) !important;
+    }
+    .slider-02 {
+        transform: rotate(-10deg) !important;
+    }
+    .slider-01,
+    .slider-02 {
+        position: relative;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+    }
 }
 @media screen and (max-width: 320px) {
     .section-title {
@@ -609,7 +660,7 @@ body {
     }
 
     .grid-cols-2 {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
     }
 
     .our-services-item h4 {
@@ -620,7 +671,25 @@ body {
         margin-top: 0px !important;
     }
     
-        
+    .primary-theme-text, .italic { 
+        font-size: 40px !important;
+    } 
+    .listing-banner {
+        padding-block: 60px !important;
+    }
+    .slider-01 {
+        transform: rotate(10deg) !important;
+    }
+    .slider-02 {
+        transform: rotate(-10deg) !important;
+    }
+    .slider-01,
+    .slider-02 {
+        position: relative;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+    }
         
 }
 

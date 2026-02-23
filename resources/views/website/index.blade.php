@@ -34,7 +34,7 @@
                         <div class="flex justify-center" data-aos="fade-up"
                             data-aos-easing="linear"
                             data-aos-duration="1500">
-                            <a href="" class="btn primary-btn border border-transparent">Join as a Coach <span class="ps-[10px]"><i class="fa-solid fa-arrow-right"></i></span></a>
+                            <a href="{{ route('registration') }}" class="btn primary-btn border border-transparent">Join as a Coach <span class="ps-[10px]"><i class="fa-solid fa-arrow-right"></i></span></a>
                         </div>
                     </div>
                 </div>
