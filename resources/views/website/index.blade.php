@@ -31,9 +31,10 @@
                                 {!! $homeslider->description !!}
                             </div>
                         @endif 
-                        <div class="flex justify-center" data-aos="fade-up"
+                        <div class="flex justify-center gap-4 flex-wrap" data-aos="fade-up"
                             data-aos-easing="linear"
                             data-aos-duration="1500">
+                            <a href="{{ route('trainers') }}" class="btn primary-btn border border-transparent">Find a Wellness Professional <span class="ps-[10px]"><i class="fa-solid fa-arrow-right"></i></span></a>
                             <a href="{{ route('registration') }}" class="btn primary-btn border border-transparent">Join as a Coach <span class="ps-[10px]"><i class="fa-solid fa-arrow-right"></i></span></a>
                         </div>
                     </div>
@@ -131,7 +132,8 @@
     <div class="grid grid-cols-1 justify-items-center md:grid-cols-3 lg:grid-cols-5 gap-y-[20px]">
         @foreach ($categories as $category)
         <div>
-            <div class="our-services-item relative" style="height: 100%"
+            <a href="{{ route('trainers', ['category' => $category->slug]) }}" class="block no-underline">
+            <div class="our-services-item relative cursor-pointer" style="height: 100%"
                 data-aos="fade-up"
                 data-aos-duration="600"
                 data-aos-delay="{{ $loop->index * 100 }}"
@@ -143,6 +145,7 @@
                     </h4>
                 </div>
             </div>
+            </a>
         </div>
         @endforeach 
     </div>
@@ -160,7 +163,7 @@
             data-aos="fade-right"
             data-aos-easing="linear"
             data-aos-duration="1500">
-            10 years of experience in the fitness industry and trusted by over 100.000 customers.
+            10 years of experience in the fitness industry.
         </p>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-3 justify-between items-center max-w-[1000px] mx-auto mb-[40px]"
@@ -168,8 +171,8 @@
         data-aos-easing="linear"
         data-aos-duration="1500">
         <div class="text-center">
-            <h4 class="text-[48px] font-bold primary-theme count" data-number="100000">
-                +100k
+            <h4 class="text-[48px] font-bold primary-theme count" data-number="0">
+                0
             </h4>
             <p class="text-white font-secondary text-[20px]">
                 Clients
@@ -277,8 +280,12 @@
                             <img src="{{ asset('/admin/assets/images/trainers/no-photo1.jpg') }}" class="w-full h-full object-cover object-top" alt="{{ $trainer->name }}">
                         @endif
                         <div class="absolute top-5 left-5 flex flex-col space-y-2 social-media-links">
-                            <a href="{{ $trainer->twitter }}" class="bg-white text-black w-8 h-8 rounded-md flex justify-center items-center no-underline transition-all duration-300 expoert-traning-card hover:text-white hover:scale-110"><i class="fab fa-x-twitter"></i></a>
-                            <a href="{{ $trainer->instagram }}" class="bg-white text-black w-8 h-8 rounded-md flex justify-center items-center no-underline transition-all duration-300 expoert-traning-card hover:text-white hover:scale-110"><i class="fab fa-instagram"></i></a>
+                            @if(!empty($trainer->twitter) && (str_starts_with($trainer->twitter, 'http') || str_starts_with($trainer->twitter, 'https')))
+                                <a href="{{ $trainer->twitter }}" target="_blank" rel="noopener noreferrer" class="bg-white text-black w-8 h-8 rounded-md flex justify-center items-center no-underline transition-all duration-300 expoert-traning-card hover:text-white hover:scale-110"><i class="fab fa-x-twitter"></i></a>
+                            @endif
+                            @if(!empty($trainer->instagram) && (str_starts_with($trainer->instagram, 'http') || str_starts_with($trainer->instagram, 'https')))
+                                <a href="{{ $trainer->instagram }}" target="_blank" rel="noopener noreferrer" class="bg-white text-black w-8 h-8 rounded-md flex justify-center items-center no-underline transition-all duration-300 expoert-traning-card hover:text-white hover:scale-110"><i class="fab fa-instagram"></i></a>
+                            @endif
                         </div>
                     </div>
                     </a>

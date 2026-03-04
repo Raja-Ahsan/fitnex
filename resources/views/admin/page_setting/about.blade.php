@@ -56,6 +56,8 @@
 									alt="Image Not Found">
 							</div>
 						</div>
+						
+						<h3 class="sec_title text-center">OUR APPROACH?</h3>
 
 						<div class="form-group">
 							<label for="" class="col-sm-2 control-label">Description</label>
@@ -84,7 +86,8 @@
 							</div>
 						</div>
 
-						<h3 class="sec_title text-center">OUR MISSION?</h3>
+						<h3 class="sec_title text-center">OUR MISSION ?</h3>
+
 
 						
 						

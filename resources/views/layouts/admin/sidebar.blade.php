@@ -113,6 +113,12 @@
         </li>
         @endcan
 
+        <li class="treeview mt-2 {{ request()->is('admin/trainer-reviews') ? 'active' : '' }}">
+            <a href="{{ route('admin.trainer_review.index') }}">
+                <i class="fa fa-star-half-o"></i> <span>Trainer Reviews</span>
+            </a>
+        </li>
+
         {{-- Trainer Management Section --}}
         <li class="treeview {{ (request()->is('admin/bookings') || request()->is('admin/bookings/*') || request()->is('admin/appointments/*') || request()->is('admin/slots') || request()->is('admin/slots/*') || request()->is('admin/availability') || request()->is('admin/availability/*')) ? 'active' : '' }}"
             style="height: auto;">
