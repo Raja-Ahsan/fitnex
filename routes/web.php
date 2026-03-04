@@ -35,6 +35,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\admin\BlogCategoryController;
 use App\Http\Controllers\admin\BlogController;
+use App\Http\Controllers\admin\TrainerReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -119,6 +120,7 @@ Route::get('reviews', [WebController::class, 'Reviews'])->name('reviews');
 
 Route::get('trainers', [WebController::class, 'Trainers'])->name('trainers');
 Route::get('trainer-details/{id}', [WebController::class, 'TrainerDetail'])->name('trainer.detail');
+Route::post('trainer-details/{id}/review', [WebController::class, 'storeTrainerReview'])->name('trainer.review.store');
 
 //stripe payment
 Route::get('stripe/create', [StripeController::class, 'create'])->name('stripe.create');
@@ -377,6 +379,12 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Trainers
     Route::resource('trainer', TrainerController::class);
+
+    // Trainer Reviews (admin approval: pending reviews appear here, approve to show on site)
+    Route::get('admin/trainer-reviews', [TrainerReviewController::class, 'index'])->name('admin.trainer_review.index');
+    Route::get('admin/trainer-reviews/{id}', [TrainerReviewController::class, 'show'])->name('admin.trainer_review.show');
+    Route::post('admin/trainer-reviews/{id}/approve', [TrainerReviewController::class, 'approve'])->name('admin.trainer_review.approve');
+    Route::post('admin/trainer-reviews/{id}/reject', [TrainerReviewController::class, 'reject'])->name('admin.trainer_review.reject');
 
     // Customer Routes (for authenticated users)
     Route::prefix('customer')->name('customer.')->group(function () {

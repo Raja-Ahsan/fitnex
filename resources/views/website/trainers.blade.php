@@ -42,9 +42,16 @@
             <div class="text-center mb-12">
                 <h3 class="sec-hd" data-aos="flip-right" data-aos-easing="linear" data-aos-duration="1500">Expert Trainers
                 </h3>
-                <p class="para para-white max-w-[490px] mx-auto" data-aos="fade-right" data-aos-easing="linear"
-                    data-aos-duration="1500">Achieve your fitness goals with our experienced
-                    and passionate trainers at strong. </p>
+                @if(isset($selectedCategory) && $selectedCategory)
+                    <p class="para para-white max-w-[490px] mx-auto mb-2" data-aos="fade-right" data-aos-easing="linear" data-aos-duration="1500">
+                        Showing: <span class="primary-theme font-bold">{{ $selectedCategory->title }}</span>
+                    </p>
+                    <a href="{{ route('trainers') }}" class="text-sm text-gray-400 hover:text-white">View all professionals</a>
+                @else
+                    <p class="para para-white max-w-[490px] mx-auto" data-aos="fade-right" data-aos-easing="linear"
+                        data-aos-duration="1500">Achieve your fitness goals with our experienced
+                        and passionate trainers at Fitnex.</p>
+                @endif
             </div>
 
             <div class="">

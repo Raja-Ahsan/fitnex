@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\Team;
 use App\Models\Blog;
 use App\Models\Trainer;
+use App\Models\TrainerReview;
 use App\Models\BlogCategory;
 class WebController extends Controller
 {
@@ -221,23 +222,64 @@ class WebController extends Controller
         return view('website.about-us', compact('page_title', 'abouts', 'banner', 'testimonials', 'teams', 'categories', 'page_data'));
     }
 
-    public function Trainers()
+    public function Trainers(Request $request)
     {
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
         $categories = Category::where('status', 1)->get();
-        $trainers = Trainer::with('user')->where('status', 1)->get();
+        $query = Trainer::with('user')->where('status', 1);
+
+        $selectedCategory = null;
+        // Filter by service category when user clicks Personal Training, Nutrition coach, etc.
+        if ($request->filled('category')) {
+            $selectedCategory = Category::where('slug', $request->category)->where('status', 1)->first();
+            if ($selectedCategory) {
+                // Match trainer_type to category title (e.g. "Personal Training", "Nutrition coach")
+                $query->where('trainer_type', $selectedCategory->title);
+            }
+        }
+
+        $trainers = $query->get();
         $page_title = 'Trainer Listing | FITNEX';
-        return view('website.trainers', compact('page_title', 'banner', 'trainers', 'categories'));
+        return view('website.trainers', compact('page_title', 'banner', 'trainers', 'categories', 'selectedCategory'));
     }
 
     public function TrainerDetail($id)
     {
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
-        $trainer = Trainer::with(['city', 'state', 'user'])->where('id', $id)->where('status', 1)->firstOrFail();
+        $trainer = Trainer::with(['city', 'state', 'user', 'reviews'])->where('id', $id)->where('status', 1)->firstOrFail();
         $page_title = $trainer->name . ' Details';
         $cities = City::where('status', 1)->get();
         $states = State::where('status', 1)->get();
         return view('website.trainer-detail', compact('page_title', 'trainer', 'cities', 'states', 'banner'));
+    }
+
+    /**
+     * Store a review for a trainer (no stars shown until reviews exist - transparent start).
+     */
+    public function storeTrainerReview(Request $request, $id)
+    {
+        $request->validate([
+            'reviewer_name' => 'required|string|max:255',
+            'reviewer_email' => 'required|email',
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'nullable|string|max:2000',
+        ]);
+
+        $trainer = Trainer::where('id', $id)->where('status', 1)->firstOrFail();
+
+        TrainerReview::create([
+            'trainer_id' => $trainer->id,
+            'reviewer_name' => $request->reviewer_name,
+            'reviewer_email' => $request->reviewer_email,
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+            'status' => 0, // pending approval
+        ]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => true, 'message' => 'Thank you! Your review has been submitted and will appear on the trainer\'s profile after admin approval.']);
+        }
+        return redirect()->route('trainer.detail', $id)->with('message', 'Thank you! Your review has been submitted and will appear on the trainer\'s profile after admin approval.');
     }
 
 

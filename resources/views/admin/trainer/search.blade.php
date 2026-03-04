@@ -3,15 +3,15 @@
     <td>{{ $trainers->firstItem()+$key }}.</td>
     <td>
         @if($trainer->image)
-        <img src="{{ asset('/admin/assets/images/Trainers/'.$trainer->image) }}" alt="" style="width:60px;">
+        <img src="{{ asset('/admin/assets/images/UserImage/'.$trainer->image) }}" alt="" style="width:60px;">
         @else
-        <img src="{{ asset('/admin/assets/images/Trainers/no-photo1.jpg') }}" style="width:60px;">
+        <img src="{{ asset('/admin/assets/images/default.jpg') }}" style="width:60px;">
         @endif
     </td>
     <td>{{ $trainer->trainer_type }}</td>
     <td>{{ $trainer->name }}</td>
     <td>{{ $trainer->designation }}</td>
- {{--    <td>{{ $trainer->email }}</td>
+    {{-- <td>{{ $trainer->email }}</td>
     <td>{{ $trainer->phone }}</td> --}}
     <td style="max-width: 200px;">{{ $trainer->description }}</td>
     <td>${{ $trainer->price }}</td> 
@@ -28,9 +28,9 @@
     </td>
     <td>
         @if($trainer->specialization)
-        @foreach(json_decode($trainer->specialization, true) as $specialization)
-            <li class="list-inline-item">{{ $specialization }}</li>
-        @endforeach
+            @foreach(json_decode($trainer->specialization, true) as $specialization)
+                <li class="list-inline-item">{{ $specialization }}</li>
+            @endforeach
         @endif
     </td> 
     <td>{{ $trainer->instagram }}</td> 

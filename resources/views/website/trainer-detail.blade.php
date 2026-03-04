@@ -17,7 +17,10 @@
                     $parts = explode(' ', $title, 2);
                 @endphp
                 <span class="italic uppercase font-black">
-                    <span class="primary-theme-text">{{ $parts[0] }}</span>@if(isset($parts[1])) {{ $parts[1] }}@endif
+                    <span class="primary-theme-text">{{ $parts[0] }}</span>
+                    @if(isset($parts[1]))
+                        {{ $parts[1] }}
+                    @endif
                 </span>
             </h1>
         </div>
@@ -25,7 +28,7 @@
   
     <section class="trainer-details-sec py-[50px] md:py-[100px] bg-black text-white">
         <div class="container">
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-x-12 items-center">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-x-12">
                 <div class="lg:col-span-2 trainer-image-box" data-aos="fade-right" data-aos-easing="linear"
                     data-aos-duration="1500">
                     @php
@@ -54,14 +57,37 @@
                     @endif
                     <div class="flex items-center mb-4">
                         <div class="flex text-yellow-400">
-                            @for ($i = 0; $i < $trainer->rating; $i++)
-                                <i class="fa-solid fa-star"></i>
-                            @endfor
-                            @for ($i = 0; $i < 5 - $trainer->rating; $i++)
-                                <i class="fa-regular fa-star"></i>
-                            @endfor
+                            @php
+                                $reviewCount = $trainer->reviews->count();
+                                $avgRating = $reviewCount ? round($trainer->reviews->avg('rating'), 1) : 0;
+                                $fullStars = (int) floor($avgRating);
+                                $decimalPart = $avgRating - $fullStars;
+                                $hasHalfStar = $reviewCount && $decimalPart >= 0.25 && $decimalPart < 0.75;
+                                $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0);
+                            @endphp
+                            @if($reviewCount)
+                                @for ($i = 0; $i < $fullStars; $i++)
+                                    <i class="fa-solid fa-star"></i>
+                                @endfor
+                                @if($hasHalfStar)
+                                    <i class="fa-solid fa-star-half-stroke"></i>
+                                @endif
+                                @for ($i = 0; $i < $emptyStars; $i++)
+                                    <i class="fa-regular fa-star"></i>
+                                @endfor
+                            @else
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <i class="fa-regular fa-star"></i>
+                                @endfor
+                            @endif
                         </div>
-                        <span class="ml-2 text-white">({{ number_format($trainer->rating, 1) }}/5.0)</span>
+                        <span class="ml-2 text-white">
+                            @if($reviewCount)
+                                ({{ number_format($avgRating, 1) }}/5.0) · {{ $reviewCount }} {{ Str::plural('review', $reviewCount) }}
+                            @else
+                                No reviews yet
+                            @endif
+                        </span>
                     </div>
 
                     <p class="para para-white mb-6">
@@ -102,9 +128,73 @@
 
                         <a href="{{ route('appointments.create', ['trainer_id' => $trainer->id]) }}"
                             class="btn primary-btn">Book a Session</a>
-                        {{-- <a href="{{ route('appointments.create', ['trainer_id' => $trainer->id]) }}"
-                            class="btn primary-btn">Book a Session</a> --}}
                     </div>
+
+                    @if(session('message'))
+                        <p class="text-green-400 mt-4">{{ session('message') }}</p>
+                    @endif
+
+                    <h3 class="text-2xl font-bold font-secondary mb-3 mt-10">Leave a review</h3>
+                    <p class="para para-white mb-4">Share your experience after working with {{ $trainer->name }}. Your review will be visible on this profile after admin approval.</p>
+                    <form action="{{ route('trainer.review.store', $trainer->id) }}" method="post" class="space-y-4">
+                        @csrf
+                        <div>
+                            <label for="reviewer_name" class="block text-white font-secondary mb-1">Your name</label>
+                            <input type="text" name="reviewer_name" id="reviewer_name" class="input-field w-full max-w-md" placeholder="Your name" required value="{{ old('reviewer_name') }}">
+                            @error('reviewer_name')
+                                <span class="text-red-400 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="reviewer_email" class="block text-white font-secondary mb-1">Your email</label>
+                            <input type="email" name="reviewer_email" id="reviewer_email" class="input-field w-full max-w-md" placeholder="your@email.com" required value="{{ old('reviewer_email') }}">
+                            @error('reviewer_email')
+                                <span class="text-red-400 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="rating" class="block text-white font-secondary mb-1">Rating (1–5 stars)</label>
+                            <select name="rating" id="rating" class="input-field w-full max-w-md" required>
+                                <option value="">Select rating</option>
+                                @for($i = 1; $i <= 5; $i++)
+                                    <option value="{{ $i }}" @if((int) old('rating') === $i) selected @endif>{{ $i }} star{{ $i > 1 ? 's' : '' }}</option>
+                                @endfor
+                            </select>
+                            @error('rating')
+                                <span class="text-red-400 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="comment" class="block text-white font-secondary mb-1">Your review (optional)</label>
+                            <textarea name="comment" id="comment" class="input-field w-full max-w-md" rows="4" placeholder="Tell others about your experience...">{{ old('comment') }}</textarea>
+                            @error('comment')
+                                <span class="text-red-400 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn primary-btn">Submit review</button>
+                    </form>
+
+                    @if($trainer->reviews->count() > 0)
+                        <h3 class="text-2xl font-bold font-secondary mb-3 mt-10">Reviews</h3>
+                        <div class="space-y-4">
+                            @foreach($trainer->reviews as $review)
+                                <div class="border border-gray-700 rounded-lg p-4">
+                                    <div class="flex text-yellow-400 mb-2">
+                                                @for($i = 0; $i < $review->rating; $i++)
+                                            <i class="fa-solid fa-star"></i>
+                                        @endfor
+                                        @for($i = 0; $i < 5 - $review->rating; $i++)
+                                            <i class="fa-regular fa-star"></i>
+                                        @endfor
+                                    </div>
+                                    @if($review->comment)
+                                        <p class="para para-white mb-2">{{ $review->comment }}</p>
+                                    @endif
+                                    <span class="text-white font-secondary font-bold">{{ $review->reviewer_name }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

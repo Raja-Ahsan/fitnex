@@ -93,6 +93,14 @@ class Trainer extends Model
     }
 
     /**
+     * Get approved reviews for this trainer.
+     */
+    public function reviews()
+    {
+        return $this->hasMany(TrainerReview::class)->where('status', 1)->orderBy('created_at', 'desc');
+    }
+
+    /**
      * Accessor methods to get user data through relationship
      * These replace the removed duplicate columns
      */
