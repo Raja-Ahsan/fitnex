@@ -229,10 +229,15 @@ class WebController extends Controller
         $query = Trainer::with('user')->where('status', 1);
 
         $selectedCategory = null;
+        $noTrainersAvailable = false; // true when service doesn't exist or has no trainers
+
         // Filter by service category when user clicks Personal Training, Nutrition Coaching, etc.
         if ($request->filled('category')) {
             $selectedCategory = Category::where('slug', $request->category)->where('status', 1)->first();
-            if ($selectedCategory) {
+            if (!$selectedCategory) {
+                // Service/category does not exist
+                $noTrainersAvailable = true;
+            } else {
                 // trainer_type: comma-separated slugs (multiple) or legacy single title/slug
                 $query->where(function ($q) use ($selectedCategory) {
                     $q->where('trainer_type', $selectedCategory->title)
@@ -243,8 +248,14 @@ class WebController extends Controller
         }
 
         $trainers = $query->get();
+
+        // Service exists but has no trainers for this category
+        if ($selectedCategory && $trainers->isEmpty()) {
+            $noTrainersAvailable = true;
+        }
+
         $page_title = 'Trainer Listing | FITNEX';
-        return view('website.trainers', compact('page_title', 'banner', 'trainers', 'categories', 'selectedCategory'));
+        return view('website.trainers', compact('page_title', 'banner', 'trainers', 'categories', 'selectedCategory', 'noTrainersAvailable'));
     }
 
     public function TrainerDetail($id)

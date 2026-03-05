@@ -40,8 +40,13 @@
             <div class="text-center mb-8 sm:mb-10 md:mb-12">
                 <h3 class="sec-hd text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3" data-aos="flip-right" data-aos-easing="linear" data-aos-duration="500">Expert Trainers</h3>
                 @if(isset($selectedCategory) && $selectedCategory)
-                    <p class="para para-white max-w-[490px] mx-auto mb-2 text-sm sm:text-base md:text-lg px-2" data-aos="fade-right" data-aos-easing="linear" data-aos-duration="500">
+                    <p class="para para-white max-w-[490px] mx-auto  text-sm sm:text-base md:text-lg px-2" data-aos="fade-right" data-aos-easing="linear" data-aos-duration="500">
                         Showing: <span class="primary-theme font-bold">{{ $selectedCategory->title }}</span>
+                    </p>
+                    
+                @elseif(!empty($noTrainersAvailable))
+                    <p class="para para-white max-w-[490px] mx-auto mb-2 text-sm sm:text-base md:text-lg px-2" data-aos="fade-right" data-aos-easing="linear" data-aos-duration="500">
+                        No trainers available for this service.
                     </p>
                     <a href="{{ route('trainers') }}" class="inline-block mt-2 text-sm text-gray-400 hover:text-white underline">View all professionals</a>
                 @else
@@ -51,6 +56,14 @@
                 @endif
             </div>
 
+            @if(!empty($noTrainersAvailable))
+            <div class="text-center py-12 sm:py-10">
+                <p class="para para-white text-base sm:text-lg md:text-xl max-w-xl mx-auto mb-6">
+                    No trainers are currently available for this service. Use the link above to view all our professionals.
+                </p>
+                <a href="{{ route('trainers') }}" class="btn primary-btn border border-transparent text-sm sm:text-base py-3 px-5 sm:px-6 md:px-8 min-h-[44px] inline-flex items-center justify-center">View all professionals</a>
+            </div>
+            @else
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 justify-items-center max-w-6xl mx-auto">
                 @foreach ($trainers as $trainer)
                 <div class="trainer-card expert-trainer-item flex flex-col items-center w-full max-w-[280px] sm:max-w-[300px] lg:max-w-[320px]"
@@ -94,6 +107,7 @@
                 </div>
                 @endforeach
             </div>
+            @endif
         </div>
     </section>
 @endsection
