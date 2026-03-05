@@ -142,18 +142,12 @@ $.ajaxSetup({
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    if (typeof AOS !== 'undefined') {
-        if (window.innerWidth < 1025) {
-            AOS.init({ disable: true });
-        } else {
-            AOS.init({
-                duration: 500,
-                offset: 40,
-                once: true,
-                easing: 'ease-out',
-                startEvent: 'DOMContentLoaded'
-            });
-        }
+    if (window.innerWidth < 1025) {
+        AOS.init({
+            disable: true
+        });
+    } else {
+        AOS.init();
     }
 });
 
