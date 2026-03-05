@@ -153,4 +153,23 @@ class Trainer extends Model
     {
         return $this->user ? $this->user->youtube : null;
     }
+
+    /**
+     * Get trainer type(s) as display text (category titles).
+     * trainer_type stores comma-separated slugs; legacy single title is also supported.
+     */
+    public function getTrainerTypeDisplayAttribute()
+    {
+        if (empty($this->attributes['trainer_type'] ?? null)) {
+            return '';
+        }
+        $value = $this->attributes['trainer_type'];
+        if (strpos($value, ',') !== false) {
+            $slugs = array_filter(array_map('trim', explode(',', $value)));
+            $titles = \App\Models\Category::whereIn('slug', $slugs)->pluck('title');
+            return $titles->implode(', ');
+        }
+        $category = \App\Models\Category::where('slug', $value)->orWhere('title', $value)->first();
+        return $category ? $category->title : $value;
+    }
 }

@@ -142,12 +142,18 @@ $.ajaxSetup({
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    if (window.innerWidth < 1025) {
-        AOS.init({
-            disable: true
-        });
-    } else {
-        AOS.init();
+    if (typeof AOS !== 'undefined') {
+        if (window.innerWidth < 1025) {
+            AOS.init({ disable: true });
+        } else {
+            AOS.init({
+                duration: 500,
+                offset: 40,
+                once: true,
+                easing: 'ease-out',
+                startEvent: 'DOMContentLoaded'
+            });
+        }
     }
 });
 
@@ -171,11 +177,13 @@ const cursorCard = document.getElementById('cursor-card');
 const cursorCardTitle = document.getElementById('cursor-card-title');
 const cursorCardDescription = document.getElementById('cursor-card-description');
 const cursorCardPrice = document.getElementById('cursor-card-price');
-const trainerCards = document.querySelectorAll('.trainer-card');
+const trainerCardsList = document.querySelectorAll('.trainer-card');
+// Exclude trainer cards inside homepage expert section (they use on-card hover overlay instead)
+const trainerCardsForCursor = cursorCard ? Array.from(trainerCardsList).filter(card => !card.closest('.expert-trainers-sec')) : [];
 
-gsap.set(cursorCard, { scale: 0, opacity: 0 });
+if (cursorCard) gsap.set(cursorCard, { scale: 0, opacity: 0 });
 
-trainerCards.forEach(card => {
+trainerCardsForCursor.forEach(card => {
     const trainerTitle = card.dataset.title;
     const trainerDescription = card.dataset.description;
     const trainerPrice = card.dataset.price;
@@ -304,17 +312,21 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+    // Only apply alternating margin to trainer cards outside the homepage expert section (e.g. trainers listing page)
+    const expertSection = document.querySelector('.expert-trainers-grid');
     const trainerCards = document.querySelectorAll('.trainer-card');
     const textRotate = document.querySelectorAll('.text-rotate');
-    trainerCards.forEach((card, index) => {
-        if ((index + 1) % 2 === 0) {
-            card.style.marginTop = "70px";
-        }
-    });
-    textRotate.forEach((item, index) => {
-        if ((index + 1) % 2 === 0) {
-            item.style.marginTop = "70px";
-        }
-    });
+    if (!expertSection) {
+        trainerCards.forEach((card, index) => {
+            if ((index + 1) % 2 === 0) {
+                card.style.marginTop = "70px";
+            }
+        });
+        textRotate.forEach((item, index) => {
+            if ((index + 1) % 2 === 0) {
+                item.style.marginTop = "70px";
+            }
+        });
+    }
 });
 

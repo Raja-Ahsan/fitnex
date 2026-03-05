@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\State;
 use Illuminate\Http\Request;
+use App\Models\Category;
 use File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -63,7 +64,8 @@ class TrainerController extends Controller
     public function create()
     {
         $page_title = 'Add Trainer'; 
-        return view('admin.trainer.create', compact('page_title'));
+        $categories = Category::orderby('id', 'asc')->where('status', 1)->get();
+        return view('admin.trainer.create', compact('page_title', 'categories'));
     }
 
     /**
@@ -76,7 +78,8 @@ class TrainerController extends Controller
         'designation' => 'required',
         'email' => 'required|email|unique:users,email',
         'phone' => 'nullable',
-        'trainer_type' => 'required',
+        'trainer_types' => 'required|array|min:1',
+        'trainer_types.*' => 'required|string',
         'description' => 'required',
         'price' => 'required',
         'state' => 'required', 
@@ -128,7 +131,7 @@ class TrainerController extends Controller
     
     if ($trainer) {
         $trainer->update([
-            'trainer_type' => $request->trainer_type,
+            'trainer_type' => is_array($request->trainer_types) ? implode(',', $request->trainer_types) : $request->trainer_types,
             'description' => $request->description,
             'price' => $request->price,
             'rating' => $request->rating,
@@ -158,7 +161,8 @@ class TrainerController extends Controller
     {
         $page_title='Edit Trainer';
         $trainer= Trainer::where('id' , $id)->first(); 
-        return view('admin.trainer.edit' , compact('page_title' , 'trainer'));
+        $categories = Category::orderby('id', 'asc')->where('status', 1)->get();
+        return view('admin.trainer.edit' , compact('page_title' , 'trainer', 'categories'));
     }
 
     /**
@@ -173,7 +177,8 @@ class TrainerController extends Controller
             'designation' => 'required',
             'email' => 'nullable|email',
             'phone' => 'nullable',
-            'trainer_type' => 'required',
+            'trainer_types' => 'required|array|min:1',
+            'trainer_types.*' => 'required|string',
             'description' => 'required',
             'price' => 'required',
             'state' => 'required', 
@@ -210,7 +215,7 @@ class TrainerController extends Controller
 
         // Update trainer-specific fields only
         $trainer->update([
-            'trainer_type' => $request->trainer_type,
+            'trainer_type' => is_array($request->trainer_types) ? implode(',', $request->trainer_types) : $request->trainer_types,
             'description' => $request->description,
             'price' => $request->price, 
             'rating' => $request->rating,

@@ -105,7 +105,7 @@
                         @endif
                     </ul>
                     <h3 class="text-2xl font-bold font-secondary mb-3">Training Type:</h3>
-                    <p class="text-white mb-4">{{ $trainer->trainer_type }}</p>
+                    <p class="text-white mb-4">{{ $trainer->trainer_type_display }}</p>
                     <h3 class="text-2xl font-bold font-secondary mb-3">Contact:</h3>
                     <div class="text-white space-y-2 mb-6">
                         @if($trainer->email)
