@@ -30,26 +30,34 @@
             <div class="contact-info-wrapper text-white p-6 rounded-lg h-full"> 
                 <h2 class="text-3xl font-bold mb-6 text-white">{!! $home_page_data['contact_heading'] !!}</h2>
                 <ul class="space-y-4">
+                    @if($home_page_data['contact_phone'])
                     <li class="flex items-center">
                         <i class="fa-solid fa-phone text-2xl primary-theme mr-4"></i>
                         <a href="tel:{{ $home_page_data['contact_phone'] }}" class="text-lg text-white hover:text-gray-300 transition">{{ $home_page_data['contact_phone'] }}</a>
                     </li>
+                    @endif
+                    @if($home_page_data['contact_email'])
                     <li class="flex items-center">
                         <i class="fa-solid fa-envelope text-2xl primary-theme mr-4"></i>
                         <a href="mailto:{{ $home_page_data['contact_email'] }}" class="text-lg text-white hover:text-gray-300 transition">{{ $home_page_data['contact_email'] }}</a>
                     </li>
+                    @endif
+                    @if($home_page_data['contact_address'])
                     <li class="flex items-start">
                         <i class="fa-solid fa-location-dot text-2xl primary-theme mr-4"></i>
                         <span class="text-lg text-white">{{ $home_page_data['contact_address'] }}</span>
                     </li>
+                    @endif
                 </ul>
                 <hr class="my-8 border-gray-700">
+                @if($home_page_data['contact_facebok'] || $home_page_data['contact_twiter'] || $home_page_data['contact_linkdin'])
                 <h3 class="text-2xl font-bold mb-4 text-white">Follow Us</h3>
                 <div class="social-icons">
                     <li><a href="{{ $home_page_data['contact_facebok'] }}"><i class="fab fa-facebook-f"></i></a></li>
                     <li><a href="{{ $home_page_data['contact_twiter'] }}"><i class="fa-brands fa-x-twitter"></i></a></li>
                     <li><a href="{{ $home_page_data['contact_linkdin'] }}"><i class="fab fa-linkedin-in"></i></a></li>
                 </div>
+                @endif
             </div>
             <div> 
                 <div class="field-wrap p-6 rounded-lg">
