@@ -94,10 +94,15 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="" class="col-sm-2 control-label">Trainer Type<span style="color: red">*</span></label>
+							<label for="" class="col-sm-2 control-label">Trainer Type (Categories)<span style="color: red">*</span></label>
 							<div class="col-sm-9">
-								<input type="text" autocomplete="off" class="form-control" name="trainer_type" value="{{ old('trainer_type') }}" placeholder="Enter trainer type">
-								<span style="color: red">{{ $errors->first('trainer_type') }}</span>
+								<select name="trainer_types[]" class="form-control" multiple="multiple" required>
+									@foreach($categories as $category)
+										<option value="{{ $category->slug }}" {{ in_array($category->slug, old('trainer_types', [])) ? 'selected' : '' }}>{{ $category->title }}</option>
+									@endforeach
+								</select>
+								<small class="text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple categories.</small>
+								<span style="color: red">{{ $errors->first('trainer_types') }}</span>
 							</div>
 						</div>
 						<div class="form-group">

@@ -229,12 +229,16 @@ class WebController extends Controller
         $query = Trainer::with('user')->where('status', 1);
 
         $selectedCategory = null;
-        // Filter by service category when user clicks Personal Training, Nutrition coach, etc.
+        // Filter by service category when user clicks Personal Training, Nutrition Coaching, etc.
         if ($request->filled('category')) {
             $selectedCategory = Category::where('slug', $request->category)->where('status', 1)->first();
             if ($selectedCategory) {
-                // Match trainer_type to category title (e.g. "Personal Training", "Nutrition coach")
-                $query->where('trainer_type', $selectedCategory->title);
+                // trainer_type: comma-separated slugs (multiple) or legacy single title/slug
+                $query->where(function ($q) use ($selectedCategory) {
+                    $q->where('trainer_type', $selectedCategory->title)
+                      ->orWhere('trainer_type', $selectedCategory->slug)
+                      ->orWhereRaw('FIND_IN_SET(?, trainer_type) > 0', [$selectedCategory->slug]);
+                });
             }
         }
 

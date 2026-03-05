@@ -361,7 +361,15 @@ body {
 
 .trainer-card {
     max-height: 450px;
- }
+}
+
+/* Expert trainers section: on-card hover overlay */
+.expert-trainers-grid .trainer-card-link .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 
 /* Show the card when hovering over the image */
 .expert-trainers-img-wrapper:hover .expert-traning-card {

@@ -68,7 +68,7 @@
 										<img src="{{ asset('/admin/assets/images/default.jpg') }}" style="width:60px;">
 										@endif
 									</td>
-									<td>{{ $trainer->trainer_type }}</td>
+									<td>{{ $trainer->trainer_type_display }}</td>
 									<td>{{ $trainer->name }}</td>
 									<td>{{ $trainer->designation }}</td>
 									{{-- <td>{{ $trainer->email }}</td>

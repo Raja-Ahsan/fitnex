@@ -31,7 +31,7 @@
 					</tr>
 					<tr>
 						<th>Trainer Type</th>
-						<td>{{ $trainer->trainer_type }}</td>
+						<td>{{ $trainer->trainer_type_display }}</td>
 					</tr>
 					<tr>
 						<th>Designation</th>
