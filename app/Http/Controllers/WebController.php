@@ -247,6 +247,15 @@ class WebController extends Controller
             }
         }
 
+        $selectedDelivery = null;
+        if ($request->filled('delivery')) {
+            $d = (string) $request->delivery;
+            if (in_array($d, ['online', 'in_person'], true)) {
+                $selectedDelivery = $d;
+                $query->matchingDelivery($d);
+            }
+        }
+
         $trainers = $query->get();
 
         // Service exists but has no trainers for this category
@@ -255,7 +264,7 @@ class WebController extends Controller
         }
 
         $page_title = 'Trainer Listing | FITNEX';
-        return view('website.trainers', compact('page_title', 'banner', 'trainers', 'categories', 'selectedCategory', 'noTrainersAvailable'));
+        return view('website.trainers', compact('page_title', 'banner', 'trainers', 'categories', 'selectedCategory', 'selectedDelivery', 'noTrainersAvailable'));
     }
 
     public function TrainerDetail($id)
@@ -358,8 +367,19 @@ class WebController extends Controller
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
         $page_title = 'Registration | FITNEX';
         $categories = Category::where('status', 1)->get();
+        $coachCategory = null;
+        $coachDelivery = null;
+        if (request()->filled('category')) {
+            $coachCategory = Category::where('slug', request('category'))->where('status', 1)->first();
+        }
+        if (request()->filled('delivery')) {
+            $d = (string) request('delivery');
+            if (in_array($d, ['online', 'in_person'], true)) {
+                $coachDelivery = $d;
+            }
+        }
         /*  $packages = Package::where('status', 1)->get(); */
-        return view('website.sign-up', compact('page_title', 'banner', 'categories'));
+        return view('website.sign-up', compact('page_title', 'banner', 'categories', 'coachCategory', 'coachDelivery'));
     }
     public function Blogs()
     {
@@ -447,7 +467,9 @@ class WebController extends Controller
         $page_title = 'Sign Up';
         $banner = Banner::where('id', 10)->where('status', 1)->first();
         $categories = Category::where('status', 1)->get();
-        return view('website.sign-up', compact('page_title', 'banner', 'package', 'categories'));
+        $coachCategory = null;
+        $coachDelivery = null;
+        return view('website.sign-up', compact('page_title', 'banner', 'package', 'categories', 'coachCategory', 'coachDelivery'));
     }
 
     public function storeUser(Request $request)

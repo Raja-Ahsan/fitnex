@@ -197,6 +197,20 @@
     <div class="signup-container" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
         <h2 class="form-title"><span>FITNEX Trainer Registration</span></h2>
         <p class="form-subtitle">Join FITNEX as a trainer and start your fitness journey! Registration is free.</p>
+        @if(!empty($coachCategory) || !empty($coachDelivery))
+            <div class="form-field-group" style="background: rgba(0, 121, 212, 0.08); border: 1px solid rgba(0, 121, 212, 0.35); border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 1.5rem; text-align: center;">
+                <p class="field-label" style="margin-bottom: 0.25rem;">Your coaching focus</p>
+                <p style="color: var(--text-color); font-size: 0.95rem; margin: 0;">
+                    @if(!empty($coachCategory) && !empty($coachDelivery))
+                        <strong>{{ $coachCategory->title }}</strong> — {{ $coachDelivery === 'online' ? 'online' : 'in-person' }} sessions.
+                    @elseif(!empty($coachCategory))
+                        <strong>{{ $coachCategory->title }}</strong>.
+                    @else
+                        {{ $coachDelivery === 'online' ? 'Online' : 'In-person' }} sessions.
+                    @endif
+                </p>
+            </div>
+        @endif
         <form method="POST" action="{{ route('user.register.store') }}" id="subscription-form" enctype="multipart/form-data">
             @csrf
             <!-- Hidden field for Trainer role - trainers register for free -->

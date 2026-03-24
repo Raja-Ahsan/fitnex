@@ -129,9 +129,14 @@ class TrainerController extends Controller
     // But we need to update trainer-specific fields
     $trainer = Trainer::where('created_by', $user->id)->first();
     
+    if (!$request->boolean('delivery_online') && !$request->boolean('delivery_in_person')) {
+        return back()->withErrors(['delivery_modes' => 'Select at least one: online or in-person sessions.'])->withInput();
+    }
+
     if ($trainer) {
         $trainer->update([
             'trainer_type' => is_array($request->trainer_types) ? implode(',', $request->trainer_types) : $request->trainer_types,
+            'delivery_modes' => $this->normalizedDeliveryModes($request),
             'description' => $request->description,
             'price' => $request->price,
             'rating' => $request->rating,
@@ -185,6 +190,9 @@ class TrainerController extends Controller
             'city' => 'required',
         ]);
 
+        if (!$request->boolean('delivery_online') && !$request->boolean('delivery_in_person')) {
+            return back()->withErrors(['delivery_modes' => 'Select at least one: online or in-person sessions.'])->withInput();
+        }
 
         $trainer = Trainer::where('id' , $id)->first();
         
@@ -216,6 +224,7 @@ class TrainerController extends Controller
         // Update trainer-specific fields only
         $trainer->update([
             'trainer_type' => is_array($request->trainer_types) ? implode(',', $request->trainer_types) : $request->trainer_types,
+            'delivery_modes' => $this->normalizedDeliveryModes($request),
             'description' => $request->description,
             'price' => $request->price, 
             'rating' => $request->rating,
@@ -226,6 +235,22 @@ class TrainerController extends Controller
         ]);
 
         return redirect()->route('trainer.index')->with('message' , 'Trainer updated Successfully');
+    }
+
+    /**
+     * @return string|null Comma-separated: online, in_person
+     */
+    private function normalizedDeliveryModes(Request $request): ?string
+    {
+        $modes = [];
+        if ($request->boolean('delivery_online')) {
+            $modes[] = 'online';
+        }
+        if ($request->boolean('delivery_in_person')) {
+            $modes[] = 'in_person';
+        }
+
+        return count($modes) ? implode(',', $modes) : null;
     }
 
     /**

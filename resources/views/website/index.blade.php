@@ -36,7 +36,7 @@
                             data-aos-duration="1500">
                             <a href="{{ route('trainers') }}" class="btn primary-btn border border-transparent">Find a Wellness Professional <span class="ps-[10px]"><i class="fa-solid fa-arrow-right"></i></span></a>
                             <a href="{{ route('registration') }}" class="btn primary-btn border border-transparent">Join as a Coach <span class="ps-[10px]"><i class="fa-solid fa-arrow-right"></i></span></a>
-                        </div>
+                        </div> 
                     </div>
                 </div>
             </div>

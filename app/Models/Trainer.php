@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -98,6 +99,23 @@ class Trainer extends Model
     public function reviews()
     {
         return $this->hasMany(TrainerReview::class)->where('status', 1)->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Filter by how sessions are delivered (matches `delivery_modes` CSV: online, in_person).
+     * Null/empty delivery_modes on a trainer = show for any filter (legacy / unspecified).
+     */
+    public function scopeMatchingDelivery(Builder $query, ?string $delivery): Builder
+    {
+        if (!$delivery || !in_array($delivery, ['online', 'in_person'], true)) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($delivery) {
+            $q->whereNull('delivery_modes')
+                ->orWhere('delivery_modes', '')
+                ->orWhereRaw('FIND_IN_SET(?, delivery_modes) > 0', [$delivery]);
+        });
     }
 
     /**

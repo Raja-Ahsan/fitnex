@@ -106,6 +106,17 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label for="" class="col-sm-2 control-label">Session delivery<span style="color: red">*</span></label>
+							<div class="col-sm-9">
+								<input type="hidden" name="delivery_online" value="0">
+								<input type="hidden" name="delivery_in_person" value="0">
+								<label class="checkbox-inline"><input type="checkbox" name="delivery_online" value="1" {{ old('delivery_online', '1') === '1' ? 'checked' : '' }}> Online</label>
+								<label class="checkbox-inline" style="margin-left:15px;"><input type="checkbox" name="delivery_in_person" value="1" {{ old('delivery_in_person', '1') === '1' ? 'checked' : '' }}> In-person</label>
+								<p class="help-block text-muted" style="margin-top:6px;">Used when clients search by specialty and online or in-person sessions.</p>
+								<span style="color: red">{{ $errors->first('delivery_modes') }}</span>
+							</div>
+						</div>
+						<div class="form-group">
 							<label for="" class="col-sm-2 control-label">City <span style="color: red">*</span></label>
 							<div class="col-sm-9">
 								<input type="text" autocomplete="off" class="form-control" name="city" value="{{ old('city') }}" placeholder="Enter City">

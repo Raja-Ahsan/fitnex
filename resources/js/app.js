@@ -303,6 +303,24 @@ document.addEventListener('DOMContentLoaded', function () {
         speed: 1000,
         grabCursor: true,
     });
+
+    function closeWellnessDropdowns() {
+        document.querySelectorAll('[data-wellness-dropdown].is-open').forEach(function (root) {
+            root.classList.remove('is-open');
+            var btn = root.querySelector('button.wellness-dd__btn');
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+            var panel = root.querySelector('.wellness-dd__panel');
+            if (panel) {
+                panel.querySelectorAll('[data-wellness-accordion-item].is-expanded').forEach(function (item) {
+                    item.classList.remove('is-expanded');
+                    var t = item.querySelector('[data-wellness-accordion-toggle]');
+                    if (t) t.setAttribute('aria-expanded', 'false');
+                });
+            }
+        });
+    }
+
+    swiper.on('slideChange', closeWellnessDropdowns);
 });
 
 document.addEventListener("DOMContentLoaded", function () {

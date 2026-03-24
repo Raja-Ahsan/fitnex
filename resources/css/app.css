@@ -58,6 +58,12 @@ body {
     @apply p-[10px] md:px-[20px] md:py-[12px] text-[12px];
 }
 
+/* Sit above .hero-banner (z-[1]) and Swiper slides so dropdowns are not painted behind the slider */
+.header {
+    position: relative;
+    z-index: 100;
+}
+
 .label-area {
     @apply text-black py-[8px] px-[30px] rounded-[60px] font-bold;
     font-family: var(--font-secondary);
@@ -766,6 +772,142 @@ body {
 
 .primary-navs a:hover::before {
   @apply w-[100%];
+}
+
+/* Nested header menus: Find a wellness professional / Join as a coach */
+.site-nav-dd {
+  position: relative;
+}
+
+.site-nav-dd__trigger {
+  @apply relative bg-transparent border-0 text-white cursor-pointer font-secondary;
+  font-size: inherit;
+}
+
+.site-nav-dd__trigger::before {
+  @apply content-[""] absolute bg-[#0079D4] h-[2px] w-[0%] left-0 -bottom-[5px] rounded-xl duration-300;
+}
+
+.site-nav-dd:hover .site-nav-dd__trigger::before,
+.site-nav-dd:focus-within .site-nav-dd__trigger::before {
+  @apply w-[100%];
+}
+
+.site-nav-dd__trigger.active {
+  @apply text-[#0079D4];
+}
+
+.site-nav-dd__panel {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  padding-top: 0.35rem;
+  min-width: 280px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+  z-index: 200;
+}
+
+.site-nav-dd:hover .site-nav-dd__panel,
+.site-nav-dd:focus-within .site-nav-dd__panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.site-nav-dd__list {
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem 0;
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.5rem;
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.5);
+}
+
+.site-nav-dd__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.site-nav-dd__has-sub:hover .site-nav-dd__row,
+.site-nav-dd__has-sub:focus-within .site-nav-dd__row {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.site-nav-dd__sub-wrap {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  padding-left: 5px;
+  min-width: 188px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s;
+  z-index: 210;
+}
+
+.site-nav-dd__has-sub:hover .site-nav-dd__sub-wrap,
+.site-nav-dd__has-sub:focus-within .site-nav-dd__sub-wrap {
+  opacity: 1;
+  visibility: visible;
+}
+
+.site-nav-dd__sub {
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem 0;
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.5rem;
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.5);
+}
+
+.site-nav-dd__sub a {
+  display: block;
+  padding: 0.45rem 1rem;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.site-nav-dd__sub a:hover {
+  background: rgba(0, 121, 212, 0.15);
+  color: #fff;
+}
+
+.site-nav-dd__footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 0.25rem;
+  padding-top: 0.25rem;
+}
+
+.site-nav-dd__footer a {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  color: #0079d4;
+  text-decoration: none;
+}
+
+.site-nav-dd__footer a:hover {
+  color: #4db3ff;
+}
+
+.mobile-wellness-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.mobile-wellness-details summary {
+  list-style: none;
 }
 
 #mobile-menu {
