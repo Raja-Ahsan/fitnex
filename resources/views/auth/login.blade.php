@@ -13,15 +13,7 @@
     }
 </style>
 @section('content')
-    {{-- <section class="inner-banner listing-banner" style="background: url(' {{ asset('/assets/website/images/trainer-banner.webp') }}') no-repeat center/cover;">
-        <div class="container">
-            <h1 class="relative mx-auto text-[50px] text-white font-bold leading-[1.1] lg:max-w-[680px] xxl:max-w-[860px] k+pfr5Wx@I8MPO@UuY'2"
-                data-aos="flip-right"
-                data-aos-easing="linear"
-                data-aos-duration="1500"> <span class="italic uppercase font-black"><span class="primary-theme">LOGIN</span></span>
-            </h1>
-        </div>
-    </section> --}}
+     
     <section class="inner-banner listing-banner" style="background: url('{{ ($banner && $banner->image) ? asset('/admin/assets/images/banner/'.$banner->image) : asset('/admin/assets/images/images.png') }}') no-repeat center/cover">
         <div class="container">
             <h1 class="relative mx-auto text-[50px] text-white font-bold leading-[1.1]" data-aos="flip-right" data-aos-easing="linear" data-aos-duration="1500">
