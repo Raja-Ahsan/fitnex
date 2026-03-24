@@ -238,7 +238,6 @@
 </section>
 @endif
 <div id="cursor-card" class="fixed top-0 left-0 w-64 bg-primary-theme text-white p-4 rounded-lg shadow-2xl pointer-events-none z-50 opacity-0 scale-0 transform-gpu" style="transform-origin: center center;">
-     
     <div class="p-4">
         <h3 id="cursor-card-title" class="text-xl font-bold text-white mb-[10px]"></h3>
         <p id="cursor-card-description" class="text-sm text-white"></p>
