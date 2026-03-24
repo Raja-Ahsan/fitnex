@@ -2,10 +2,12 @@
     <div class="container" data-aos="fade-down"
          data-aos-easing="linear"
          data-aos-duration="1500">
+        @if($home_page_data['footer_email'] ?? '')
         <div class="topbar text-end mb-[5px]">
             <a href="mailto:{{ $home_page_data['footer_email'] }}" class="text-white font-secondary "><span class="pe-[10px] text-[#0079D4]"><i class="fa-solid fa-envelope"></i></span>{{ $home_page_data['footer_email'] }}</a>
         </div>
         <div class="border-b border-bottom mb-[10px]"></div>
+        @endif
         <div class="flex items-center justify-between">
             <div class="logo">
                 <a href="{{ route('index') }}">
