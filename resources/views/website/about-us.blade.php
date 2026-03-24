@@ -158,7 +158,7 @@
 <!-- Banner Section -->
 <section class="inner-banner listing-banner" style="background: url('{{ ($banner && $banner->image) ? asset('/admin/assets/images/banner/'.$banner->image) : asset('/admin/assets/images/images.png') }}') no-repeat center/cover">
   <div class="container">
-      <h1 class="relative mx-auto text-[50px] text-white font-bold leading-[1.1]" data-aos="flip-right" data-aos-easing="linear" data-aos-duration="1500">
+      <h1 class="relative mx-auto text-[50px] text-white font-bold leading-[1.1]"{{--  data-aos="flip-right" data-aos-easing="linear" data-aos-duration="1500" --}}>
           @php
               $title = ($banner && $banner->name) ? $banner->name : '';
               $parts = explode(' ', $title, 2);
@@ -174,14 +174,14 @@
 <section class="about-template-section">
     <div class="container">
         <div class="about-row">
-            <div class="about-col" data-aos="fade-right">
+            <div class="about-col" {{-- data-aos="fade-right" --}}>
                 @if (isset($page_data['about_us_image']))
                     <div class="image-glow-container">
                         <img src="{{ asset('/admin/assets/images/page/' . $page_data['about_us_image']) }}" alt="Who We Are">
                     </div>
                 @endif
             </div>
-            <div class="about-col" data-aos="fade-left">
+            <div class="about-col" {{-- data-aos="fade-left" --}}>
                 <div class="text-content">
                     <h2 class="section-title">Who <span>We</span> Are</h2>
                     <p>{{ $page_data['about_description'] ?? '' }}</p>
@@ -196,14 +196,14 @@
 <section class="about-template-section">
     <div class="container">
         <div class="about-row" style="flex-direction: row-reverse;">
-            <div class="about-col" data-aos="fade-left">
+            <div class="about-col" {{-- data-aos="fade-left" --}}>
                 @if (isset($page_data['about_us_image2']))
                     <div class="image-glow-container">
                         <img src="{{ asset('/admin/assets/images/page/' . $page_data['about_us_image2']) }}" alt="Our Approach">
                     </div>
                 @endif
             </div>
-            <div class="about-col" data-aos="fade-right">
+            <div class="about-col" {{-- data-aos="fade-right" --}}>
                 <div class="text-content">
                     <h2 class="section-title">Our <span>Approach</span></h2>
                     <p>{{ $page_data['about_description_three'] ?? '' }}</p>
@@ -217,14 +217,14 @@
 <section class="about-template-section">
     <div class="container">
         <div class="about-row">
-            <div class="about-col" data-aos="fade-right">
+            <div class="about-col" {{-- data-aos="fade-right" --}}>
                 @if (isset($page_data['why_image']))
                     <div class="image-glow-container our-mission-image">
                         <img src="{{ asset('/admin/assets/images/page/' . $page_data['why_image']) }}" alt="Our Mission">
                     </div>
                 @endif
             </div>
-            <div class="about-col" data-aos="fade-left">
+            <div class="about-col" {{-- data-aos="fade-left" --}}>
                 <div class="text-content">
                     <h2 class="section-title">Our <span>Mission</span></h2>
                     <p>{{ $page_data['our_mission_description'] ?? '' }}</p>

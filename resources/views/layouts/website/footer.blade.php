@@ -24,8 +24,12 @@
             <div class="md:mx-auto">
                 <h4 class="text-white font-secondary font-bold text-[20px] mb-[20px]">Contact</h4>
                 <ul class="footer-links">
+                    @if($home_page_data['footer_email'] ?? '')
                     <li><a href="mailto:{{ $home_page_data['footer_email'] }}"><span class="pe-[10px] primary-theme"><i class="fa-solid fa-envelope"></i></span> {{ $home_page_data['footer_email'] }}</a></li>
+                    @endif
+                    @if($home_page_data['footer_address'] ?? '')
                     <li><a href="#"><span class="pe-[10px] primary-theme"><i class="fa-solid fa-location-dot"></i></span>{{ $home_page_data['footer_address'] }}</a></li>
+                    @endif
                 </ul>
             </div>
             <div class="md:mx-auto">
