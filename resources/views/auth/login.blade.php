@@ -27,7 +27,7 @@
             </h1>
         </div>
       </section>
-
+{{-- Banner Section End --}}
     <section class="login-sec pt-b-80">
         <div class="container py-5">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
