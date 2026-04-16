@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 use View;
+use App\Models\Category;
 use App\Models\User;
 use App\Observers\TrainerObserver;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +40,10 @@ class AppServiceProvider extends ServiceProvider
             } else {
                 $view->with('notifications', collect()); // empty collection if not logged in
             }
+        });
+
+        View::composer('layouts.website.header', function ($view) {
+            $view->with('wellnessSpecs', Category::wellnessNavSpecs());
         });
 
         // Register TrainerObserver to sync trainers from users

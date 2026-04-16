@@ -1,5 +1,4 @@
 @php
-    $wellnessSpecs = config('wellness_nav.specialties', []);
     $trainersNavActive = request()->routeIs('trainers');
 @endphp
 <header class="header bg-black py-[10px]">

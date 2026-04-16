@@ -1,15 +1,11 @@
 <?php
 
 /**
- * Header nav: "Find a wellness professional" / "Join as a coach" specialty slugs.
- * Slugs must exist in `categories` (seeded + admin). Labels are user-facing.
+ * Yahan manually categories mat likhein — list `categories` table se aati hai
+ * (AppServiceProvider → View composer `layouts.website.header`, foreach se).
+ *
+ * `specialties` sirf tab use hoti hai jab DB mein koi active category na ho.
  */
 return [
-    'specialties' => [
-        ['label' => 'Bodybuilding', 'slug' => 'body-building'],
-        ['label' => 'Weight loss coach', 'slug' => 'weight-loss-coach'],
-        ['label' => 'Strength coach', 'slug' => 'strength-coach'],
-        ['label' => 'Nutritionist / Dietitian', 'slug' => 'nutrition-coaching'],
-        ['label' => 'Sports performance coach', 'slug' => 'sports-performance'],
-    ],
+    'specialties' => [],
 ];
