@@ -11,7 +11,7 @@
 <!-- Banner Section -->
 <section class="inner-banner listing-banner" style="background: url('{{ ($banner && $banner->image) ? asset('/admin/assets/images/banner/'.$banner->image) : asset('/admin/assets/images/images.png') }}') no-repeat center/cover">
     <div class="container">
-        <h1 class="relative mx-auto text-[50px] text-white font-bold leading-[1.1]" data-aos="flip-right" data-aos-easing="linear" data-aos-duration="1500">
+        <h1 class="relative mx-auto text-[50px] text-white font-bold leading-[1.1]" {{-- data-aos="flip-right" data-aos-easing="linear" data-aos-duration="1500" --}}>
             @php
                 $title = ($banner && $banner->name) ? $banner->name : '';
                 $parts = explode(' ', $title, 2);

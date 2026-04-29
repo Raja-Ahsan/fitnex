@@ -1,10 +1,9 @@
 <footer class="footer-sec bg-black pt-[50px] md:pt-[150px] pb-[30px]">
     <div class="container">
         <div class="md:grid flex gap-y-[20px] justify-start flex-col md:grid-cols-5 pb-[50px]" 
-        data-aos="fade-down"
+        {{-- data-aos="fade-down"
                 data-aos-easing="linear"
-                data-aos-duration="1500"
-        >
+                data-aos-duration="1500" --}}>
             <div class="mx-auto col-span-2">
                 <div class="footer-logo">
                     <img src="{{ asset('/admin/assets/images/page') }}/{{ $home_page_data['footer_image'] }}" class="footer-logo" alt="footer-logo">

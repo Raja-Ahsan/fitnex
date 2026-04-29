@@ -171,7 +171,7 @@
 
 
 
-        <li class="treeview {{ (request()->is('blog_category') || request()->is('blog_category/create') || request()->is('blog_category/*/edit') || request()->is('blog') || request()->is('blog/create') || request()->is('blog/*/edit')) ? 'active' : '' }}"
+        {{-- <li class="treeview {{ (request()->is('blog_category') || request()->is('blog_category/create') || request()->is('blog_category/*/edit') || request()->is('blog') || request()->is('blog/create') || request()->is('blog/*/edit')) ? 'active' : '' }}"
             style="height: auto;">
             <a href="#"
                 class="{{ (request()->is('blog_category') || request()->is('blog_category/create') || request()->is('blog_category/*/edit') || request()->is('blog') || request()->is('blog/create') || request()->is('blog/*/edit')) ? 'active' : '' }}">
@@ -203,7 +203,7 @@
                 </li>
                 @endcan
             </ul>
-        </li>
+        </li> --}}
 
 
         {{-- <li

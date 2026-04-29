@@ -12,7 +12,7 @@
             <div class="container">
                 <div class="row">
                     @include('website.include.social-links')
-                    <div class="col-lg-7 col-xl-6" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500">
+                    <div class="col-lg-7 col-xl-6" {{-- data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500" --}}>
                         <div class="card">
                             <div class="shape-1"></div>
                             @if (isset($banner))
@@ -31,12 +31,12 @@
     </section>
     <section class="registration-sec pt-100" id="sec-1">
         <div class="container">
-            <h2 class="hd-70 heading text-primary-theme mb-20 text-center" data-aos="flip-left" data-aos-easing="linear"
-                data-aos-duration="1500">Registration</h2>
-            <h6 class="text-secondry-theme fs-20 fw-700 mb-20 text-center" data-aos="fade-up" data-aos-easing="linear"
-                data-aos-duration="1500">Thank you for your interest in FITNEX!</h6>
-            <p class="hd-20 fw-medium mb-60 text-center" data-aos="fade-up" data-aos-easing="linear"
-                data-aos-duration="1500">
+            <h2 class="hd-70 heading text-primary-theme mb-20 text-center" {{-- data-aos="flip-left" data-aos-easing="linear"
+                data-aos-duration="1500" --}}>Registration</h2>
+            <h6 class="text-secondry-theme fs-20 fw-700 mb-20 text-center" {{-- data-aos="fade-up" data-aos-easing="linear"
+                data-aos-duration="1500" --}}>Thank you for your interest in FITNEX!</h6>
+            <p class="hd-20 fw-medium mb-60 text-center" {{-- data-aos="fade-up" data-aos-easing="linear"
+                data-aos-duration="1500" --}}>
                 Choose from two membership types, Standard or Platinum. Platinum includes the standard membership, but also
                 allows your company representative a non-voting presence at FITNEX board meetings. Please select below to
                 begin registration. Once payment is made, you will be directed to a member directory profile form. You can

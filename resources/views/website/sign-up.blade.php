@@ -181,7 +181,7 @@
 <!-- Banner Section -->
 <section class="inner-banner listing-banner" style="background: url('{{ ($banner && $banner->image) ? asset('/admin/assets/images/banner/'.$banner->image) : asset('/admin/assets/images/images.png') }}') no-repeat center/cover">
     <div class="container">
-        <h1 class="relative mx-auto text-[50px] text-white font-bold leading-[1.1]" data-aos="flip-right" data-aos-easing="linear" data-aos-duration="1500">
+        <h1 class="relative mx-auto text-[50px] text-white font-bold leading-[1.1]" {{-- data-aos="flip-right" data-aos-easing="linear" data-aos-duration="1500" --}}>
             @php
                 $title = ($banner && $banner->name) ? $banner->name : '';
                 $parts = explode(' ', $title, 2);
@@ -194,7 +194,7 @@
 </section>
 <!-- Signup Form Section -->
 <section class="signup-section" id="signup-form">
-    <div class="signup-container" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
+    <div class="signup-container" {{-- data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000" --}}>
         <h2 class="form-title"><span>FITNEX Trainer Registration</span></h2>
         <p class="form-subtitle">Join FITNEX as a trainer and start your fitness journey! Registration is free.</p>
         @if(!empty($coachCategory) || !empty($coachDelivery))

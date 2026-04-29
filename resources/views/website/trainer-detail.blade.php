@@ -10,8 +10,8 @@
     <section class="inner-banner listing-banner"
         style="background: url('{{ ($banner && $banner->image) ? asset('/admin/assets/images/banner/' . $banner->image) : asset('/admin/assets/images/images.png') }}') no-repeat center/cover">
         <div class="container">
-            <h1 class="relative mx-auto text-[50px] text-white font-bold leading-[1.1]" data-aos="flip-right"
-                data-aos-easing="linear" data-aos-duration="1500">
+            <h1 class="relative mx-auto text-[50px] text-white font-bold leading-[1.1]" {{-- data-aos="flip-right"
+                data-aos-easing="linear" data-aos-duration="1500" --}}>
                 @php
                     $title = ($banner && $banner->name) ? $banner->name : '';
                     $parts = explode(' ', $title, 2);
@@ -29,8 +29,8 @@
     <section class="trainer-details-sec py-[50px] md:py-[100px] bg-black text-white">
         <div class="container">
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-x-12">
-                <div class="lg:col-span-2 trainer-image-box" data-aos="fade-right" data-aos-easing="linear"
-                    data-aos-duration="1500">
+                <div class="lg:col-span-2 trainer-image-box" {{-- data-aos="fade-right" data-aos-easing="linear"
+                    data-aos-duration="1500" --}}>
                     @php
                         $image = $trainer->user->image ?? $trainer->image;
                     @endphp
@@ -45,8 +45,8 @@
                             class="rounded-lg trainer-details-img" alt="{{ $trainer->name }}">
                     @endif
                 </div>
-                <div class="lg:col-span-3 trainer-info-box" data-aos="fade-left" data-aos-easing="linear"
-                    data-aos-duration="1500">
+                <div class="lg:col-span-3 trainer-info-box" {{-- data-aos="fade-left" data-aos-easing="linear"
+                    data-aos-duration="1500" --}}>
                     <h2 class="text-4xl font-bold font-secondary">{{ $trainer->name }}</h2>
                     <p class="text-xl text-[#0079D4] font-secondary mb-4">{{ $trainer->designation }}</p>
                     @if($trainer->city && $trainer->state)

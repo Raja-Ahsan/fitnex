@@ -12,7 +12,7 @@
         <div class="container">
             <div class="row">
                 @include('website.include.social-links')
-                <div class="col-lg-7 col-xl-6" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500">
+                <div class="col-lg-7 col-xl-6" {{-- data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500" --}}>
                     <div class="card">
                         <div class="shape-1"></div>
                         @if (isset($banner))
@@ -31,30 +31,30 @@
     </section>
     <section class="event-sec pt-100" id="sec-1">
         <div class="container">
-            <h2 class="hd-70 heading text-primary-theme mb-20 text-center mb-100" data-aos="flip-left"
-                data-aos-easing="linear" data-aos-duration="1500">Join us at an <span>FITNEX event!</span>
+            <h2 class="hd-70 heading text-primary-theme mb-20 text-center mb-100" {{-- data-aos="flip-left"
+                data-aos-easing="linear" data-aos-duration="1500" --}}>Join us at an <span>FITNEX event!</span>
             </h2>
 
             <div class="row row-gap-60">
-                <div class="col-lg-4" data-aos="fade-right" data-aos-easing="linear" data-aos-duration="1500">
+                <div class="col-lg-4" {{-- data-aos="fade-right" data-aos-easing="linear" data-aos-duration="1500" --}}>
                     <div class="img-wrapper md-shape theme-blue">
                         <img src="{{ asset('/assets/website') }}/images/events-01.png" class=""
                             alt="Events fitnex">
                     </div>
                 </div>
-                <div class="col-lg-8" data-aos="fade-left" data-aos-easing="linear" data-aos-duration="1500">
+                <div class="col-lg-8" {{-- data-aos="fade-left" data-aos-easing="linear" data-aos-duration="1500" --}}>
                     <div class="img-wrapper md-shape">
                         <img src="{{ asset('/assets/website') }}/images/events-02.png" class=""
                             alt="Events fitnex">
                     </div>
                 </div>
-                <div class="col-lg-4" data-aos="fade-right" data-aos-easing="linear" data-aos-duration="1500">
+                <div class="col-lg-4" {{-- data-aos="fade-right" data-aos-easing="linear" data-aos-duration="1500" --}}>
                     <div class="img-wrapper md-shape">
                         <img src="{{ asset('/assets/website') }}/images/events-03.png" class=""
                             alt="Events fitnex">
                     </div>
                 </div>
-                <div class="col-lg-8" data-aos="fade-left" data-aos-easing="linear" data-aos-duration="1500">
+                <div class="col-lg-8" {{-- data-aos="fade-left" data-aos-easing="linear" data-aos-duration="1500" --}}>
                     <div class="img-wrapper md-shape theme-blue">
                         <img src="{{ asset('/assets/website') }}/images/events-04.png" class=""
                             alt="Events fitnex">
@@ -64,10 +64,10 @@
     </section>
     <section class="registration-sec pt-100">
         <div class="container">
-            <h2 class="hd-70 heading text-primary-theme mb-20 text-center" data-aos="flip-left" data-aos-easing="linear" data-aos-duration="1500">Upcoming:</h2>
+            <h2 class="hd-70 heading text-primary-theme mb-20 text-center" {{-- data-aos="flip-left" data-aos-easing="linear" data-aos-duration="1500" --}}>Upcoming:</h2>
             <div class="row justify-content-center">
                 @foreach($events as $event)
-                    <div class="col-lg-8" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500">
+                    <div class="col-lg-8" {{-- data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500" --}}>
                         <div class="card-lg text-center p-4 mb-4">
                             <h3 class="hd-20 text-primary-theme mb-3">{{ $event['title'] }}</h3>
                             <p class="mb-1 text-white">{{ $event['host'] }}</p>

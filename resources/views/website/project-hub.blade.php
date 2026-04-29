@@ -272,7 +272,7 @@
         <div class="container">
             <div class="row">
                 @include('website.include.social-links')
-                <div class="col-lg-10 col-xl-9" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500">
+                <div class="col-lg-10 col-xl-9" {{-- data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500" --}}>
                     <div class="card">
                         <div class="shape-1"></div>
                         @if (isset($banner))
@@ -336,7 +336,7 @@
             <h1 class="section-title">Latest Projects</h1>
             <div class="row">
                 @foreach ($projects as $project)
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
+                    <div class="col-lg-4 col-md-6" {{-- data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}" --}}>
                         <div class="job-card">
                             <div class="job-image-container">
                                 @if ($project->image)

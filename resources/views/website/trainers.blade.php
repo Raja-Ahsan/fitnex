@@ -9,7 +9,7 @@
     <section class="inner-banner listing-banner"
         style="background: url('{{ ($banner && $banner->image) ? asset('/admin/assets/images/banner/' . $banner->image) : asset('/admin/assets/images/images.png') }}') no-repeat center/cover">
         <div class="container px-4 sm:px-6">
-            <h1 class="relative mx-auto text-3xl sm:text-4xl md:text-[50px] text-white font-bold leading-[1.1] text-center" data-aos="flip-right" data-aos-easing="linear" data-aos-duration="500">
+            <h1 class="relative mx-auto text-3xl sm:text-4xl md:text-[50px] text-white font-bold leading-[1.1] text-center" {{-- data-aos="flip-right" data-aos-easing="linear" data-aos-duration="500" --}}>
                 @php
                     $title = ($banner && $banner->name) ? $banner->name : '';
                     $parts = explode(' ', $title, 2);
@@ -38,19 +38,19 @@
 
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-8 sm:mb-10 md:mb-12">
-                <h3 class="sec-hd text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3" data-aos="flip-right" data-aos-easing="linear" data-aos-duration="500">Expert Trainers</h3>
+                <h3 class="sec-hd text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3" {{-- data-aos="flip-right" data-aos-easing="linear" data-aos-duration="500" --}}>Expert Trainers</h3>
                 @if(isset($selectedCategory) && $selectedCategory)
-                    <p class="para para-white max-w-[490px] mx-auto  text-sm sm:text-base md:text-lg px-2" data-aos="fade-right" data-aos-easing="linear" data-aos-duration="500">
+                    <p class="para para-white max-w-[490px] mx-auto  text-sm sm:text-base md:text-lg px-2" {{-- data-aos="fade-right" data-aos-easing="linear" data-aos-duration="500" --}}>
                         Showing: <span class="primary-theme font-bold">{{ $selectedCategory->title }}</span>@if(!empty($selectedDelivery ?? null))<span class="text-white"> — {{ ($selectedDelivery === 'online') ? 'Online' : 'In-person' }} sessions</span>@endif
                     </p>
                     
                 @elseif(!empty($noTrainersAvailable))
-                    <p class="para para-white max-w-[490px] mx-auto mb-2 text-sm sm:text-base md:text-lg px-2" data-aos="fade-right" data-aos-easing="linear" data-aos-duration="500">
+                    <p class="para para-white max-w-[490px] mx-auto mb-2 text-sm sm:text-base md:text-lg px-2" {{-- data-aos="fade-right" data-aos-easing="linear" data-aos-duration="500" --}}>
                         No trainers available for this service.
                     </p>
                     <a href="{{ route('trainers') }}" class="inline-block mt-2 text-sm text-gray-400 hover:text-white underline">View all professionals</a>
                 @else
-                    <p class="para para-white max-w-[490px] mx-auto text-sm sm:text-base md:text-lg px-2" data-aos="fade-right" data-aos-easing="linear" data-aos-duration="500">
+                    <p class="para para-white max-w-[490px] mx-auto text-sm sm:text-base md:text-lg px-2" {{-- data-aos="fade-right" data-aos-easing="linear" data-aos-duration="500" --}}>
                         Achieve your fitness goals with our experienced and passionate trainers at Fitnex.
                     </p>
                 @endif

@@ -306,62 +306,6 @@ class WebController extends Controller
         return redirect()->route('trainer.detail', $id)->with('message', 'Thank you! Your review has been submitted and will appear on the trainer\'s profile after admin approval.');
     }
 
-
-    /* public function Benefits()
-    {
-        $abouts = AboutUs::where('status', 1)->get();
-        $banner = Banner::where('id', 6)->where('status', 1)->first();
-        $testimonials = Testimonial::where('status', '=', 1)->get();
-        $page_title = 'Benefits | FITNEX';
-        return view('website.benefits', compact('page_title', 'abouts', 'banner', 'testimonials'));
-    } */
-
-    /* public function MemberDirectory()
-    {
-        $abouts = AboutUs::where('status', 1)->get();
-        $categories = Category::where('status', 1)->get();
-        $member_directories = MemberDirectory::where('status', 1)
-            ->with('category')
-            ->get()
-            ->groupBy('category_id');
-        $banner = Banner::where('id', 15)->where('status', 1)->first();
-        $page_title = 'Member Directory | FITNEX';
-        return view('website.member-directory', compact('page_title', 'categories', 'member_directories', 'abouts', 'banner'));
-    } */
-
-    /*  public function MemberDirectory()
-     {
-         $abouts = AboutUs::where('status', 1)->get();
-         $categories = Category::where('status', 1)->get();
-         $banner = Banner::where('id', 15)->where('status', 1)->first();
-         $page_title = 'Member Directory | FITNEX';
-
-         $member_directories_raw = MemberDirectory::where('status', 'approved')->get();
-         $member_directories = [];
-
-         foreach ($member_directories_raw as $member) {
-             $categoryIds = json_decode($member->category_id, true);
-             if (is_array($categoryIds)) {
-                 foreach ($categoryIds as $categoryId) {
-                     $member_directories[$categoryId][] = $member;
-                 }
-             }
-         }
-
-         $all_members = collect($member_directories_raw)->unique('title')->sortBy('title');
-
-         return view('website.member-directory', compact('page_title', 'categories', 'member_directories', 'all_members', 'abouts', 'banner'));
-     } */
-
-
-    /* public function Registration()
-    {
-        $banner = Banner::where('id', 16)->where('status', 1)->first();
-        $page_title = 'Registration | FITNEX';
-        $categories = Category::where('status', 1)->get();
-        $packages = Package::where('status', 1)->get();
-        return view('website.registration', compact('page_title', 'banner', 'packages', 'categories'));
-    } */
     public function Registration()
     {
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
@@ -381,43 +325,15 @@ class WebController extends Controller
         /*  $packages = Package::where('status', 1)->get(); */
         return view('website.sign-up', compact('page_title', 'banner', 'categories', 'coachCategory', 'coachDelivery'));
     }
-    public function Blogs()
+    /* public function Blogs()
     {
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
         $page_title = 'Blogs | FITNEX';
         $blog_categories = BlogCategory::where('status', 1)->get();
         $blogs = Blog::where('status', 1)->orderBy('created_at', 'desc')->get();
         return view('website.blogs', compact('page_title', 'banner', 'blogs', 'blog_categories'));
-    }
-    /* public function Events()
-    {
-        $banner = Banner::where('id', 7)->where('status', 1)->first();
-        $page_title = 'Events | FITNEX';
-        $events = Event::where('status', 1)->orderBy('date', 'asc')->get();
-        return view('website.events', compact('page_title', 'banner', 'events'));
     } */
-    /*  public function Careers()
-     {
-         $banner = Banner::where('id', 19)->where('status', 1)->first();
-         $page_title = 'Careers | FITNEX';
-         return view('website.careers', compact('page_title', 'banner'));
-     } */
-
-    /* public function ProjectHub()
-    {
-        $banner = Banner::where('id', 9)->where('status', 1)->first(); 
-        $projects = Project::where('status', 'approved')->get();
-        $page_title = 'Project Hub | FITNEX';
-        return view('website.project-hub', compact('page_title', 'projects', 'banner'));
-    } */
-
-    /*  public function Gallery()
-     {
-         $banner = Banner::where('status', 1)->first();
-         $page_title = 'Gallery | FITNEX';
-         return view('website.gallery', compact('page_title', 'banner'));
-     } */
-
+    
     public function ContactUs()
     {
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
@@ -451,14 +367,6 @@ class WebController extends Controller
         return view('website.thank-you', compact('page_title', 'banner'));
     }
 
-    /* public function AgentDetail($id)
-    {
-        $banner = Banner::where('status', 1)->first();
-        $page_title = 'Contractor Detail';
-        $agent_detail = User::where('id', $id)->first();
-        $contacts = Contact::where('status', 1)->where('agent_id', $id)->get();
-        return view('website.contractor-detail', compact('page_title', 'banner', 'contacts', 'agent_detail'));
-    } */
 
     public function SignUp()
     {
@@ -613,8 +521,5 @@ class WebController extends Controller
             return back()->withErrors(['error' => $errorMessage])->withInput();
         }
     }
-
-
-
      
 }

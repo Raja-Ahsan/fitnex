@@ -101,7 +101,7 @@ Route::get('get_cities', [TrainerController::class, 'get_cities'])->name('get_ci
 Route::post('appointment', [WebController::class, 'appointment'])->name('appointment');
 Route::get('about-us', [WebController::class, 'AboutUs'])->name('about-us');
 Route::get('benefits', [WebController::class, 'Benefits'])->name('benefits');
-Route::get('blogs', [WebController::class, 'Blogs'])->name('blogs');
+/* Route::get('blogs', [WebController::class, 'Blogs'])->name('blogs'); */
 
 Route::get('registration', [WebController::class, 'Registration'])->name('registration');
 Route::get('events', [WebController::class, 'Events'])->name('events');

@@ -2,9 +2,9 @@
     $trainersNavActive = request()->routeIs('trainers');
 @endphp
 <header class="header bg-black py-[10px]">
-    <div class="container" data-aos="fade-down"
+    <div class="container" {{-- data-aos="fade-down"
          data-aos-easing="linear"
-         data-aos-duration="1500">
+         data-aos-duration="1500" --}}>
         @if($home_page_data['footer_email'] ?? '')
         <div class="topbar text-end mb-[5px]">
             <a href="mailto:{{ $home_page_data['footer_email'] }}" class="text-white font-secondary "><span class="pe-[10px] text-[#0079D4]"><i class="fa-solid fa-envelope"></i></span>{{ $home_page_data['footer_email'] }}</a>
@@ -77,7 +77,7 @@
                         </div>
                     </li>
 
-                    <li><a href="{{ route('blogs') }}" class="px-[20px] {{ request()->routeIs('blogs') ? 'active' : '' }}">Blog</a></li>
+                    {{-- <li><a href="{{ route('blogs') }}" class="px-[20px] {{ request()->routeIs('blogs') ? 'active' : '' }}">Blog</a></li> --}}
                     <li><a href="{{ route('contact-us') }}" class="px-[20px] {{ request()->routeIs('contact-us') ? 'active' : '' }}">Contact us</a></li>
                     @if(!Auth::check())
                         <li><a href="{{ route('login') }}" class="px-[20px] {{ request()->routeIs('login') ? 'active' : '' }}">Login</a></li>
@@ -144,7 +144,7 @@
                 <a href="{{ route('registration') }}" class="inline-block mt-3 mb-2 text-sm text-[#0079D4]">Coach registration</a>
             </li>
 
-            <li class="py-[12px] text-center"><a href="{{ route('blogs') }}" class="text-white {{ request()->routeIs('blogs') ? 'active' : '' }}">Blog</a></li>
+           {{--  <li class="py-[12px] text-center"><a href="{{ route('blogs') }}" class="text-white {{ request()->routeIs('blogs') ? 'active' : '' }}">Blog</a></li> --}}
             <li class="py-[12px] text-center"><a href="{{ route('contact-us') }}" class="text-white {{ request()->routeIs('contact-us') ? 'active' : '' }}">Contact us</a></li>
             <li class="py-[15px] text-center">
                 <a href="{{ route('registration') }}" class="btn primary-btn border border-transparent">Try for FREE</a>

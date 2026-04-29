@@ -9,31 +9,31 @@
             <div class="container">
                 <div class="flex justify-center items-center flex-col text-center py-[200px]">
                     @if($homeslider->title) 
-                        <div class="label-area c" data-aos="fade-down"
+                        <div class="label-area c" {{-- data-aos="fade-down"
                             data-aos-easing="linear"
-                            data-aos-duration="1500">
+                            data-aos-duration="1500" --}}>
                             {{ $homeslider->title }}
                         </div> 
                     @endif  
                     <div>
                         @if($homeslider->heading) 
                             <h1 class="relative text-[50px] md:text-[70px] lg:text-[80px] xxl:text-[100px] text-white font-bold leading-[1.1] lg:max-w-[680px] xxl:max-w-[860px]"
-                                data-aos="flip-right"
+                                {{-- data-aos="flip-right"
                                 data-aos-easing="linear"
-                                data-aos-duration="1500"> 
+                                data-aos-duration="1500" --}}> 
                                 {!! formatFitnexText($homeslider->heading) !!}
                             </h1>
                         @endif 
                         @if($homeslider->description) 
-                            <div class="text-white font-secondary  text-[20px] mx-auto mb-[20px] max-w-[600px]" data-aos="fade-right"
+                            <div class="text-white font-secondary  text-[20px] mx-auto mb-[20px] max-w-[600px]" {{-- data-aos="fade-right"
                                 data-aos-easing="linear"
-                                data-aos-duration="1500">
+                                data-aos-duration="1500" --}}>
                                 {!! $homeslider->description !!}
                             </div>
                         @endif 
-                        <div class="flex justify-center gap-4 flex-wrap" data-aos="fade-up"
+                        <div class="flex justify-center gap-4 flex-wrap" {{-- data-aos="fade-up"
                             data-aos-easing="linear"
-                            data-aos-duration="1500">
+                            data-aos-duration="1500" --}}>
                             <a href="{{ route('trainers') }}" class="btn primary-btn border border-transparent">Find a Wellness Professional <span class="ps-[10px]"><i class="fa-solid fa-arrow-right"></i></span></a>
                             <a href="{{ route('registration') }}" class="btn primary-btn border border-transparent">Join as a Coach <span class="ps-[10px]"><i class="fa-solid fa-arrow-right"></i></span></a>
                         </div> 
@@ -118,13 +118,13 @@
 <section class="our-services bg-black">
     <div class="container">
         <h2 class="sec-hd text-center mb-[10px]"
-            data-aos="flip-right"
+            {{-- data-aos="flip-right"
             data-aos-easing="linear"
-            data-aos-duration="1500">our services</h2>
+            data-aos-duration="1500" --}}>our services</h2>
         <p class="para text-center max-w-[490px] mx-auto para-white mb-[30px]"
-            data-aos="fade-right"
+            {{-- data-aos="fade-right"
             data-aos-easing="linear"
-            data-aos-duration="1500">
+            data-aos-duration="1500" --}}>
             Strong offers 5 popular services to help you make
             comfortable choices that suit your needs.
         </p>
@@ -153,23 +153,23 @@
 <section class="fitness-journey bg-black py-[50px] md:py-[100px]">
     <div class="container">
         <h2 class="sec-hd text-center mb-[10px] max-w-[670px] mx-auto"
-            data-aos="flip-right"
+            {{-- data-aos="flip-right"
             data-aos-easing="linear"
-            data-aos-duration="1500">
+            data-aos-duration="1500" --}}>
             let's Transform Your
             Fitness Journey
         </h2>
         <p class="para text-center max-w-[490px] mx-auto para-white mb-[80px]"
-            data-aos="fade-right"
+            {{-- data-aos="fade-right"
             data-aos-easing="linear"
-            data-aos-duration="1500">
+            data-aos-duration="1500" --}}>
             10 years of experience in the fitness industry.
         </p>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-3 justify-between items-center max-w-[1000px] mx-auto mb-[40px]"
-        data-aos="fade-down"
+        {{-- data-aos="fade-down"
         data-aos-easing="linear"
-        data-aos-duration="1500">
+        data-aos-duration="1500" --}}>
         <div class="text-center">
             <h4 class="text-[48px] font-bold primary-theme count" data-number="0">
                 0
@@ -212,9 +212,9 @@
 <section class="about-sec bg-black pb-[50px] md:pb-[100px]">
     <div class="container">
         <div class="grid grid-cols-1 md:grid-cols-2 items-center gap-[30px]">
-            <div class="text-center md:text-start" data-aos="fade-right"
+            <div class="text-center md:text-start" {{-- data-aos="fade-right"
                 data-aos-easing="linear"
-                data-aos-duration="1500">
+                data-aos-duration="1500" --}}>
                 <h3 class="sec-hd mb-[20px]">{{ $home_page_data['home_about_title'] }}</h3>
                 <div class="para para-white mb-[10px]">
                     {!! $home_page_data['home_about_description'] !!}
@@ -224,9 +224,9 @@
                 </div>
             </div>
             <div
-                data-aos="fade-left"
+                {{-- data-aos="fade-left"
                 data-aos-easing="linear"
-                data-aos-duration="1500">
+                data-aos-duration="1500" --}}>
                 @if(isset($home_page_data['home_about_image']) && $home_page_data['home_about_image'] != '')
                     <img src="{{ asset('/admin/assets/images/page/'.$home_page_data['home_about_image']) }}" class="" alt="">
                 @else
@@ -251,9 +251,9 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center mb-8 sm:mb-10 md:mb-12">
             <h3 class="sec-hd text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3"
-                data-aos="flip-right" data-aos-easing="linear" data-aos-duration="500">Expert Trainers</h3>
+                {{-- data-aos="flip-right" data-aos-easing="linear" data-aos-duration="500" --}}>Expert Trainers</h3>
             <p class="para para-white max-w-[490px] mx-auto text-sm sm:text-base md:text-lg px-2"
-                data-aos="fade-right" data-aos-easing="linear" data-aos-duration="500">
+                {{-- data-aos="fade-right" data-aos-easing="linear" data-aos-duration="500" --}}>
                 Achieve your fitness goals with our experienced and passionate trainers at strong.
             </p>
         </div>
@@ -309,9 +309,9 @@
 <section class="testimonials-sec bg-black py-[50px] md:py-[100px]">
     <div class="container">
         <h2 class="sec-hd text-center mb-[40px] max-w-[670px] mx-auto"
-            data-aos="flip-right"
+            {{-- data-aos="flip-right"
             data-aos-easing="linear"
-            data-aos-duration="1500">
+            data-aos-duration="1500" --}}>
             What people say
         </h2>
     </div>
@@ -351,9 +351,9 @@
         <div class="bg-black py-[100px] px-[10px] lg:px-[150px]">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-[20px]">
                 <div class="max-w-[500px]"
-                    data-aos="fade-right"
+                    {{-- data-aos="fade-right"
                     data-aos-easing="linear"
-                    data-aos-duration="1500">
+                    data-aos-duration="1500" --}}>
                     <h3 class="sec-hd text-center md:text-start mb-[10px]">
                         free 7-day trial
                         signup
@@ -365,9 +365,9 @@
                     </p>
                     <div class="border-b border-bottom"></div>
                 </div>
-                <div data-aos="fade-left"
+                <div {{-- data-aos="fade-left"
                     data-aos-easing="linear"
-                    data-aos-duration="1500">
+                    data-aos-duration="1500" --}}>
                     <form action="{{ route('contactus.store') }}" id="regform" class="form-horizontal" enctype="multipart/form-data" method="post" accept-charset="utf-8">
                         @csrf
                         <div class="grid grid-cols-2 gap-[20px]">

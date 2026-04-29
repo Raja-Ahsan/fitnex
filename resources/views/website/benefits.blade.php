@@ -10,7 +10,7 @@
     <div class="container">
       <div class="row">
         @include('website.include.social-links') 
-        <div class="col-lg-7 col-xl-6" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500">
+        <div class="col-lg-7 col-xl-6" {{-- data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500" --}}>
           <div class="card">
             <div class="shape-1"></div>
               @if(isset($banner))
@@ -29,14 +29,14 @@
 </section>
 <section class="benefit-sec-2 py-150" id="sec-1">
   <div class="container">
-    <h2 class="hd-70 heading mb-20 text-center" data-aos="flip-left"
+    <h2 class="hd-70 heading mb-20 text-center" {{-- data-aos="flip-left"
      data-aos-easing="linear"
-     data-aos-duration="1500">
+     data-aos-duration="1500" --}}>
       <span class="text-primary-theme text-center text-capitalize">Member</span> <span>Benefits</span>
     </h2>
-    <p class="hd-42 fw-semibold text-center mb-50" data-aos="fade-up"
+    <p class="hd-42 fw-semibold text-center mb-50" {{-- data-aos="fade-up"
      data-aos-easing="linear"
-     data-aos-duration="1500">
+     data-aos-duration="1500" --}}>
       We promote, connect, and advocate for all local businesses within our Area.
     </p>
   </div>
@@ -81,9 +81,9 @@
 <section class="benefit-sec-3">
   <div class="container">
     <div class="row justify-content-between">
-      <div class="col-lg-6" data-aos="fade-right"
+      <div class="col-lg-6" {{-- data-aos="fade-right"
      data-aos-easing="linear"
-     data-aos-duration="1500">
+     data-aos-duration="1500" --}}>
         <h2 class="text-uppercase hd-42 heading mb-20">How we serve <span>our members:</span></h2>
         <p class="hd-20 fw-medium mb-20 text-capitalize lh-base">
           <span class="fw-bold">Share industry intelligence so you can plan for current and future business opportunities</span>.Timely insights and projections will help position you to submit effective proposals. 
@@ -98,9 +98,9 @@
           <span class="fw-bold">Establish your reputation</span>. Grow your reach and name recognition in our area and across the nation.
         </p>
       </div>
-      <div class="col-lg-5" data-aos="fade-left"
+      <div class="col-lg-5" {{-- data-aos="fade-left"
      data-aos-easing="linear"
-     data-aos-duration="1500">
+     data-aos-duration="1500" --}}>
         <div class="position-relative">
           <div class="img-wrapper md-shape">
             <img src="{{ asset('/assets/website') }}/images/about-01.png" class="" alt="our members">
