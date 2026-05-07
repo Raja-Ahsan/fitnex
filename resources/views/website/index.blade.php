@@ -252,8 +252,7 @@
         <div class="text-center mb-8 sm:mb-10 md:mb-12">
             <h3 class="sec-hd text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3"
                 {{-- data-aos="flip-right" data-aos-easing="linear" data-aos-duration="500" --}}>Expert Trainers</h3>
-            <p class="para para-white max-w-[490px] mx-auto text-sm sm:text-base md:text-lg px-2"
-                {{-- data-aos="fade-right" data-aos-easing="linear" data-aos-duration="500" --}}>
+            <p class="para para-white max-w-[490px] mx-auto text-sm sm:text-base md:text-lg px-2">
                 Achieve your fitness goals with our experienced and passionate trainers at strong.
             </p>
         </div>
