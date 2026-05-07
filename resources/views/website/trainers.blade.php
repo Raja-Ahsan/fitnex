@@ -70,7 +70,7 @@
                     data-title="{{ $trainer->trainer_type_display }}"
                     data-description="{{ $trainer->description }}"
                     data-price="Price: ${{ $trainer->price }}"
-                    data-aos="fade-up" data-aos-easing="linear" data-aos-duration="500" data-aos-delay="{{ $loop->index * 50 }}">
+                    {{-- data-aos="fade-up" data-aos-easing="linear" data-aos-duration="500" data-aos-delay="{{ $loop->index * 50 }}" --}}>
                     <a href="{{ route('trainer.detail', $trainer->id) }}" class="trainer-card-link block w-full no-underline group">
                         <div class="relative w-full overflow-hidden rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl bg-neutral-800" style="aspect-ratio: 3/4;">
                             @if($trainer->image)

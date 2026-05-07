@@ -134,9 +134,9 @@
         <div>
             <a href="{{ route('trainers', ['category' => $category->slug]) }}" class="block no-underline">
             <div class="our-services-item relative cursor-pointer" style="height: 100%"
-                data-aos="fade-up"
+                {{-- data-aos="fade-up"
                 data-aos-duration="600"
-                data-aos-delay="{{ $loop->index * 100 }}"
+                data-aos-delay="{{ $loop->index * 100 }}" --}}
                 >
                 <img src="{{ asset('/admin/assets/images/services/'.$category->image) }}" class="relative z-[1] h-full w-auto mx-auto" alt="">
                 <div class="our-services-content">
