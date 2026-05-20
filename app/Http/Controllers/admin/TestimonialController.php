@@ -48,7 +48,7 @@ class TestimonialController extends Controller
         $validator = $request->validate([
             'name' => 'required',
             'comment' => 'required',
-            'image' => 'mimes:jpeg,jpg,png,gif,webp|required|max:10000' // max 10000kb
+            'image' => 'mimes:jpeg,jpg,png,gif,webp|required|'.upload_file_rule()
         ]);
 
         $testimonail = new Testimonial();

@@ -70,7 +70,7 @@ class GalleryController extends Controller
     public function store(Request $request)
     {
         $validator = $request->validate([
-            'image' => 'mimes:jpeg,jpg,png,gif|required|max:10000',
+            'image' => 'mimes:jpeg,jpg,png,gif|required|'.upload_file_rule(),
         ]);
 
         $galleries = new Gallery();

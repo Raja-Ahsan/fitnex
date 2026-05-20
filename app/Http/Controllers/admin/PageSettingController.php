@@ -40,6 +40,8 @@ class PageSettingController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validateUploadedFiles($request);
+
         $model = PageSetting::where('parent_slug', $request->parent_slug)->first();
         if(empty($model)){
             foreach($request->all() as $key=>$value){
@@ -164,5 +166,31 @@ class PageSettingController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    protected function validateUploadedFiles(Request $request): void
+    {
+        $maxKb = upload_max_kb();
+        $mimes = upload_allowed_mimes();
+
+        $rules = [];
+        foreach ($request->allFiles() as $key => $file) {
+            if (is_array($file)) {
+                foreach ($file as $index => $uploaded) {
+                    $rules["{$key}.{$index}"] = ['nullable', 'file', "mimes:{$mimes}", "max:{$maxKb}"];
+                }
+            } else {
+                $rules[$key] = ['nullable', 'file', "mimes:{$mimes}", "max:{$maxKb}"];
+            }
+        }
+
+        if ($rules === []) {
+            return;
+        }
+
+        $request->validate($rules, [
+            '*.max' => config('upload.file_max_exceeded_message'),
+            '*.mimes' => 'Only image files (JPEG, PNG, GIF, WebP, SVG, ICO) are allowed.',
+        ]);
     }
 }

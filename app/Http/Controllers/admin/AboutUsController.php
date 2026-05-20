@@ -122,7 +122,7 @@ class AboutUsController extends Controller
     {
         /* $validator=$request->validate([
             'heading' => 'required',
-            'image' => 'mimes:jpeg,jpg,png,gif|required|max:10000',
+            'image' => 'mimes:jpeg,jpg,png,gif|required|'.upload_file_rule(),
         ]); */
 
         $updates = AboutUs::where('id', $id)->first();

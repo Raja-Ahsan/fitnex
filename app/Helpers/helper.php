@@ -62,3 +62,46 @@ if (!function_exists('formatFitnexText')) {
         return '';
     }
 }
+
+if (!function_exists('upload_max_kb')) {
+    function upload_max_kb(): int
+    {
+        return (int) config('upload.max_file_size_kb');
+    }
+}
+
+if (!function_exists('upload_max_mb')) {
+    function upload_max_mb(): string
+    {
+        return (string) config('upload.max_file_size_mb');
+    }
+}
+
+if (!function_exists('upload_max_bytes')) {
+    function upload_max_bytes(): int
+    {
+        return (int) config('upload.max_file_size_bytes');
+    }
+}
+
+if (!function_exists('upload_file_rule')) {
+    /** Laravel file validation: max size in KB from .env */
+    function upload_file_rule(): string
+    {
+        return 'max:' . upload_max_kb();
+    }
+}
+
+if (!function_exists('upload_too_large_message')) {
+    function upload_too_large_message(): string
+    {
+        return (string) config('upload.too_large_message');
+    }
+}
+
+if (!function_exists('upload_allowed_mimes')) {
+    function upload_allowed_mimes(): string
+    {
+        return (string) config('upload.allowed_mimes');
+    }
+}

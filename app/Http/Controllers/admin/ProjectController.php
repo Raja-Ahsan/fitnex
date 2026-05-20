@@ -124,7 +124,7 @@ class ProjectController extends Controller
             'key_links' => 'nullable|array',
             'key_links.*.url' => 'nullable|url',
             'key_links.*.label' => 'nullable|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|'.upload_file_rule()
         ]);
         //dd($request->all());
 
@@ -331,7 +331,7 @@ class ProjectController extends Controller
             'key_links' => 'nullable|array',
             'key_links.*.url' => 'nullable|url',
             'key_links.*.label' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Ensure the image is valid
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|'.upload_file_rule(),
         ];
 
         // Add status and rejection reason validation only for admins

@@ -84,7 +84,7 @@ class TrainerController extends Controller
         'price' => 'required',
         'state' => 'required', 
         'city' => 'required',
-        'image' => 'required|mimes:jpeg,jpg,png,gif,webp|max:10000',
+        'image' => 'required|mimes:jpeg,jpg,png,gif,webp|'.upload_file_rule(),
     ]);
 
     // Generate secure random password
@@ -178,7 +178,7 @@ class TrainerController extends Controller
         
         $validator = $request->validate([
             'name' => 'required',
-            'image' => 'mimes:jpeg,jpg,png,gif,webp|nullable|max:10000',
+            'image' => 'mimes:jpeg,jpg,png,gif,webp|nullable|'.upload_file_rule(),
             'designation' => 'required',
             'email' => 'nullable|email',
             'phone' => 'nullable',

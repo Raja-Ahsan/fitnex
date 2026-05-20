@@ -66,7 +66,7 @@ class AgentController extends Controller
     {
         $validator = $request->validate([
             'name' => 'required',
-            'image' => 'mimes:jpeg,jpg,png,gif|required|max:10000',
+            'image' => 'mimes:jpeg,jpg,png,gif|required|'.upload_file_rule(),
             'designation' => 'required',
         ]);
 

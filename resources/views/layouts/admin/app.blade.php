@@ -295,6 +295,33 @@
 	}
 	toastr.warning("{{ session('warning') }}");
 	@endif
+
+	@if ($errors->any())
+	toastr.options = {
+		"closeButton": true,
+		"progressBar": true
+	}
+	toastr.error(@json($errors->first()));
+	@endif
+</script>
+<script>
+	(function () {
+		var maxBytes = {{ upload_max_bytes() }};
+		var maxMb = @json(upload_max_mb());
+
+		document.querySelectorAll('input[type="file"]').forEach(function (input) {
+			input.addEventListener('change', function () {
+				var file = input.files && input.files[0];
+				if (!file) {
+					return;
+				}
+				if (file.size > maxBytes) {
+					input.value = '';
+					toastr.error('File "' + file.name + '" must not exceed ' + maxMb + ' MB.');
+				}
+			});
+		});
+	})();
 </script>
 @stack('js')
 

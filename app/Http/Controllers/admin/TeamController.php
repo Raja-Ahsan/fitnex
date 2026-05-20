@@ -63,7 +63,7 @@ class TeamController extends Controller
         $validator = $request->validate([
             'name' => 'required',
             'designation' => 'required',
-            'image' => 'mimes:jpeg,jpg,png,gif|required|max:10000' // max 10000kb
+            'image' => 'mimes:jpeg,jpg,png,gif|required|'.upload_file_rule()
         ]);
 
         $team = new Team();
