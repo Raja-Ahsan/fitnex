@@ -2,7 +2,7 @@
 
 @php
     $trainerAttrs = $trainer->getAttributes();
-    $selectedSlugs = old('trainer_types', !empty($trainerAttrs['trainer_type']) ? array_filter(explode(',', $trainerAttrs['trainer_type'])) : []);
+    $selectedSlugs = old('trainer_types', $selectedTypeSlugs ?? \App\Services\TrainerProfileSync::trainerTypeSlugs($trainer));
     $specializations = old('specialization', !empty($trainerAttrs['specialization']) ? (json_decode($trainerAttrs['specialization'], true) ?: []) : []);
     if (empty($specializations)) {
         $specializations = [''];
@@ -106,8 +106,19 @@
                 <div class="profile-note" data-profile-success="{{ session('success') }}" style="margin-top:12px;color:#155724;"></div>
             @endif
 
+            @if ($errors->any())
+                <div class="alert alert-danger" style="margin-top:12px;border-radius:10px;">
+                    <strong>Please fix the following:</strong>
+                    <ul style="margin:8px 0 0 18px;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="glass-card">
-                <form action="{{ route('trainer.profile.update') }}" method="POST" enctype="multipart/form-data">
+                <form id="trainer-profile-form" action="{{ route('trainer.profile.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="glass-panel">
@@ -292,7 +303,28 @@
     }
 
     if ($.fn.select2) {
-        $('.select2-trainer-categories').select2({ width: '100%', placeholder: 'Select categories' });
+        var $categories = $('.select2-trainer-categories');
+        $categories.select2({ width: '100%', placeholder: 'Select categories' });
+        var preset = @json($selectedSlugs);
+        if (preset && preset.length) {
+            $categories.val(preset).trigger('change');
+        }
+    }
+
+    var profileForm = document.getElementById('trainer-profile-form');
+    if (profileForm) {
+        profileForm.addEventListener('submit', function (e) {
+            var $categories = $('#trainer_types');
+            if ($categories.length && $categories.data('select2')) {
+                var val = $categories.val();
+                if (!val || !val.length) {
+                    e.preventDefault();
+                    alert('Please select at least one category.');
+                    return;
+                }
+                $categories.val(val).trigger('change.select2');
+            }
+        });
     }
 
     function updateRemoveButtons() {

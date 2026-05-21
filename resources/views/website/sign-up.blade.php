@@ -176,7 +176,35 @@
         border: 1px solid #f5c6cb;
         border-radius: .25rem;
     }
+    .coach-focus-card {
+        background: linear-gradient(135deg, rgba(0, 121, 212, 0.08), rgba(0, 66, 116, 0.05));
+        border: 1px solid rgba(0, 121, 212, 0.25);
+        border-radius: 0.75rem;
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.75rem;
+    }
+    .coach-focus-card__title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #004274;
+        margin: 0 0 0.35rem;
+        text-align: center;
+    }
+    .coach-focus-card__hint {
+        text-align: center;
+        color: var(--secondary-color);
+        font-size: 0.875rem;
+        margin: 0 0 1.25rem;
+    }
+    .coach-focus-card .input-field {
+        min-height: 44px;
+    }
 </style>
+
+@php
+    $selectedCategorySlug = old('trainer_category', $coachCategory?->slug ?? '');
+    $selectedDelivery = old('delivery', $coachDelivery ?? '');
+@endphp
 
 <!-- Banner Section -->
 <section class="inner-banner listing-banner" style="background: url('{{ ($banner && $banner->image) ? asset('/admin/assets/images/banner/'.$banner->image) : asset('/admin/assets/images/images.png') }}') no-repeat center/cover">
@@ -197,26 +225,43 @@
     <div class="signup-container" {{-- data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000" --}}>
         <h2 class="form-title"><span>FITNEX Trainer Registration</span></h2>
         <p class="form-subtitle">Join FITNEX as a trainer and start your fitness journey! Registration is free.</p>
-        @if(!empty($coachCategory) || !empty($coachDelivery))
-            <div class="form-field-group" style="background: rgba(0, 121, 212, 0.08); border: 1px solid rgba(0, 121, 212, 0.35); border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 1.5rem; text-align: center;">
-                <p class="field-label" style="margin-bottom: 0.25rem;">Your coaching focus</p>
-                <p style="color: var(--text-color); font-size: 0.95rem; margin: 0;">
-                    @if(!empty($coachCategory) && !empty($coachDelivery))
-                        <strong>{{ $coachCategory->title }}</strong> — {{ $coachDelivery === 'online' ? 'online' : 'in-person' }} sessions.
-                    @elseif(!empty($coachCategory))
-                        <strong>{{ $coachCategory->title }}</strong>.
-                    @else
-                        {{ $coachDelivery === 'online' ? 'Online' : 'In-person' }} sessions.
-                    @endif
-                </p>
-            </div>
-        @endif
         <form method="POST" action="{{ route('user.register.store') }}" id="subscription-form" enctype="multipart/form-data">
             @csrf
-            <!-- Hidden field for Trainer role - trainers register for free -->
             <input type="hidden" name="role" value="trainer">
             <input type="hidden" name="amount" value="0">
-            
+
+            <div class="coach-focus-card">
+                <h3 class="coach-focus-card__title">Your coaching focus</h3>
+                <p class="coach-focus-card__hint">Choose your category and how you deliver sessions. You can change these later in your trainer profile.</p>
+                <div class="form-row">
+                    <div class="form-col form-col-half">
+                        <div class="form-field-group" style="margin-bottom:0;">
+                            <label for="trainer_category" class="field-label">Coach category <span style="color:#dc3545;">*</span></label>
+                            <select name="trainer_category" id="trainer_category" class="input-field @error('trainer_category') invalid-input @enderror" required>
+                                <option value="">Select a category</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->slug }}" {{ $selectedCategorySlug === $category->slug ? 'selected' : '' }}>
+                                        {{ $category->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('trainer_category')<div class="error-message">{{ $message }}</div>@enderror
+                        </div>
+                    </div>
+                    <div class="form-col form-col-half">
+                        <div class="form-field-group" style="margin-bottom:0;">
+                            <label for="delivery" class="field-label">Session delivery <span style="color:#dc3545;">*</span></label>
+                            <select name="delivery" id="delivery" class="input-field @error('delivery') invalid-input @enderror" required>
+                                <option value="">Select delivery type</option>
+                                <option value="online" {{ $selectedDelivery === 'online' ? 'selected' : '' }}>Online coaching</option>
+                                <option value="in_person" {{ $selectedDelivery === 'in_person' ? 'selected' : '' }}>In-person coaching</option>
+                                <option value="both" {{ $selectedDelivery === 'both' ? 'selected' : '' }}>Online &amp; in-person</option>
+                            </select>
+                            @error('delivery')<div class="error-message">{{ $message }}</div>@enderror
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="form-row">
                 <!-- First Name -->
                 <div class="form-col form-col-half">

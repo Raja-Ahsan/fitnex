@@ -19,11 +19,11 @@
         <img src="{{ asset('/admin/assets/images/default.jpg') }}" style="width:60px;">
         @endif
     </td>
-    <td>{{ $user->name }}</td>
+    <td>{{ $user->name }} {{ $user->last_name }}</td>
     <td>{{ $user->phone ?? 'N/A' }}</td>
     <td>{{ $user->email }}</td>
     <td>{!! format_address($user->designation, 10) !!}</td>
-    @if(Auth::user()->hasRole('Admin'))
+    @if(!Auth::user()->hasRole('Trainer'))
     <td>
         @if($user->date_of_birth)
         {{ \Carbon\Carbon::parse($user->date_of_birth)->age }} years

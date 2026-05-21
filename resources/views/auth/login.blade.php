@@ -80,7 +80,7 @@
                             <p>Don't have an account? <a href="{{ route('registration') }}">Register</a> </p>
                         </div>
 
-                        <hr style="margin: 20px 0; border-color: #ddd;">
+{{--                         <hr style="margin: 20px 0; border-color: #ddd;">
                         <p class="login-head fs-16" style="margin-bottom: 10px;"><strong>Didn't get verification email?</strong></p>
                         <form method="POST" action="{{ route('verification.resend') }}">
                             @csrf
@@ -90,7 +90,7 @@
                             <button type="submit" class="btn primary-btn d-flex justify-content-center text-capitalize w-full" style="background-color: #004274; border-color: #004274; border-radius: 7px; padding: 10px 0;">
                                 Resend verification email
                             </button>
-                        </form>
+                        </form> --}}
                     </div>
                 </div>
             </div>

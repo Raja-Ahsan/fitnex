@@ -1,13 +1,13 @@
-@extends(((Auth::user()->hasRole('Admin')) ? 'layouts.admin.app' : 'layouts.customer.app'))
+@extends(Auth::user()->hasRole('Trainer') ? 'layouts.trainer.app' : 'layouts.admin.app')
 @section('title', $page_title)
 @section('content')
 <input type="hidden" id="page_url" value="{{ route('user.index') }}">
 <section class="content-header">
     <div class="content-header-left">
-        @if(Auth::user()->hasRole('Admin'))
-        <h1>All Users</h1>
+        @if(Auth::user()->hasRole('Trainer'))
+        <h1>{{ $page_title ?? 'All Trainer' }}</h1>
         @else
-        <h1>All Contractors</h1>
+        <h1>{{ $page_title ?? 'All Users' }}</h1>
         @endif
     </div>
     <!-- @can('user-create')
@@ -55,7 +55,7 @@
                                     <th>Phone</th>
                                     <th>E-mail</th>
                                     <th>Designation</th>
-                                    @if(Auth::user()->hasRole('Admin'))
+                                    @if(!Auth::user()->hasRole('Trainer'))
                                     <th>Age</th>
                                     <th>Team</th>
                                     <th>Gender</th>
@@ -88,11 +88,11 @@
                                         <img src="{{ asset('/admin/assets/images/default.jpg') }}" style="width:60px;">
                                         @endif
                                     </td>
-                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->name }} {{ $user->last_name }}</td>
                                     <td>{{ $user->phone ?? 'N/A' }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{!! format_address($user->designation, 10) !!}</td>
-                                    @if(Auth::user()->hasRole('Admin'))
+                                    @if(!Auth::user()->hasRole('Trainer'))
                                     <td>
                                         @if($user->date_of_birth)
                                         {{ \Carbon\Carbon::parse($user->date_of_birth)->age }} years

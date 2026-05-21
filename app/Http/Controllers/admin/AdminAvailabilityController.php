@@ -31,7 +31,12 @@ class AdminAvailabilityController extends Controller
         $availabilities = $query->orderBy('trainer_id')->orderBy('day_of_week')->orderBy('start_time')->paginate(50);
         
         // Get all trainers for filter dropdown
-        $trainers = Trainer::where('status', 1)->orderBy('name')->get();
+        $trainers = Trainer::where('trainers.status', 1)
+            ->join('users', 'trainers.created_by', '=', 'users.id')
+            ->orderBy('users.name')
+            ->orderBy('users.last_name')
+            ->select('trainers.*')
+            ->get();
         
         // Days of week
         $days = [

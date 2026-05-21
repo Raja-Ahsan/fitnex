@@ -83,20 +83,13 @@ class AdminController extends Controller
         
         return redirect()->back()->with('error', 'Failed to login. Please check your credentials and try again.');
     }
-    public function logOut()
+    public function logOut(Request $request)
     {
-        
-        if(Auth::check() && Auth::user()->hasRole('admin')){
-            Auth::logout();
-            return redirect()->route('admin.login');
-        }elseif(Auth::check() && Auth::user()->hasRole('Trainer')){
-            Auth::logout();
-            return redirect()->route('login');
-        }else{
-            Auth::logout();
-            return redirect()->route('login');
-        }
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
+        return redirect()->route('admin.login');
     }
 
     //Password reset

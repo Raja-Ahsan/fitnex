@@ -37,7 +37,14 @@
                             <tr>
                                 <td>#{{ $blocked->id }}</td>
                                 <td>
-                                    <strong>{{ $blocked->trainer->name ?? 'N/A' }}</strong>
+                                    @if($blocked->trainer)
+                                        <strong>{{ trim($blocked->trainer->name) ?: 'N/A' }}</strong>
+                                        @if($blocked->trainer->trashed())
+                                            <span class="label label-default" style="margin-left:4px;">Deleted</span>
+                                        @endif
+                                    @else
+                                        <span class="text-muted">N/A</span>
+                                    @endif
                                 </td>
                                 <td>
                                     {{ \Carbon\Carbon::parse($blocked->date)->format('M d, Y') }}

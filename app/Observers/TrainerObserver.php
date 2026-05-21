@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\User;
 use App\Models\Trainer;
+use App\Services\TrainerProfileSync;
 
 class TrainerObserver
 {
@@ -89,24 +90,11 @@ class TrainerObserver
      */
     protected function syncTrainer(User $user): void
     {
-        $trainer = Trainer::where('created_by', $user->id)->first();
+        // Same row as trainer profile edit (not Trainer::first() which can be a duplicate empty row)
+        $trainer = TrainerProfileSync::resolveTrainer($user);
 
-        $trainerData = [
-            'created_by' => $user->id,
-            'status' => $user->status == 1 ? 1 : 0, // Sync status from user
-            // Note: We don't store duplicate fields (name, email, phone, image, designation, social media)
-            // These are accessed through the user relationship via accessor methods
-        ];
-
-        if ($trainer) {
-            // Update existing trainer - only update status, keep other trainer-specific fields
-            $trainer->update([
-                'status' => $user->status == 1 ? 1 : 0,
-            ]);
-        } else {
-            // Create new trainer record with minimal data
-            // Trainer-specific fields will be set later through admin panel or trainer profile
-            Trainer::create($trainerData);
-        }
+        $trainer->update([
+            'status' => $user->status == 1 ? 1 : 0,
+        ]);
     }
 }

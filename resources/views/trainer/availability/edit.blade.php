@@ -105,7 +105,7 @@
                         </div>
 
                         <div class="form-group fitnex-check">
-                            <label class="checkbox-inline" style="padding-left:0;">
+                            <label class="checkbox-inline" style="padding-left:22px;">
                                 <input type="checkbox" name="is_active" id="is_active" value="1"
                                     {{ old('is_active', $availability->is_active) ? 'checked' : '' }}>
                                 Active &mdash; generate bookable slots for this window

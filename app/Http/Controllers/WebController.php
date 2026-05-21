@@ -33,6 +33,7 @@ use App\Models\Blog;
 use App\Models\Trainer;
 use App\Models\TrainerReview;
 use App\Models\BlogCategory;
+use App\Services\TrainerProfileSync;
 use App\Services\VerificationEmailService;
 
 class WebController extends Controller
@@ -75,19 +76,8 @@ class WebController extends Controller
         if (Auth::attempt($credentials)) {
             $authenticatedUser = Auth::user();
             
-            // Ensure Trainer record exists
-            $trainer = Trainer::where('created_by', $authenticatedUser->id)->first();
-            if (!$trainer) {
-                Trainer::create([
-                    'created_by' => $authenticatedUser->id,
-                    'name' => $authenticatedUser->name . ' ' . ($authenticatedUser->last_name ?? ''),
-                    'email' => $authenticatedUser->email,
-                    'phone' => $authenticatedUser->phone,
-                    'status' => 0, // Inactive until profile is completed
-                ]);
-            }
-            
-            // Redirect trainers to trainer dashboard
+            TrainerProfileSync::resolveTrainer($authenticatedUser);
+
             return redirect()->route('trainer.dashboard');
         }
         
@@ -326,7 +316,7 @@ class WebController extends Controller
     {
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
         $page_title = 'Registration | FITNEX';
-        $categories = Category::where('status', 1)->get();
+        $categories = Category::where('status', 1)->orderBy('title')->get(['id', 'title', 'slug']);
         $coachCategory = null;
         $coachDelivery = null;
         if (request()->filled('category')) {
@@ -338,7 +328,7 @@ class WebController extends Controller
                 $coachDelivery = $d;
             }
         }
-        /*  $packages = Package::where('status', 1)->get(); */
+
         return view('website.sign-up', compact('page_title', 'banner', 'categories', 'coachCategory', 'coachDelivery'));
     }
     /* public function Blogs()
@@ -398,20 +388,24 @@ class WebController extends Controller
 
     public function storeUser(Request $request)
     {
-        $this->validate($request, [
+        $isTrainer = strtolower((string) $request->role) === 'trainer';
+
+        $rules = [
             'name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|same:password_confirmation',
             'phone' => 'required',
             'role' => 'required',
-            /*'package_id' => 'required',     
-            'package_description' => 'required', */
-        ]);
+        ];
+
+        if ($isTrainer) {
+            $rules = array_merge($rules, TrainerProfileSync::registrationRules());
+        }
+
+        $this->validate($request, $rules);
 
         try {
-            // Check if user is registering as trainer - trainers register for free
-            $isTrainer = strtolower($request->role) === 'trainer';
             
             // Only process payment if amount is not 0 AND user is not a trainer
             if ($request->amount != 0 && !$isTrainer) {
@@ -488,10 +482,18 @@ class WebController extends Controller
                     'password' => Hash::make($request->password),
                     'phone' => $request->phone,
                     'role' => $isTrainer ? 'Trainer' : $request->role,
+                    'category_id' => $isTrainer
+                        ? TrainerProfileSync::categoryIdFromSlug((string) $request->trainer_category)
+                        : null,
                     'status' => 0, // Set as inactive until email is verified
                 ]);
 
                 VerificationEmailService::assignRegistrationRole($user, $request->role);
+
+                if ($isTrainer) {
+                    TrainerProfileSync::createFromRegistration($user, $request);
+                }
+
                 VerificationEmailService::generateVerifyToken($user);
                 $emailSent = VerificationEmailService::send($user);
 

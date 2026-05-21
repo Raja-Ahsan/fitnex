@@ -50,10 +50,11 @@ class GoogleCalendarController extends Controller
 
         $googleConfigured = google_oauth_configured();
 
-        if (!$googleConfigured && $this->userIsAdmin()) {
-            session()->flash('error', 'Google Calendar is not configured. Add GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_REDIRECT_URI in .env (Google Cloud Console).');
-        } elseif (!$googleConfigured) {
-            session()->flash('warning', 'Google Calendar sync is temporarily unavailable. Please try again later or contact FITNEX support.');
+        if (!$googleConfigured) {
+            $message = $this->userIsAdmin()
+                ? 'Google Calendar is not configured yet. Add GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_REDIRECT_URI in .env, then run php artisan config:clear.'
+                : 'Google Calendar sync is not available yet. Please contact FITNEX support.';
+            session()->flash('warning', $message);
         }
 
         return view('trainer.google.connect', compact('trainer', 'googleAccount', 'googleConfigured'));
@@ -66,7 +67,7 @@ class GoogleCalendarController extends Controller
     {
         if (!$this->client || !google_oauth_configured()) {
             return redirect()->route('trainer.google.index')
-                ->with('error', 'Google Calendar API credentials are not configured. Ask admin to set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env.');
+                ->with('warning', 'Google Calendar is not set up on this site yet. An administrator must add Google OAuth credentials in .env.');
         }
 
         $authUrl = $this->client->createAuthUrl();

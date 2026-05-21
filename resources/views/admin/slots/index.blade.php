@@ -131,7 +131,14 @@
                             <tr>
                                 <td>#{{ $slot->id }}</td>
                                 <td>
-                                    <strong>{{ $slot->trainer->name ?? 'N/A' }}</strong>
+                                    @if($slot->trainer)
+                                        <strong>{{ trim($slot->trainer->name) ?: 'N/A' }}</strong>
+                                        @if($slot->trainer->trashed())
+                                            <span class="label label-default" style="margin-left:4px;">Deleted</span>
+                                        @endif
+                                    @else
+                                        <span class="text-muted">N/A</span>
+                                    @endif
                                 </td>
                                 <td>
                                     {{ \Carbon\Carbon::parse($slot->slot_datetime)->format('M d, Y h:i A') }}

@@ -18,7 +18,10 @@ class AdminSlotController extends Controller
     {
         $page_title = 'All Trainer Slots';
         
-        $query = TimeSlot::with(['trainer', 'availability']);
+        $query = TimeSlot::with([
+            'trainer' => fn ($q) => $q->withTrashed(),
+            'availability',
+        ]);
         
         // Filter by trainer if provided
         if ($request->has('trainer_id') && $request->trainer_id) {
@@ -46,8 +49,13 @@ class AdminSlotController extends Controller
         
         $slots = $query->orderBy('slot_datetime', 'desc')->paginate(50);
         
-        // Get all trainers for filter dropdown
-        $trainers = Trainer::where('status', 1)->orderBy('name')->get();
+        // Get all trainers for filter dropdown (name lives on users, not trainers)
+        $trainers = Trainer::where('trainers.status', 1)
+            ->join('users', 'trainers.created_by', '=', 'users.id')
+            ->orderBy('users.name')
+            ->orderBy('users.last_name')
+            ->select('trainers.*')
+            ->get();
         
         // Get statistics
         // Note: Blocked slots are stored in blocked_slots table, not time_slots table
@@ -70,7 +78,9 @@ class AdminSlotController extends Controller
     {
         $page_title = 'Blocked Slots';
         
-        $blockedSlots = BlockedSlot::with(['trainer'])
+        $blockedSlots = BlockedSlot::with([
+            'trainer' => fn ($q) => $q->withTrashed(),
+        ])
             ->orderBy('date', 'desc')
             ->orderBy('start_time', 'desc')
             ->paginate(50);

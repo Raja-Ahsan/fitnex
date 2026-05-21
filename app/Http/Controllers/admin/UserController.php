@@ -9,6 +9,7 @@ use App\Models\City;
 use App\Models\State;
 use App\Models\Payment;
 use App\Models\Trainer;
+use App\Services\TrainerProfileSync;
 use App\Models\Role as UserRole;
 use Spatie\Permission\Models\Role;
 use DB;
@@ -71,19 +72,16 @@ class UserController extends Controller
         }
 
         // Non-AJAX request filtering
+        $page_title = 'All Users';
+        $users = User::orderBy('id', 'asc')->paginate(10);
+
         if ($user->hasRole('Trainer')) {
-            // Set the page title
             $page_title = 'All Trainer';
-            $users = User::where('role', 'Trainer')->paginate(10); // Only show Contractors
+            $users = User::where('role', 'Trainer')->paginate(10);
         } elseif ($user->hasRole('Admin')) {
-            // Set the page title
-            $page_title = 'All Users';
-            $users = User::where('role', '!=', 'Admin')->paginate(10); // Show all users except Admins
-        } else {
-            $users = User::orderby('id', 'asc')->paginate(10); // Default case (if there are more roles)
+            $users = User::where('role', '!=', 'Admin')->paginate(10);
         }
 
-        // Return the view
         return view('admin.user.index', compact('users', 'page_title'));
     }
 
@@ -321,18 +319,9 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $authenticatedUser = Auth::user();
             
-            // Ensure Trainer record exists
-            $trainer = Trainer::where('created_by', $authenticatedUser->id)->first();
-            if (!$trainer) {
-                Trainer::create([
-                    'created_by' => $authenticatedUser->id,
-                    'name' => $authenticatedUser->name . ' ' . ($authenticatedUser->last_name ?? ''),
-                    'email' => $authenticatedUser->email,
-                    'phone' => $authenticatedUser->phone,
-                    'status' => 0, // Inactive until profile is completed
-                ]);
-            }
-            
+            // Ensure one trainer row exists (name/email live on users table, not trainers)
+            TrainerProfileSync::resolveTrainer($authenticatedUser);
+
             // Redirect trainers to trainer dashboard
             return redirect()->route('trainer.dashboard');
         }
@@ -341,9 +330,12 @@ class UserController extends Controller
     }
 
 
-    public function logOut()
+    public function logOut(Request $request)
     {
         Auth::logout();
-        return redirect()->route('/');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
 }

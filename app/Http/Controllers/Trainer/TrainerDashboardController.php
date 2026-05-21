@@ -75,8 +75,16 @@ class TrainerDashboardController extends Controller
         $user = Auth::user();
         $trainer = TrainerProfileSync::resolveTrainer($user);
         $categories = Category::orderBy('title')->where('status', 1)->get();
+        $selectedTypeSlugs = TrainerProfileSync::trainerTypeSlugs($trainer);
 
-        return view('trainer.profile.edit', compact('user', 'trainer', 'categories'));
+        if ($selectedTypeSlugs === [] && !empty($user->category_id)) {
+            $primary = Category::find($user->category_id);
+            if ($primary?->slug) {
+                $selectedTypeSlugs = [$primary->slug];
+            }
+        }
+
+        return view('trainer.profile.edit', compact('user', 'trainer', 'categories', 'selectedTypeSlugs'));
     }
 
     public function updateProfile(Request $request)
@@ -94,7 +102,7 @@ class TrainerDashboardController extends Controller
                 ->withInput();
         }
 
-        TrainerProfileSync::syncFromRequest($request, $user, $trainer);
+        $trainer = TrainerProfileSync::syncFromRequest($request, $user, $trainer);
 
         $user->refresh();
         Auth::setUser($user);
