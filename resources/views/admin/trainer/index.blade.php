@@ -1,138 +1,99 @@
 @extends('layouts.admin.app')
+
 @section('title', $page_title)
+
 @section('content')
 <input type="hidden" id="page_url" value="{{ route('trainer.index') }}">
-<section class="content-header">
-	<div class="content-header-left">
-		<h1>{{$page_title}}</h1>
-	</div>
-	@can('trainer-create')
-	<div class="content-header-right">
-		<a href="{{ route('trainer.create') }}" class="btn btn-primary btn-sm">Add Trainer</a>
-	</div>
-	@endcan
-</section>
+
 <section class="content">
-	<div class="row">
-		<div class="col-md-12">
-			@if (session('status'))
-			<div class="callout callout-success">
-				{{ session('status') }}
-			</div>
-			@endif
-			<div class="box box-info">
-				<div class="box-body">
-					<div class="row">
-						<div class="col-sm-1">Search:</div>
-						<div class="d-flex col-sm-6">
-							<input type="text" id="search" class="form-control" placeholder="Search by name">
-						</div>
-						<div class="d-flex col-sm-5">
-							<select name="status" id="status" class="form-control status" style="margin-bottom:5px">
-								<option value="All" selected>Search by status</option>
-								<option value="1">Active</option>
-								<option value="2">In-Active</option>
-							</select>
-						</div>
-					</div>
-					<div class="card-body table-responsive p-0">
-						<table id="" class="table table-hover table-bordered">
-							<thead>
-								<tr>
-									<th width="30">SL</th>
-									<th>Image</th>
-									<th>Trainer Type</th>
-									<th>Name</th>
-									<th>Designation</th>
-									{{-- <th>Email</th>
-									<th>Phone</th> --}}
-									<th>Description</th>
-									<th>Price</th> 
-									<th>Rating</th>
-									<th>Specialization</th> 
-									<th>Instagram</th> 
-									<!-- <th>Google Calendar ID</th> -->
-									<th>Status</th>
-									<th>Created by</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody id="body">
-								@foreach($trainers as $key=>$trainer)
-								<tr id="id-{{ $trainer->slug }}">
-									<td>{{ $trainers->firstItem()+$key }}.</td>
-									<td>
-										@if($trainer->image)
-										<img src="{{ asset('/admin/assets/images/UserImage/'.$trainer->image) }}" alt="" style="width:60px;">
-										@else
-										<img src="{{ asset('/admin/assets/images/default.jpg') }}" style="width:60px;">
-										@endif
-									</td>
-									<td>{{ $trainer->trainer_type_display }}</td>
-									<td>{{ $trainer->name }}</td>
-									<td>{{ $trainer->designation }}</td>
-									{{-- <td>{{ $trainer->email }}</td>
-									<td>{{ $trainer->phone }}</td> --}}
-									<td style="max-width: 200px;">{{ $trainer->description }}</td>
-									<td>${{ $trainer->price }}</td> 
-									<td>
-										<div class="rating-stars">
-											@for($i = 1; $i <= 5; $i++)
-												@if($i <= $trainer->rating)
-													<i class="fas fa-star text-warning"></i>
-												@else
-													<i class="far fa-star"></i>
-												@endif
-											@endfor
-										</div>
-									</td>
-									<td>
-										@if($trainer->specialization)
-											@foreach(json_decode($trainer->specialization, true) as $specialization)
-												<li class="list-inline-item">{{ $specialization }}</li>
-											@endforeach
-										@endif
-									</td> 
-									<td>{{ $trainer->instagram }}</td> 
-									<!-- <td>{{ $trainer->google_calendar_id }}</td> -->
-									<td>
-										@if($trainer->status)
-										<span class="label label-success">Active</span>
-										@else
-										<span class="label label-danger">In-Active</span>
-										@endif
-									</td>
-									<td>{{isset($trainer->hasCreatedBy)?$trainer->hasCreatedBy->name:'N/A'}}</td>
-									<td style="max-width: 100px;">
-										<div style="display: flex; gap: 5px;">
-											@can('trainer-edit')
-											<a href="{{route('trainer.edit', $trainer->id)}}" data-toggle="tooltip" data-placement="top" title="Edit Trainer" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
-											@endcan
-											@can('trainer-delete')
-											<button class="btn btn-danger btn-xs delete" data-slug="{{ $trainer->id }}" data-del-url="{{ url('trainer', $trainer->id) }}" data-toggle="tooltip" data-placement="top" title="Delete Trainer"><i class="fa fa-trash"></i></button>
-											@endcan
-										</div>
-									</td>
-								</tr>
-								@endforeach
-								<tr>
-									<td colspan="13">
-										Displying {{$trainers->firstItem()}} to {{$trainers->lastItem()}} of {{$trainers->total()}} records
-										<div class="d-flex justify-content-center">
-											{!! $trainers->links('pagination::bootstrap-4') !!}
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="admin-themed-page">
+        <div class="admin-hero">
+            <div>
+                <h1><i class="fa fa-users"></i> {{ $page_title }}</h1>
+                <p>Manage coach profiles, status, and listings.</p>
+            </div>
+            @can('trainer-create')
+                <a href="{{ route('trainer.create') }}" class="btn btn-hero">
+                    <i class="fa fa-plus"></i> Add trainer
+                </a>
+            @endcan
+        </div>
+
+        @if (session('status'))
+            <div class="admin-alert-success">
+                <i class="fa fa-check-circle"></i> {{ session('status') }}
+            </div>
+        @endif
+
+        <div class="admin-panel">
+            <div class="admin-panel__head"><i class="fa fa-filter"></i> Search &amp; filter</div>
+            <div class="admin-panel__body">
+                <div class="admin-filters">
+                    <input type="text" id="search" class="form-control" placeholder="Search by name, email, type..." style="flex:1;min-width:200px;">
+                    <select name="status" id="status" class="form-control status" style="width:200px;">
+                        <option value="All" selected>All statuses</option>
+                        <option value="1">Active</option>
+                        <option value="2">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="table-responsive admin-table-desktop">
+                    <table class="table admin-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Coach</th>
+                                <th>Type</th>
+                                <th>Price</th>
+                                <th>Rating</th>
+                                <th>Status</th>
+                                <th>Owner</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body">
+                            @include('admin.trainer.partials.rows', ['trainers' => $trainers])
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="admin-cards" id="body-cards">
+                    @foreach($trainers as $key => $trainer)
+                        <div class="admin-card" id="trainer-row-{{ $trainer->id }}-card">
+                            <div class="admin-card__title">{{ $trainer->name ?: '—' }}</div>
+                            <div class="admin-card__row"><span>Type</span><span>{{ $trainer->trainer_type_display ?: '—' }}</span></div>
+                            <div class="admin-card__row"><span>Price</span><span>{{ $trainer->price ? '$'.$trainer->price : '—' }}</span></div>
+                            <div class="admin-card__row">
+                                <span>Status</span>
+                                <span>
+                                    @if($trainer->status)
+                                        <span class="admin-badge admin-badge--success">Active</span>
+                                    @else
+                                        <span class="admin-badge admin-badge--danger">Inactive</span>
+                                    @endif
+                                </span>
+                            </div>
+                            <div class="admin-actions" style="margin-top:10px;">
+                                @can('trainer-edit')
+                                    <a href="{{ route('trainer.edit', $trainer->id) }}" class="btn btn-xs btn-admin-primary"><i class="fa fa-edit"></i> Edit</a>
+                                @endcan
+                                @can('trainer-delete')
+                                    <button type="button" class="btn btn-xs btn-danger btn-admin-danger delete"
+                                        data-row-id="trainer-row-{{ $trainer->id }}"
+                                        data-del-url="{{ url('trainer/'.$trainer->id) }}"
+                                        title="Delete trainer">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </button>
+                                @endcan
+                            </div>
+                        </div>
+                    @endforeach
+                    @if($trainers->hasPages())
+                        <div class="text-center">{!! $trainers->links('pagination::bootstrap-4') !!}</div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
-
 @endsection
-
-@push('js')
-@endpush

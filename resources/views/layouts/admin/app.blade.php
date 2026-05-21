@@ -219,6 +219,7 @@
 		}
 	</style>
 
+	@include('admin.partials.theme-styles')
 	@stack('css')
 </head>
 

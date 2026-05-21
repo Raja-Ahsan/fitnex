@@ -259,13 +259,15 @@ class TrainerController extends Controller
     // destroy trainer
     public function destroy($id)
     {
-        $trainers = Trainer::where('id', $id)->first();
-        if ($trainers) {
-            $trainers->delete();
-            return true;
-        } else {
-            return response()->json(['message' => 'Failed '], 404);
+        $trainer = Trainer::where('id', $id)->first();
+
+        if (!$trainer) {
+            return response()->json(['success' => false, 'message' => 'Trainer not found.'], 404);
         }
+
+        $trainer->delete();
+
+        return response()->json(['success' => true]);
     }
 
     /**
