@@ -101,7 +101,7 @@ class TrainerSlotController extends Controller
 
         $blockedSlot->delete();
 
-        return redirect()->route('trainer.slots.index')
+        return redirect()->route('trainer.slots.blocked')
             ->with('success', 'Time slots unblocked successfully.');
     }
 

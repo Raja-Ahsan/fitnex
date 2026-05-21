@@ -67,6 +67,7 @@ Route::get('sign-up', [WebController::class, 'SignUp'])->name('sign-up');
 Route::post('user/store', [WebController::class, 'storeUser'])->name('user.register.store');
 
 Route::get('email-verification/{token}', [WebController::class, 'verifyEmail'])->name('email-verification');
+Route::post('resend-verification-email', [WebController::class, 'resendVerificationEmail'])->name('verification.resend');
 
 //admin reset password
 Route::get('admin/forgot_password', [AdminController::class, 'forgotPassword'])->name('admin.forgot_password');

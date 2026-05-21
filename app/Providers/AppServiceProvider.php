@@ -31,8 +31,8 @@ class AppServiceProvider extends ServiceProvider
         view::share('testimonails', $testimonails); */
         $home_page_data = globalData();
         View::share('home_page_data', $home_page_data);
-        $game_category_data = gamecategorydata();
-        View::share('game_category_data', $game_category_data);
+        /* $game_category_data = gamecategorydata();
+        View::share('game_category_data', $game_category_data); */
 
         View::composer('layouts.admin.header', function ($view) {
             if (Auth::check()) {

@@ -105,3 +105,26 @@ if (!function_exists('upload_allowed_mimes')) {
         return (string) config('upload.allowed_mimes');
     }
 }
+
+if (!function_exists('google_oauth_configured')) {
+    function google_oauth_configured(): bool
+    {
+        $clientId = (string) config('services.google.client_id');
+        $clientSecret = (string) config('services.google.client_secret');
+        $redirect = (string) config('services.google.redirect');
+
+        if ($clientId === '' || $clientSecret === '' || $redirect === '') {
+            return false;
+        }
+
+        $placeholders = ['your_actual_client_id', 'your_actual_client_secret', 'example', 'changeme'];
+
+        foreach ($placeholders as $needle) {
+            if (stripos($clientId, $needle) !== false || stripos($clientSecret, $needle) !== false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}

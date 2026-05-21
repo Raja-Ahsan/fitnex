@@ -33,6 +33,8 @@ use App\Models\Blog;
 use App\Models\Trainer;
 use App\Models\TrainerReview;
 use App\Models\BlogCategory;
+use App\Services\VerificationEmailService;
+
 class WebController extends Controller
 {
     public function index()
@@ -105,10 +107,24 @@ class WebController extends Controller
             $user->status = 1; // Activate user upon verification
             $user->update();
 
-            return redirect()->route('login');
-        } else {
-            return redirect()->back()->with('error', 'Your token is expired');
+            return redirect()->route('login')->with('message', 'Email verified successfully! You can now log in.');
         }
+
+        return redirect()->route('login')->with('error', 'This verification link is invalid or has expired.');
+    }
+
+    public function resendVerificationEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $result = VerificationEmailService::resendForEmail($request->email);
+
+        return redirect()->route('login')->with(
+            $result['ok'] ? 'message' : 'error',
+            $result['message']
+        );
     }
 
     //Reset password
@@ -431,23 +447,11 @@ class WebController extends Controller
                         /* 'package_id' => $request->package_id, */
                     ]);
 
-                    $user->assignRole($request->input('role'));
+                    VerificationEmailService::assignRegistrationRole($user, $request->role);
                     $userId = $user->id;
 
-                    // Generate and save verification token
-                    do {
-                        $verify_token = uniqid();
-                    } while (User::where('verify_token', $verify_token)->first());
-                    $user->verify_token = $verify_token;
-                    $user->save();
-                    // Send verification email
-                    $details = [
-                        'from' => 'verify',
-                        'title' => "We have received your registration. Please verify your account.",
-                        'body' => "Click the link below to verify your email address.",
-                        'verify_token' => $user->verify_token,
-                    ];
-                    Mail::to($user->email)->send(new \App\Mail\Email($details));
+                    VerificationEmailService::generateVerifyToken($user);
+                    $emailSent = VerificationEmailService::send($user);
 
                     $order_number = rand(10000, 99999);
                     $payment = Payment::create([
@@ -471,7 +475,7 @@ class WebController extends Controller
                             'transaction_date' => date('Y-m-d'),
                         ]);
                     }
-                    return redirect()->route('login')->with('message', 'Registration successful! Please check your email to verify your account.');
+                    return $this->registrationRedirectAfterEmail($emailSent, false);
                 } else {
                     return back()->withErrors(['error' => 'Payment was not successful. Please try again.'])->withInput();
                 }
@@ -483,43 +487,44 @@ class WebController extends Controller
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                     'phone' => $request->phone,
-                    'role' => $request->role,
-                    /*  'category_id' => isset($request->category_id) ? json_encode($request->category_id) : null, */
+                    'role' => $isTrainer ? 'Trainer' : $request->role,
                     'status' => 0, // Set as inactive until email is verified
-                    /* 'package_id' => $request->package_id, */
                 ]);
-                $user->assignRole($request->input('role'));
-                
-                // Generate and save verification token
-                do {
-                    $verify_token = uniqid();
-                } while (User::where('verify_token', $verify_token)->first());
-                $user->verify_token = $verify_token;
-                $user->save();
 
-                // Send verification email
-                $details = [
-                    'from' => 'verify',
-                    'title' => "We have received your registration. Please verify your account.",
-                    'body' => "Click the link below to verify your email address.",
-                    'verify_token' => $user->verify_token,
-                ];
-                Mail::to($user->email)->send(new \App\Mail\Email($details));
+                VerificationEmailService::assignRegistrationRole($user, $request->role);
+                VerificationEmailService::generateVerifyToken($user);
+                $emailSent = VerificationEmailService::send($user);
 
-                $successMessage = $isTrainer 
-                    ? 'Trainer registration successful! Please check your email to verify your account.'
-                    : 'Registration successful! Please check your email to verify your account.';
-                    
-                return redirect()->route('login')->with('message', $successMessage);
+                return $this->registrationRedirectAfterEmail($emailSent, $isTrainer);
             }
         } catch (\Exception $e) {
-            // Check if it's a trainer registration error (no payment needed)
+            Log::error('Registration failed', [
+                'email' => $request->email ?? null,
+                'message' => $e->getMessage(),
+            ]);
+
             $isTrainer = isset($request->role) && strtolower($request->role) === 'trainer';
-            $errorMessage = $isTrainer 
-                ? 'An error occurred during registration. Please try again.'
+            $errorMessage = $isTrainer
+                ? 'Registration failed: ' . $e->getMessage()
                 : 'An error occurred while processing your payment. Please try again.';
+
             return back()->withErrors(['error' => $errorMessage])->withInput();
         }
     }
-     
+
+    protected function registrationRedirectAfterEmail(bool $emailSent, bool $isTrainer)
+    {
+        if ($emailSent) {
+            $message = $isTrainer
+                ? 'Trainer registration successful! Please check your email (and spam folder) to verify your account.'
+                : 'Registration successful! Please check your email to verify your account.';
+
+            return redirect()->route('login')->with('message', $message);
+        }
+
+        return redirect()->route('login')->with(
+            'warning',
+            'Account created but we could not send the verification email. Use "Resend verification email" on the login page or contact support.'
+        );
+    }
 }

@@ -86,7 +86,11 @@
         <div class="email-body">
             <p style="font-size:1.2rem; font-weight:500;">{{ $details['title'] }}</p>
             <p>{{ $details['body'] }}</p>
-            <a href="{{ route('email-verification', $details['verify_token']) }}" class="cta-button" target="_blank">Confirm Account</a>
+            <a href="{{ $details['verification_url'] ?? url('/email-verification/' . $details['verify_token']) }}" class="cta-button" target="_blank">Confirm Account</a>
+            <p style="font-size:0.85rem;color:#666;word-break:break-all;margin-top:16px;">
+                Or copy this link:<br>
+                {{ $details['verification_url'] ?? url('/email-verification/' . $details['verify_token']) }}
+            </p>
             <p style="margin-top:32px; color:#888;">If you did not create an account, no further action is required.</p>
         </div>
         <div class="email-footer">

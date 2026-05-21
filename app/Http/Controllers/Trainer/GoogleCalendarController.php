@@ -48,11 +48,15 @@ class GoogleCalendarController extends Controller
         $trainer = Trainer::where('created_by', Auth::id())->firstOrFail();
         $googleAccount = $trainer->googleAccount;
 
-        if (!$this->client) {
-            session()->flash('error', 'Google Calendar API credentials are not configured. Please contact the administrator.');
+        $googleConfigured = google_oauth_configured();
+
+        if (!$googleConfigured && $this->userIsAdmin()) {
+            session()->flash('error', 'Google Calendar is not configured. Add GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_REDIRECT_URI in .env (Google Cloud Console).');
+        } elseif (!$googleConfigured) {
+            session()->flash('warning', 'Google Calendar sync is temporarily unavailable. Please try again later or contact FITNEX support.');
         }
 
-        return view('trainer.google.connect', compact('trainer', 'googleAccount'));
+        return view('trainer.google.connect', compact('trainer', 'googleAccount', 'googleConfigured'));
     }
 
     /**
@@ -60,9 +64,9 @@ class GoogleCalendarController extends Controller
      */
     public function connect()
     {
-        if (!$this->client) {
+        if (!$this->client || !google_oauth_configured()) {
             return redirect()->route('trainer.google.index')
-                ->with('error', 'Google Calendar API credentials are not configured.');
+                ->with('error', 'Google Calendar API credentials are not configured. Ask admin to set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env.');
         }
 
         $authUrl = $this->client->createAuthUrl();
@@ -141,6 +145,13 @@ class GoogleCalendarController extends Controller
 
         return redirect()->route('trainer.google.index')
             ->with('success', 'Google Calendar disconnected successfully.');
+    }
+
+    protected function userIsAdmin(): bool
+    {
+        $user = Auth::user();
+
+        return $user && ($user->hasRole('admin') || $user->hasRole('Admin'));
     }
 
     /**

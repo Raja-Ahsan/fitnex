@@ -50,6 +50,9 @@
                         @if (Session::has('message'))
                             <p class="alert alert-success" id="success-alert">{{ Session::get('message') }}</p>
                         @endif
+                        @if (Session::has('warning'))
+                            <p class="alert alert-warning">{{ Session::get('warning') }}</p>
+                        @endif
                         <form method="POST" action="{{ route('user.authenticate') }}">
                             @csrf
                             <div class="form-group field-wrap" style="margin-bottom: 10px;">
@@ -76,6 +79,18 @@
                             <div class="forgot"><a href="{{ route('forgot-password') }}">Forgot Password?</a></div>
                             <p>Don't have an account? <a href="{{ route('registration') }}">Register</a> </p>
                         </div>
+
+                        <hr style="margin: 20px 0; border-color: #ddd;">
+                        <p class="login-head fs-16" style="margin-bottom: 10px;"><strong>Didn't get verification email?</strong></p>
+                        <form method="POST" action="{{ route('verification.resend') }}">
+                            @csrf
+                            <div class="form-group field-wrap" style="margin-bottom: 10px;">
+                                <input class="input-field" name="email" type="email" placeholder="Your registration email" value="{{ old('email') }}" required style="border: 1px solid #cd8904;">
+                            </div>
+                            <button type="submit" class="btn primary-btn d-flex justify-content-center text-capitalize w-full" style="background-color: #004274; border-color: #004274; border-radius: 7px; padding: 10px 0;">
+                                Resend verification email
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

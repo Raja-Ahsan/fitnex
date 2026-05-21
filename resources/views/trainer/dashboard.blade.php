@@ -1,278 +1,290 @@
 @extends('layouts.trainer.app')
 
+@section('title', 'Dashboard')
+
+@push('css')
+    @include('trainer.partials.theme-styles')
+@endpush
+
 @section('content')
-    <section class="content-header">
+    <div class="content-header">
         <h1>
             Trainer Dashboard
             <small>Control panel</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Dashboard</li>
+            <li class="active"><i class="fa fa-dashboard"></i> Dashboard</li>
         </ol>
-    </section>
+    </div>
 
     <section class="content">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box" style="background-color: #0079d4; color: white;">
-                    <div class="inner">
-                        <h3>{{ $stats['total_bookings'] }}</h3>
-                        <p>Total Bookings</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-calendar-check-o"></i>
-                    </div>
-                    <a href="{{ route('trainer.bookings.index') }}" class="small-box-footer"
-                        style="background-color: rgba(0,0,0,0.1); color: white;">More info <i
-                            class="fa fa-arrow-circle-right"></i></a>
+        <div class="trainer-themed-page">
+            <div class="fitnex-hero">
+                <div>
+                    <h1><i class="fa fa-dashboard"></i> Welcome back</h1>
+                    <p>Overview of bookings, sessions, and your schedule.</p>
                 </div>
+                <a href="{{ route('trainer.profile.edit') }}" class="btn btn-hero">
+                    <i class="fa fa-user"></i> My profile
+                </a>
             </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box" style="background-color: #0079d4; color: white;">
-                    <div class="inner">
-                        <h3>{{ $stats['this_month'] }}</h3>
-                        <p>This Month</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-bar-chart"></i>
-                    </div>
-                    <a href="#" class="small-box-footer" style="background-color: rgba(0,0,0,0.1); color: white;">More
-                        info <i class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box" style="background-color: #0079d4; color: white;">
-                    <div class="inner">
-                        <h3>{{ $stats['pending'] }}</h3>
-                        <p>Pending Bookings</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-clock-o"></i>
-                    </div>
-                    <a href="{{ route('trainer.bookings.index') }}?status=pending" class="small-box-footer"
-                        style="background-color: rgba(0,0,0,0.1); color: white;">More info <i
-                            class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box" style="background-color: #0079d4; color: white;">
-                    <div class="inner">
-                        <h3>${{ number_format($stats['total_revenue'], 2) }}</h3>
-                        <p>Total Revenue</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-dollar"></i>
-                    </div>
-                    <a href="#" class="small-box-footer" style="background-color: rgba(0,0,0,0.1); color: white;">More
-                        info <i class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
-        </div>
-        <!-- /.row -->
 
-        <div class="row">
-            <!-- Left col -->
-            <section class="col-lg-7 connectedSortable">
-                <!-- Upcoming Sessions -->
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Upcoming Sessions</h3>
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                    class="fa fa-minus"></i></button>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                    class="fa fa-times"></i></button>
+            @if(!empty($profileIncomplete))
+                <div class="fitnex-alert" style="background:#fff8e1;color:#e65100;margin-bottom:16px;">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <strong>Complete your coach profile</strong> so clients can find you on the website.
+                    <a href="{{ route('trainer.profile.edit') }}" style="color:#004274;font-weight:700;margin-left:6px;">Edit profile</a>
+                </div>
+            @endif
+
+            <div class="fitnex-stat-grid">
+                <a href="{{ route('trainer.bookings.index') }}" class="fitnex-stat-card">
+                    <span class="fitnex-stat-card__label">Total bookings</span>
+                    <span class="fitnex-stat-card__value">{{ $stats['total_bookings'] }}</span>
+                    <i class="fa fa-calendar-check-o fitnex-stat-card__icon"></i>
+                    <span class="fitnex-stat-card__link">View all <i class="fa fa-arrow-right"></i></span>
+                </a>
+                <div class="fitnex-stat-card fitnex-stat-card--accent">
+                    <span class="fitnex-stat-card__label">This month</span>
+                    <span class="fitnex-stat-card__value">{{ $stats['this_month'] }}</span>
+                    <i class="fa fa-bar-chart fitnex-stat-card__icon"></i>
+                </div>
+                <a href="{{ route('trainer.bookings.index', ['status' => 'pending']) }}" class="fitnex-stat-card">
+                    <span class="fitnex-stat-card__label">Pending</span>
+                    <span class="fitnex-stat-card__value">{{ $stats['pending'] }}</span>
+                    <i class="fa fa-clock-o fitnex-stat-card__icon"></i>
+                    <span class="fitnex-stat-card__link">Review pending <i class="fa fa-arrow-right"></i></span>
+                </a>
+                <div class="fitnex-stat-card">
+                    <span class="fitnex-stat-card__label">Total revenue</span>
+                    <span class="fitnex-stat-card__value">${{ number_format($stats['total_revenue'], 2) }}</span>
+                    <i class="fa fa-dollar fitnex-stat-card__icon"></i>
+                </div>
+            </div>
+
+            <div class="fitnex-dash-grid">
+                <div>
+                    <div class="fitnex-panel" style="margin-bottom:20px;">
+                        <div class="fitnex-panel__head">
+                            <h3><i class="fa fa-calendar"></i> Upcoming sessions (7 days)</h3>
+                        </div>
+                        <div class="fitnex-panel__body">
+                            @if($upcomingBookings->isEmpty())
+                                <div class="fitnex-alert fitnex-alert--info text-center" style="padding:24px 16px;">
+                                    <i class="fa fa-calendar-times-o fa-2x" style="display:block;margin-bottom:10px;"></i>
+                                    <strong>No upcoming sessions</strong>
+                                    <p style="margin:8px 0 0;">Nothing scheduled for the next 7 days.</p>
+                                </div>
+                            @else
+                                <div class="fitnex-table-wrap fitnex-table-desktop">
+                                    <table class="table fitnex-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date &amp; time</th>
+                                                <th>Client</th>
+                                                <th>Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($upcomingBookings as $booking)
+                                                @php
+                                                    $startTime = \Carbon\Carbon::parse($booking->appointment_time);
+                                                    $dayOfWeek = \Carbon\Carbon::parse($booking->appointment_date)->dayOfWeek;
+                                                    $availability = \App\Models\Availability::where('trainer_id', $booking->trainer_id)
+                                                        ->where('day_of_week', $dayOfWeek)
+                                                        ->where('is_active', true)
+                                                        ->first();
+                                                    $sessionDuration = (int) ($availability->session_duration ?? 60);
+                                                    $endTime = $startTime->copy()->addMinutes($sessionDuration);
+                                                @endphp
+                                                <tr>
+                                                    <td>
+                                                        <strong>{{ \Carbon\Carbon::parse($booking->appointment_date)->format('M d, Y') }}</strong>
+                                                        <div style="font-size:12px;color:var(--fit-muted);margin-top:4px;">
+                                                            {{ $startTime->format('h:i A') }} &ndash; {{ $endTime->format('h:i A') }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        {{ $booking->name ?? ($booking->user->name ?? 'Guest') }}
+                                                        @if($booking->phone || ($booking->user && $booking->user->phone))
+                                                            <div style="font-size:12px;color:var(--fit-muted);"><i class="fa fa-phone"></i> {{ $booking->phone ?? $booking->user->phone }}</div>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if($booking->status == 'confirmed')
+                                                            <span class="fitnex-badge fitnex-badge--success">Confirmed</span>
+                                                        @elseif($booking->status == 'pending')
+                                                            <span class="fitnex-badge fitnex-badge--warning">Pending</span>
+                                                        @else
+                                                            <span class="fitnex-badge fitnex-badge--muted">{{ ucfirst($booking->status) }}</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('trainer.bookings.show', $booking->id) }}" class="btn btn-xs btn-fit-outline">
+                                                            <i class="fa fa-eye"></i> View
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="dashboard-session-cards">
+                                    @foreach($upcomingBookings as $booking)
+                                        @php
+                                            $startTime = \Carbon\Carbon::parse($booking->appointment_time);
+                                            $dayOfWeek = \Carbon\Carbon::parse($booking->appointment_date)->dayOfWeek;
+                                            $availability = \App\Models\Availability::where('trainer_id', $booking->trainer_id)
+                                                ->where('day_of_week', $dayOfWeek)
+                                                ->where('is_active', true)
+                                                ->first();
+                                            $sessionDuration = (int) ($availability->session_duration ?? 60);
+                                            $endTime = $startTime->copy()->addMinutes($sessionDuration);
+                                        @endphp
+                                        <div class="dashboard-session-card">
+                                            <div class="dashboard-session-card__date">{{ \Carbon\Carbon::parse($booking->appointment_date)->format('l, M d') }}</div>
+                                            <div class="dashboard-session-card__row">
+                                                <span>Time</span>
+                                                <span>{{ $startTime->format('h:i A') }} &ndash; {{ $endTime->format('h:i A') }}</span>
+                                            </div>
+                                            <div class="dashboard-session-card__row">
+                                                <span>Client</span>
+                                                <span>{{ $booking->name ?? ($booking->user->name ?? 'Guest') }}</span>
+                                            </div>
+                                            <div class="fitnex-actions" style="margin-top:10px;">
+                                                <a href="{{ route('trainer.bookings.show', $booking->id) }}" class="btn btn-sm btn-fit-primary" style="width:100%;">
+                                                    <i class="fa fa-eye"></i> View booking
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                        <div class="fitnex-panel__foot">
+                            <a href="{{ route('trainer.bookings.index') }}" class="btn btn-sm btn-fit-outline">
+                                View all bookings <i class="fa fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
-                    <div class="box-body">
-                        @if($upcomingBookings->isEmpty())
-                            <div class="alert alert-info alert-dismissible">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                <h4><i class="icon fa fa-info"></i> No Upcoming Sessions</h4>
-                                You don't have any sessions scheduled for the next 7 days.
+
+                    <div class="fitnex-panel">
+                        <div class="fitnex-panel__head">
+                            <h3><i class="fa fa-bolt"></i> Quick actions</h3>
+                        </div>
+                        <div class="fitnex-panel__body">
+                            <div class="fitnex-quick-grid">
+                                <a href="{{ route('trainer.availability.index') }}" class="fitnex-quick-btn">
+                                    <i class="fa fa-calendar-check-o"></i> Availability
+                                </a>
+                                <a href="{{ route('trainer.slots.index') }}" class="fitnex-quick-btn">
+                                    <i class="fa fa-th-list"></i> Time slots
+                                </a>
+                                <a href="{{ route('trainer.pricing.index') }}" class="fitnex-quick-btn">
+                                    <i class="fa fa-usd"></i> Pricing
+                                </a>
+                                <a href="{{ route('trainer.bookings.index') }}" class="fitnex-quick-btn">
+                                    <i class="fa fa-list"></i> Bookings
+                                </a>
+                                <a href="{{ route('trainer.google.index') }}" class="fitnex-quick-btn">
+                                    <i class="fa fa-google"></i> Google sync
+                                </a>
+                                <a href="{{ route('trainer.profile.edit') }}" class="fitnex-quick-btn">
+                                    <i class="fa fa-user"></i> Profile
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="fitnex-panel" style="margin-bottom:20px;">
+                        <div class="fitnex-panel__head">
+                            <h3><i class="fa fa-history"></i> Recent activity</h3>
+                        </div>
+                        <div class="fitnex-panel__body">
+                            @if($recentBookings->isEmpty())
+                                <p class="text-muted text-center" style="margin:12px 0;">No recent activity.</p>
+                            @else
+                                <ul class="fitnex-activity-list">
+                                    @foreach($recentBookings as $booking)
+                                        <li class="fitnex-activity-item">
+                                            <img src="{{ $booking->user && $booking->user->image ? asset('storage/' . $booking->user->image) : asset('assets/images/user-placeholder.png') }}"
+                                                alt="">
+                                            <div class="fitnex-activity-item__body">
+                                                <a href="{{ route('trainer.bookings.show', $booking->id) }}" class="fitnex-activity-item__title">
+                                                    <span>{{ $booking->name ?? ($booking->user->name ?? 'Guest') }}</span>
+                                                    <span class="fitnex-badge fitnex-badge--info">${{ number_format($booking->price, 2) }}</span>
+                                                </a>
+                                                <div class="fitnex-activity-item__meta">
+                                                    {{ \Carbon\Carbon::parse($booking->appointment_date)->format('M d, Y') }}
+                                                    &middot; {{ ucfirst($booking->status) }}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </div>
+                        <div class="fitnex-panel__foot">
+                            <a href="{{ route('trainer.bookings.index') }}" class="btn btn-sm btn-fit-outline">View all</a>
+                        </div>
+                    </div>
+
+                    <div class="fitnex-panel">
+                        <div class="fitnex-panel__head">
+                            <h3><i class="fa fa-clock-o"></i> Availability</h3>
+                        </div>
+                        @if($availabilities->isEmpty())
+                            <div class="fitnex-panel__body">
+                                <div class="fitnex-alert fitnex-alert--info">
+                                    <i class="fa fa-info-circle"></i>
+                                    You have not set up your weekly availability yet.
+                                </div>
+                            </div>
+                            <div class="fitnex-panel__foot">
+                                <a href="{{ route('trainer.availability.create') }}" class="btn btn-sm btn-fit-primary">
+                                    <i class="fa fa-plus"></i> Add availability
+                                </a>
                             </div>
                         @else
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
+                            <div class="fitnex-table-wrap">
+                                <table class="table fitnex-table" style="margin:0;">
                                     <thead>
                                         <tr>
-                                            <th>Date & Time</th>
-                                            <th>Customer</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th>Day</th>
+                                            <th>Hours</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($upcomingBookings as $booking)
+                                        @foreach($availabilities as $availability)
                                             <tr>
-                                                <td>
-                                                    {{ \Carbon\Carbon::parse($booking->appointment_date)->format('M d, Y') }}<br>
-                                                    @php
-                                                        $startTime = \Carbon\Carbon::parse($booking->appointment_time);
-                                                        $dayOfWeek = \Carbon\Carbon::parse($booking->appointment_date)->dayOfWeek;
-                                                        $availability = \App\Models\Availability::where('trainer_id', $booking->trainer_id)
-                                                            ->where('day_of_week', $dayOfWeek)
-                                                            ->where('is_active', true)
-                                                            ->first();
-                                                        $sessionDuration = (int) ($availability->session_duration ?? 60);
-                                                        $endTime = $startTime->copy()->addMinutes($sessionDuration);
-                                                    @endphp
-                                                    <small class="label label-primary"><i class="fa fa-clock-o"></i>
-                                                        {{ $startTime->format('h:i A') }} - {{ $endTime->format('h:i A') }}</small>
+                                                <td><strong>{{ $availability->day_name }}</strong></td>
+                                                <td style="font-size:13px;">
+                                                    {{ \Carbon\Carbon::parse($availability->start_time)->format('h:i A') }}
+                                                    &ndash;
+                                                    {{ \Carbon\Carbon::parse($availability->end_time)->format('h:i A') }}
                                                 </td>
                                                 <td>
-                                                    {{ $booking->name ?? ($booking->user->name ?? 'Guest') }}<br>
-                                                    @if($booking->phone || ($booking->user && $booking->user->phone))
-                                                        <small class="text-muted"><i class="fa fa-phone"></i> {{ $booking->phone ?? $booking->user->phone }}</small>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if($booking->status == 'confirmed')
-                                                        <span class="label label-success">Confirmed</span>
-                                                    @elseif($booking->status == 'pending')
-                                                        <span class="label label-warning">Pending</span>
-                                                    @else
-                                                        <span class="label label-default">{{ ucfirst($booking->status) }}</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('trainer.bookings.show', $booking->id) }}"
-                                                        class="btn btn-xs btn-info"><i class="fa fa-eye"></i> View</a>
+                                                    <span class="fitnex-badge fitnex-badge--success">Active</span>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
-                        @endif
-                    </div>
-                    <div class="box-footer clearfix">
-                        <a href="{{ route('trainer.bookings.index') }}"
-                            class="btn btn-sm btn-default btn-flat pull-right">View All Bookings</a>
-                    </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="box box-info">
-                    <div class="box-header">
-                        <h3 class="box-title">Quick Actions</h3>
-                    </div>
-                    <div class="box-body text-center">
-                        <a class="btn btn-app" href="{{ route('trainer.availability.index') }}">
-                            <i class="fa fa-calendar-check-o"></i> Availability
-                        </a>
-                        <a class="btn btn-app" href="{{ route('trainer.pricing.index') }}">
-                            <i class="fa fa-usd"></i> Pricing
-                        </a>
-                        <a class="btn btn-app" href="{{ route('trainer.bookings.index') }}">
-                            <i class="fa fa-list"></i> Bookings
-                        </a>
-                        <a class="btn btn-app" href="{{ route('trainer.google.index') }}">
-                            <i class="fa fa-google"></i> Google Sync
-                        </a>
-                        <a class="btn btn-app" href="{{ route('trainer.profile.edit') }}">
-                            <i class="fa fa-user"></i> Profile
-                        </a>
-                    </div>
-                </div>
-            </section>
-            <!-- /.Left col -->
-
-            <!-- Right col -->
-            <section class="col-lg-5 connectedSortable">
-                <!-- Recent Activity -->
-                <div class="box box-success">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Recent Activity</h3>
-                    </div>
-                    <div class="box-body">
-                        @if($recentBookings->isEmpty())
-                            <p class="text-muted text-center">No recent activity.</p>
-                        @else
-                            <ul class="products-list product-list-in-box">
-                                @foreach($recentBookings as $booking)
-                                    <li class="item">
-                                        <div class="product-img">
-                                            <img src="{{ $booking->user && $booking->user->image ? asset('storage/' . $booking->user->image) : asset('assets/images/user-placeholder.png') }}"
-                                                alt="User Image">
-                                        </div>
-                                        <div class="product-info">
-                                            <a href="{{ route('trainer.bookings.show', $booking->id) }}"
-                                                class="product-title">{{ $booking->name ?? ($booking->user->name ?? 'Guest') }}
-                                                <span
-                                                    class="label label-success pull-right">${{ number_format($booking->price, 2) }}</span></a>
-                                            <span class="product-description">
-                                                Booked for {{ \Carbon\Carbon::parse($booking->appointment_date)->format('M d, Y') }}
-                                            </span>
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </div>
-                    <div class="box-footer text-center">
-                        <a href="{{ route('trainer.bookings.index') }}" class="uppercase">View All Bookings</a>
-                    </div>
-                </div>
-
-                <!-- Availability Status -->
-                <div class="box box-warning">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Availability Overview</h3>
-                    </div>
-                    <div class="box-body no-padding">
-                        <table class="table table-condensed">
-                            <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Day</th>
-                                <th>Time</th>
-                                <th style="width: 40px">Status</th>
-                            </tr>
-                            @foreach($availabilities as $index => $availability)
-                                <tr>
-                                    <td>{{ $index + 1 }}.</td>
-                                    <td>{{ $availability->day_name }}</td>
-                                    <td>
-                                        {{ \Carbon\Carbon::parse($availability->start_time)->format('h:i A') }} -
-                                        {{ \Carbon\Carbon::parse($availability->end_time)->format('h:i A') }}
-                                    </td>
-                                    <td>
-                                        @if($availability->is_active)
-                                            <span class="badge bg-green">Active</span>
-                                        @else
-                                            <span class="badge bg-red">Inactive</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </table>
-                        @if($availabilities->isEmpty())
-                            <div class="pad margin">
-                                <div class="callout callout-warning" style="margin-bottom: 0!important;">
-                                    <h4><i class="fa fa-info"></i> Note:</h4>
-                                    You have not set up your availability schema yet.
-                                </div>
+                            <div class="fitnex-panel__foot">
+                                <a href="{{ route('trainer.availability.index') }}" class="btn btn-sm btn-fit-outline">
+                                    Manage <i class="fa fa-arrow-right"></i>
+                                </a>
                             </div>
                         @endif
                     </div>
-                    <div class="box-footer clearfix">
-                        <a href="{{ route('trainer.availability.create') }}"
-                            class="btn btn-sm btn-info btn-flat pull-right">Manage Availability</a>
-                    </div>
                 </div>
-            </section>
-            <!-- right col -->
+            </div>
         </div>
-        <!-- /.row (main row) -->
     </section>
 @endsection

@@ -53,6 +53,14 @@ class TimeSlot extends Model
     }
 
     /**
+     * Scope to get only booked slots.
+     */
+    public function scopeBooked($query)
+    {
+        return $query->where('is_booked', true);
+    }
+
+    /**
      * Scope to get slots for a specific date.
      */
     public function scopeForDate($query, $date)
