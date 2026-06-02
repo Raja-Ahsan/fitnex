@@ -8,7 +8,7 @@
                     <i class="fa fa-laptop"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <!-- {{-- @can('role-list')
+            {{-- @can('role-list')
                 <li class="treeview">
                     <a href="{{ route('role.index') }}"
                         class="{{ request()->is('role') || request()->is('role/create') || request()->is('role/*/edit') ? 'active' : '' }}">
@@ -23,7 +23,7 @@
                         <i class="fa fa-lock"></i> <span>Permissions</span>
                     </a>
                 </li>
-            @endcan --}} -->
+            @endcan --}}
 
             <li class="treeview {{ request()->is('page') || request()->is('page/*') || request()->is('page_setting/*') || request()->is('package') || request()->is('package/create') || request()->is('package/*/edit') || request()->is('event') || request()->is('event/create') || request()->is('event/*/edit') || request()->is('event/*') || request()->is('homeslider') || request()->is('homeslider/create') || request()->is('homeslider/*/edit')|| request()->is('banner') || request()->is('banner/create') || request()->is('banner/*/edit') || request()->is('services') || request()->is('services/create') || request()->is('services/*/edit') || request()->is('testimonial') || request()->is('testimonial/create') || request()->is('testimonial/*/edit') ? 'active' : '' }}"
                 style="height: auto;">

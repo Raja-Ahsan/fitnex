@@ -113,17 +113,17 @@ class PageSettingController extends Controller
         }
 
         if($slug=='home'){
-            return View('admin.page_setting.home', compact("model", "page_data"));
+            return view('admin.page_setting.home', compact("model", "page_data"));
         }elseif($slug=='about-us'){
-            return View('admin.page_setting.about', compact("model", "page_data"));
+            return view('admin.page_setting.about', compact("model", "page_data"));
         }elseif($slug=='home-about-us'){
-            return View('admin.page_setting.home_about', compact("model", "page_data"));
+            return view('admin.page_setting.home_about', compact("model", "page_data"));
         }elseif($slug=='careers'){
-            return View('admin.page_setting.careers', compact("model", "page_data"));
-        }elseif($slug=='terms-conditions'){
-            return View('admin.page_setting.terms', compact("model", "page_data"));
+            return view('admin.page_setting.careers', compact("model", "page_data"));
+        }elseif($slug=='terms-of-service'){
+            return view('admin.page_setting.terms', compact("model", "page_data"));
         }elseif($slug=='contact-us'){
-            return View('admin.page_setting.contact', compact("model", "page_data"));
+            return view('admin.page_setting.contact', compact("model", "page_data"));
         }elseif($slug=='header'){
             return view('admin.page_setting.header', compact("model", "page_data"));
         }elseif($slug=='footer'){

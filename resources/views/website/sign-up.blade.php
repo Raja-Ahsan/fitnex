@@ -207,9 +207,9 @@
 @endphp
 
 <!-- Banner Section -->
-<section class="inner-banner listing-banner" style="background: url('{{ ($banner && $banner->image) ? asset('/admin/assets/images/banner/'.$banner->image) : asset('/admin/assets/images/images.png') }}') no-repeat center/cover">
+{{-- <section class="inner-banner listing-banner" style="background: url('{{ ($banner && $banner->image) ? asset('/admin/assets/images/banner/'.$banner->image) : asset('/admin/assets/images/images.png') }}') no-repeat center/cover">
     <div class="container">
-        <h1 class="relative mx-auto text-[50px] text-white font-bold leading-[1.1]" {{-- data-aos="flip-right" data-aos-easing="linear" data-aos-duration="1500" --}}>
+        <h1 class="relative mx-auto text-[50px] text-white font-bold leading-[1.1]">
             @php
                 $title = ($banner && $banner->name) ? $banner->name : '';
                 $parts = explode(' ', $title, 2);
@@ -219,7 +219,7 @@
             </span>
         </h1>
     </div>
-</section>
+</section> --}}
 <!-- Signup Form Section -->
 <section class="signup-section" id="signup-form">
     <div class="signup-container" {{-- data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000" --}}>

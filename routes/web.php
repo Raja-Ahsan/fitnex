@@ -91,6 +91,12 @@ Route::post('/admin/profile/update', [AdminController::class, 'updateProfile'])-
 Route::post('admin/logout', [AdminController::class, 'logOut'])->name('admin.logout');
 
 Route::post('user/authenticate', [UserController::class, 'authenticate'])->name('user.authenticate');
+
+Route::get('auth/google', [\App\Http\Controllers\Auth\SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('auth/google/callback', [\App\Http\Controllers\Auth\SocialAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+Route::get('auth/apple', [\App\Http\Controllers\Auth\SocialAuthController::class, 'redirectToApple'])->name('auth.apple');
+Route::get('auth/apple/callback', [\App\Http\Controllers\Auth\SocialAuthController::class, 'handleAppleCallback'])->name('auth.apple.callback');
+
 Route::post('/user/profile/update', [UserController::class, 'userUpdateProfile'])->name('user.profile.update');
 Route::get('/member/profile/edit', [UserController::class, 'MemberEditProfile'])->name('member.profile.edit');
 Route::post('user/logout', [UserController::class, 'logOut'])->name('user.logout');
@@ -115,8 +121,8 @@ Route::post('book-session', [WebController::class, 'BookSession'])->name('book-s
 Route::get('faqs', [WebController::class, 'Faqs'])->name('faqs');
 Route::get('our-services', [WebController::class, 'Services'])->name('our-services');
 Route::get('service-details/{slug}', [WebController::class, 'ServiceDetails'])->name('service_details');
-Route::get('privacy-policy', [WebController::class, 'privacyPolicy'])->name('privacy-policy');
-Route::get('term-and-conditions', [WebController::class, 'termAndConditions'])->name('term-and-conditions');
+/* Route::get('privacy-policy', [WebController::class, 'PrivacyPolicy'])->name('privacy-policy');
+Route::get('terms-of-service', [WebController::class, 'TermsOfService'])->name('terms-of-service'); */
 Route::get('reviews', [WebController::class, 'Reviews'])->name('reviews');
 
 Route::get('trainers', [WebController::class, 'Trainers'])->name('trainers');

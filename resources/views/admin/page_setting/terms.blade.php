@@ -1,5 +1,5 @@
 @extends('layouts.admin.app')
-<title>Terms Conditions</title>
+<title>Terms of Service</title>
 @section('content')
 <section class="content-header">
 	<div class="content-header-left">

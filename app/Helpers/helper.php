@@ -109,20 +109,92 @@ if (!function_exists('upload_allowed_mimes')) {
 if (!function_exists('google_oauth_configured')) {
     function google_oauth_configured(): bool
     {
-        $clientId = (string) config('services.google.client_id');
-        $clientSecret = (string) config('services.google.client_secret');
-        $redirect = (string) config('services.google.redirect');
+        return oauth_credentials_valid(
+            (string) config('services.google.client_id'),
+            (string) config('services.google.client_secret'),
+            (string) config('services.google.redirect')
+        );
+    }
+}
 
+if (!function_exists('google_login_oauth_configured')) {
+    function google_login_oauth_configured(): bool
+    {
+        return oauth_credentials_valid(
+            (string) config('services.google.client_id'),
+            (string) config('services.google.client_secret'),
+            (string) config('services.google.login_redirect')
+        );
+    }
+}
+
+if (!function_exists('apple_oauth_configured')) {
+    function apple_oauth_configured(): bool
+    {
+        $clientId = (string) config('services.apple.client_id');
+        $redirect = (string) config('services.apple.redirect');
+
+        if ($clientId === '' || $redirect === '') {
+            return false;
+        }
+
+        $placeholders = ['your_apple_client_id', 'your_apple_client_secret', 'example', 'changeme'];
+
+        foreach ($placeholders as $needle) {
+            if (stripos($clientId, $needle) !== false) {
+                return false;
+            }
+        }
+
+        $clientSecret = (string) config('services.apple.client_secret');
+        if ($clientSecret !== '' && !oauth_has_placeholder($clientSecret)) {
+            return true;
+        }
+
+        $keyId = (string) config('services.apple.key_id');
+        $teamId = (string) config('services.apple.team_id');
+        $privateKey = (string) config('services.apple.private_key');
+
+        if ($keyId === '' || $teamId === '' || $privateKey === '') {
+            return false;
+        }
+
+        return is_file($privateKey);
+    }
+}
+
+if (!function_exists('oauth_has_placeholder')) {
+    function oauth_has_placeholder(string $value): bool
+    {
+        $placeholders = [
+            'your_actual_client_id',
+            'your_actual_client_secret',
+            'your_apple_client_id',
+            'your_apple_client_secret',
+            'from_google_console',
+            'example',
+            'changeme',
+        ];
+
+        foreach ($placeholders as $needle) {
+            if (stripos($value, $needle) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+if (!function_exists('oauth_credentials_valid')) {
+    function oauth_credentials_valid(string $clientId, string $clientSecret, string $redirect): bool
+    {
         if ($clientId === '' || $clientSecret === '' || $redirect === '') {
             return false;
         }
 
-        $placeholders = ['your_actual_client_id', 'your_actual_client_secret', 'example', 'changeme'];
-
-        foreach ($placeholders as $needle) {
-            if (stripos($clientId, $needle) !== false || stripos($clientSecret, $needle) !== false) {
-                return false;
-            }
+        if (oauth_has_placeholder($clientId) || oauth_has_placeholder($clientSecret)) {
+            return false;
         }
 
         return true;
