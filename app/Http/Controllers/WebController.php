@@ -390,13 +390,27 @@ class WebController extends Controller
 
     public function SignUp()
     {
-        $package_id = $_GET['package_id'];
-        $package = Package::where('id', $package_id)->first();
+        $package = null;
+        if (request()->filled('package_id')) {
+            $package = Package::where('id', request('package_id'))->first();
+        }
+
         $page_title = 'Sign Up';
         $banner = Banner::where('id', 10)->where('status', 1)->first();
         $categories = Category::where('status', 1)->get();
         $coachCategory = null;
         $coachDelivery = null;
+
+        if (request()->filled('category')) {
+            $coachCategory = Category::where('slug', request('category'))->where('status', 1)->first();
+        }
+        if (request()->filled('delivery')) {
+            $delivery = (string) request('delivery');
+            if (in_array($delivery, ['online', 'in_person'], true)) {
+                $coachDelivery = $delivery;
+            }
+        }
+
         return view('website.sign-up', compact('page_title', 'banner', 'package', 'categories', 'coachCategory', 'coachDelivery'));
     }
 
