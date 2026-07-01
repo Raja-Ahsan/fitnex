@@ -6,9 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Mail\FreeTrialSignupMail;
 use App\Models\Category;
 use App\Models\ContactUs;
+use App\Services\ContactNotificationMailService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class ContactUsController extends Controller
 {
@@ -76,28 +75,33 @@ class ContactUsController extends Controller
 
         $serviceLabel = Category::where('slug', $request->service)->value('title') ?? $request->service;
 
-        try {
-            $toAddress = config('mail.contact_notification_address');
-            if (!empty($toAddress)) {
-                Mail::to($toAddress)->send(new FreeTrialSignupMail($model, $serviceLabel));
-            } else {
-                Log::warning('Free trial signup email skipped: no contact notification address configured');
+        $mailResult = ContactNotificationMailService::send(
+            new FreeTrialSignupMail($model, $serviceLabel)
+        );
+
+        if ($request->ajax()) {
+            if (!$mailResult['ok']) {
+                return response()->json([
+                    'success' => false,
+                    'saved' => true,
+                    'email_sent' => false,
+                    'message' => $mailResult['message'],
+                ], 422);
             }
-        } catch (\Throwable $e) {
-            Log::error('Failed to send free trial signup email', [
-                'mail_driver' => config('mail.default'),
-                'mail_host' => config('mail.mailers.smtp.host'),
-                'to' => config('mail.contact_notification_address'),
-                'email' => $model->email,
-                'message' => $e->getMessage(),
+
+            return response()->json([
+                'success' => true,
+                'saved' => true,
+                'email_sent' => true,
+                'message' => 'Thank you! Your signup was received and we have been notified by email.',
             ]);
         }
 
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'success'
-            ]);
+        if (!$mailResult['ok']) {
+            return redirect()->back()->with(
+                'warning',
+                'Your details were saved, but the notification email could not be sent. ' . $mailResult['message']
+            );
         }
 
         return redirect()->back()->with('contactmessage', 'Your message has been sent. Thank you!');

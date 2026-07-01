@@ -475,24 +475,25 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
-                        text: 'Thank you for contacting us!',
+                        text: response.message || 'Thank you for contacting us!',
                         showConfirmButton: false,
-                        timer: 2000
+                        timer: 2500
                     });
                     $('#regform')[0].reset();
                 } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Oops...',
-                        text: 'Something went wrong! Please try again.',
+                        title: 'Email not sent',
+                        text: response.message || 'Something went wrong! Please try again.',
                     });
                 }
             },
             error: function(xhr) {
+                var response = xhr.responseJSON || {};
                 Swal.fire({
                     icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong during AJAX request.',
+                    title: response.saved ? 'Saved, but email failed' : 'Submission failed',
+                    text: response.message || 'Something went wrong during AJAX request.',
                 });
             },
             complete: function() {

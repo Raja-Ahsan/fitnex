@@ -4,10 +4,9 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\Contact;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Mail\ContactUs;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
+use App\Services\ContactNotificationMailService;
+use Illuminate\Http\Request;
 use Auth;
 
 class ContactController extends Controller
@@ -83,27 +82,31 @@ class ContactController extends Controller
         $model->message = $request->message;
         $model->save();
 
-        try {
-            $toAddress = config('mail.contact_notification_address');
-            if (!empty($toAddress)) {
-                Mail::to($toAddress)->send(new ContactUs($model));
-            } else {
-                Log::warning('Contact form email skipped: no contact notification address configured');
+        $mailResult = ContactNotificationMailService::send(new ContactUs($model));
+
+        if ($request->ajax()) {
+            if (!$mailResult['ok']) {
+                return response()->json([
+                    'success' => false,
+                    'saved' => true,
+                    'email_sent' => false,
+                    'message' => $mailResult['message'],
+                ], 422);
             }
-        } catch (\Throwable $e) {
-            Log::error('Failed to send contact email', [
-                'mail_driver' => config('mail.default'),
-                'mail_host' => config('mail.mailers.smtp.host'),
-                'to' => config('mail.contact_notification_address'),
-                'message' => $e->getMessage(),
+
+            return response()->json([
+                'success' => true,
+                'saved' => true,
+                'email_sent' => true,
+                'message' => 'Thank you! Your message was received and we have been notified by email.',
             ]);
         }
 
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'success'
-            ]);
+        if (!$mailResult['ok']) {
+            return redirect()->back()->with(
+                'warning',
+                'Your message was saved, but the notification email could not be sent. ' . $mailResult['message']
+            );
         }
 
         return redirect()->back()->with('message', 'Your message has been sent successfully!');

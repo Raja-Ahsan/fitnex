@@ -103,7 +103,9 @@ return [
         'name' => env('MAIL_FROM_NAME', 'FITNEX'),
     ],
 
-    'contact_notification_address' => env('CONTACT_NOTIFICATION_EMAIL', env('MAIL_FROM_ADDRESS', 'joinfitnex@gmail.com')),
+    'contact_notification_address' => env('CONTACT_NOTIFICATION_EMAIL')
+        ?: env('MAIL_FROM_ADDRESS')
+        ?: 'joinfitnex@gmail.com',
 
     /*
     |--------------------------------------------------------------------------
