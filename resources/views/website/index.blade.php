@@ -346,6 +346,45 @@
     </div>
 </section>
 <section class="form-sec py-[50px] md:py-[100px]" style="background: url('{{ asset('/assets/website/images/form-sec-bg.png') }}') no-repeat top/cover;">
+    <style>
+        .trial-submit-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 48px;
+            transition: opacity 0.2s ease;
+        }
+
+        .trial-submit-btn.is-loading {
+            opacity: 0.85;
+            pointer-events: none;
+            cursor: wait;
+        }
+
+        .trial-submit-btn .loading-spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: trial-btn-spin 0.8s linear infinite;
+            flex-shrink: 0;
+        }
+
+        .trial-submit-btn.is-loading .loading-spinner {
+            display: inline-block;
+        }
+
+        .trial-submit-btn.is-loading .submit-btn-text {
+            opacity: 0.95;
+        }
+
+        @keyframes trial-btn-spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
     <div class="container">
         <div class="bg-black py-[100px] px-[10px] lg:px-[150px]">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-[20px]">
@@ -395,7 +434,10 @@
                                 </div>
                             </div>
                             <div class="col-span-2">
-                                <button class="btn primary-btn submit-btn w-full" type="submit">Submit</button>
+                                <button class="btn primary-btn submit-btn w-full trial-submit-btn" type="submit" id="trial-submit-btn">
+                                    <span class="loading-spinner" aria-hidden="true"></span>
+                                    <span class="submit-btn-text">Submit</span>
+                                </button>
                             </div> 
                         </div>
                     </form>
@@ -408,9 +450,18 @@
 @section('script')
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
-    console.log("Script section loaded!");
+    function setTrialSubmitLoading(isLoading) {
+        var btn = document.getElementById('trial-submit-btn');
+        if (!btn) return;
+        btn.classList.toggle('is-loading', isLoading);
+        btn.disabled = isLoading;
+        btn.setAttribute('aria-busy', isLoading ? 'true' : 'false');
+    }
+
     $(document).on('submit', '#regform', function(e) {
         e.preventDefault();
+        setTrialSubmitLoading(true);
+
         var formData = new FormData(this);
 
         $.ajax({
@@ -420,7 +471,6 @@
             processData: false,
             contentType: false,
             success: function(response) {
-                console.log('AJAX Success Response:', response);
                 if (response.success) {
                     Swal.fire({
                         icon: 'success',
@@ -434,19 +484,21 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Something went wrong! Response success was false.',
+                        text: 'Something went wrong! Please try again.',
                     });
                 }
             },
             error: function(xhr) {
-                console.log('AJAX Error XHR:', xhr);
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Something went wrong during AJAX request.',
                 });
+            },
+            complete: function() {
+                setTrialSubmitLoading(false);
             }
         });
-    }); 
+    });
 </script>
 @endsection

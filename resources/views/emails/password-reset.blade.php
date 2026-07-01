@@ -94,8 +94,7 @@
             <p style="margin-top:32px; color:#888;">If you did not request a password reset, no further action is required.</p>
         </div>
         <div class="email-footer">
-            &copy; {{ date('Y') }} FITNEX. All rights reserved.<br>
-            <span style="font-size:0.9em;">FITNEX</span>
+            &copy; {{ date('Y') }} FITNEX. All rights reserved. 
         </div>
     </div>
 </body>

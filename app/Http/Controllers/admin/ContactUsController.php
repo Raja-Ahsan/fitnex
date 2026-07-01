@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Mail\FreeTrialSignupMail;
+use App\Models\Category;
 use App\Models\ContactUs;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class ContactUsController extends Controller
 {
@@ -55,26 +59,42 @@ class ContactUsController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $request->validate([
+        $request->validate([
             'name' => 'required|max:100',
-            'email' => 'required|max:100',
+            'email' => 'required|email|max:100',
+            'phone' => 'required|max:100',
+            'service' => 'required|max:100',
         ]);
 
         $model = new ContactUs();
         $model->name = $request->name;
         $model->email = $request->email;
         $model->phone = $request->phone;
-       /*  $model->address = $request->address; */
         $model->message = $request->message;
-        $model->service = $request->service;    
+        $model->service = $request->service;
         $model->save();
+
+        $serviceLabel = Category::where('slug', $request->service)->value('title') ?? $request->service;
+
+        try {
+            $toAddress = config('mail.from.address');
+            if (!empty($toAddress)) {
+                Mail::to($toAddress)->send(new FreeTrialSignupMail($model, $serviceLabel));
+            }
+        } catch (\Throwable $e) {
+            Log::error('Failed to send free trial signup email', [
+                'email' => $model->email,
+                'message' => $e->getMessage(),
+            ]);
+        }
+
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
                 'message' => 'success'
             ]);
         }
-         
+
         return redirect()->back()->with('contactmessage', 'Your message has been sent. Thank you!');
     }
 

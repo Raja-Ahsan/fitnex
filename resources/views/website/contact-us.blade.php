@@ -6,6 +6,40 @@
     .primary-theme-text {
         color: #00A3FF !important; /* Your primary theme color */
     }
+
+    .contact-submit-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 48px;
+        transition: opacity 0.2s ease;
+    }
+
+    .contact-submit-btn.is-loading {
+        opacity: 0.85;
+        pointer-events: none;
+        cursor: wait;
+    }
+
+    .contact-submit-btn .loading-spinner {
+        display: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(255, 255, 255, 0.35);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: contact-btn-spin 0.8s linear infinite;
+        flex-shrink: 0;
+    }
+
+    .contact-submit-btn.is-loading .loading-spinner {
+        display: inline-block;
+    }
+
+    @keyframes contact-btn-spin {
+        to { transform: rotate(360deg); }
+    }
 </style>
 
 <!-- Banner Section -->
@@ -80,7 +114,10 @@
                             <label for="message" class="label-field">Message</label>
                             <textarea class="input-field" id="message" name="message" rows="5" placeholder="How can we help you?" required></textarea>
                         </div>
-                        <button type="submit" class="btn primary-btn submit-btn w-full">Send Message</button>
+                        <button type="submit" class="btn primary-btn submit-btn w-full contact-submit-btn" id="contact-submit-btn">
+                            <span class="loading-spinner" aria-hidden="true"></span>
+                            <span class="submit-btn-text">Send Message</span>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -92,8 +129,18 @@
 @section('script')
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script> 
+    function setContactSubmitLoading(isLoading) {
+        var btn = document.getElementById('contact-submit-btn');
+        if (!btn) return;
+        btn.classList.toggle('is-loading', isLoading);
+        btn.disabled = isLoading;
+        btn.setAttribute('aria-busy', isLoading ? 'true' : 'false');
+    }
+
     $(document).on('submit', '#regform', function(e) {
         e.preventDefault();
+        setContactSubmitLoading(true);
+
         var formData = new FormData(this);
 
         $.ajax({
@@ -103,7 +150,6 @@
             processData: false,
             contentType: false,
             success: function(response) {
-                console.log('AJAX Success Response:', response);
                 if (response.success) {
                     Swal.fire({
                         icon: 'success',
@@ -117,20 +163,22 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Something went wrong! Response success was false.',
+                        text: 'Something went wrong! Please try again.',
                     });
                 }
             },
             error: function(xhr) {
-                console.log('AJAX Error XHR:', xhr);
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Something went wrong during AJAX request.',
                 });
+            },
+            complete: function() {
+                setContactSubmitLoading(false);
             }
         });
-    }); 
+    });
 </script>
 @endsection
 
