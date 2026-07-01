@@ -84,12 +84,19 @@ class ContactController extends Controller
         $model->save();
 
         try {
-            $toAddress = config('mail.from.address');
+            $toAddress = config('mail.contact_notification_address');
             if (!empty($toAddress)) {
                 Mail::to($toAddress)->send(new ContactUs($model));
+            } else {
+                Log::warning('Contact form email skipped: no contact notification address configured');
             }
-        } catch (\Exception $e) {
-            Log::error('Failed to send contact email: ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            Log::error('Failed to send contact email', [
+                'mail_driver' => config('mail.default'),
+                'mail_host' => config('mail.mailers.smtp.host'),
+                'to' => config('mail.contact_notification_address'),
+                'message' => $e->getMessage(),
+            ]);
         }
 
         if ($request->ajax()) {

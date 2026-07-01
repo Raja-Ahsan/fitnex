@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'smtp'),
+    'default' => env('MAIL_MAILER', env('MAIL_DRIVER', 'smtp')),
 
     /*
     |--------------------------------------------------------------------------
@@ -102,6 +102,8 @@ return [
         'address' => env('MAIL_FROM_ADDRESS', 'joinfitnex@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'FITNEX'),
     ],
+
+    'contact_notification_address' => env('CONTACT_NOTIFICATION_EMAIL', env('MAIL_FROM_ADDRESS', 'joinfitnex@gmail.com')),
 
     /*
     |--------------------------------------------------------------------------

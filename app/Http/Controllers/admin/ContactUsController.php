@@ -77,12 +77,17 @@ class ContactUsController extends Controller
         $serviceLabel = Category::where('slug', $request->service)->value('title') ?? $request->service;
 
         try {
-            $toAddress = config('mail.from.address');
+            $toAddress = config('mail.contact_notification_address');
             if (!empty($toAddress)) {
                 Mail::to($toAddress)->send(new FreeTrialSignupMail($model, $serviceLabel));
+            } else {
+                Log::warning('Free trial signup email skipped: no contact notification address configured');
             }
         } catch (\Throwable $e) {
             Log::error('Failed to send free trial signup email', [
+                'mail_driver' => config('mail.default'),
+                'mail_host' => config('mail.mailers.smtp.host'),
+                'to' => config('mail.contact_notification_address'),
                 'email' => $model->email,
                 'message' => $e->getMessage(),
             ]);
