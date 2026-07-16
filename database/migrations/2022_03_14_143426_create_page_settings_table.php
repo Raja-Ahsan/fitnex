@@ -13,6 +13,10 @@ class CreatePageSettingsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('page_settings')) {
+            return;
+        }
+
         Schema::create('page_settings', function (Blueprint $table) {
             $table->id();
             $table->string('parent_slug');

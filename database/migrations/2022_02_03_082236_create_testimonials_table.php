@@ -13,6 +13,10 @@ class CreateTestimonialsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('testimonials')) {
+            return;
+        }
+
         Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
             $table->string("name")->nullable();

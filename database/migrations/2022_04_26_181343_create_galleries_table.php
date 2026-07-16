@@ -13,6 +13,10 @@ class CreateGalleriesTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('galleries')) {
+            return;
+        }
+
         Schema::create('galleries', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by');

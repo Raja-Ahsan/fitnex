@@ -13,6 +13,10 @@ class CreateDocumentRepositoriesTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('document_repositories')) {
+            return;
+        }
+
         Schema::create('document_repositories', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by');

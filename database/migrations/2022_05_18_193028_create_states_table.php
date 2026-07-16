@@ -13,6 +13,10 @@ class CreateStatesTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('states')) {
+            return;
+        }
+
         Schema::create('states', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('city_id');

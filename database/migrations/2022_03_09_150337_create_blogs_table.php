@@ -13,6 +13,10 @@ class CreateBlogsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('blogs')) {
+            return;
+        }
+
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by');

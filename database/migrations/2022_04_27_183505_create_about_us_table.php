@@ -13,6 +13,10 @@ class CreateAboutUsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('about_us')) {
+            return;
+        }
+
         Schema::create('about_us', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by');

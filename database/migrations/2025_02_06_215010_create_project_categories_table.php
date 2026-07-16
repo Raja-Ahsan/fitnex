@@ -13,6 +13,10 @@ class CreateProjectCategoriesTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('project_categories')) {
+            return;
+        }
+
         Schema::create('project_categories', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by');

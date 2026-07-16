@@ -13,6 +13,10 @@ class CreateGalleryDetailsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('gallery_details')) {
+            return;
+        }
+
         Schema::create('gallery_details', function (Blueprint $table) {
             $table->id();
             $table->string('product_slug')->comment('Product slug')->nullable();

@@ -13,6 +13,10 @@ class CreateOurSponsorsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('our_sponsors')) {
+            return;
+        }
+
         Schema::create('our_sponsors', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by');

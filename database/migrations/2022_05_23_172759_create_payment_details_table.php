@@ -13,6 +13,10 @@ class CreatePaymentDetailsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('payment_details')) {
+            return;
+        }
+
         Schema::create('payment_details', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('order_number');

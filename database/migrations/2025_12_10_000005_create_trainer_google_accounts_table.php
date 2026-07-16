@@ -13,6 +13,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        if (Schema::hasTable('trainer_google_accounts')) {
+            return;
+        }
+
         Schema::create('trainer_google_accounts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('trainer_id')->unique()->constrained('trainers')->onDelete('cascade');

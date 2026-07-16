@@ -13,6 +13,10 @@ class CreateContactsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('contacts')) {
+            return;
+        }
+
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by');

@@ -13,6 +13,10 @@ class CreateClientContactsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('client_contacts')) {
+            return;
+        }
+
         Schema::create('client_contacts', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('agent_id');

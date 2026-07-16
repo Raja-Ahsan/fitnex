@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('permissions') && Schema::hasTable('roles')) {
+            return;
+        }
+
         $teams = config('permission.teams');
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');

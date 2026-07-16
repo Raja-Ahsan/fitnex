@@ -13,6 +13,10 @@ class CreateCitiesTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('cities')) {
+            return;
+        }
+
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
             $table->string('country');

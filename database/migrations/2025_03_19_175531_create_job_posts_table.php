@@ -13,6 +13,10 @@ class CreateJobPostsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('job_posts')) {
+            return;
+        }
+
         Schema::create('job_posts', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by');

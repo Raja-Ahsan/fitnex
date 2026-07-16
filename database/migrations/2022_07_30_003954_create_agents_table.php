@@ -13,6 +13,10 @@ class CreateAgentsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('agents')) {
+            return;
+        }
+
         Schema::create('agents', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by');

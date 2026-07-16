@@ -13,6 +13,10 @@ class CreateNewsLettersTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('news_letters')) {
+            return;
+        }
+
         Schema::create('news_letters', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();

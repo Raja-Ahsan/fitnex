@@ -13,6 +13,10 @@ class CreateAppointmentsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('appointments')) {
+            return;
+        }
+
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->nullable();

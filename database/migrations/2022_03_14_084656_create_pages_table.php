@@ -13,6 +13,10 @@ class CreatePagesTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('pages')) {
+            return;
+        }
+
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by');

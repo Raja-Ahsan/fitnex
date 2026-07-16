@@ -13,6 +13,10 @@ class BlogCategories extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('blog_categories')) {
+            return;
+        }
+
         Schema::create('blog_categories', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by');

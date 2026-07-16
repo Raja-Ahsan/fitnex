@@ -13,6 +13,10 @@ class CreateAdvertisementsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('advertisements')) {
+            return;
+        }
+
         Schema::create('advertisements', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();

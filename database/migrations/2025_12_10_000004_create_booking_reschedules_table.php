@@ -13,6 +13,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        if (Schema::hasTable('booking_reschedules')) {
+            return;
+        }
+
         Schema::create('booking_reschedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('booking_id')->constrained('bookings')->onDelete('cascade');

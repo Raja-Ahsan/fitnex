@@ -13,6 +13,10 @@ class CreatePackagesTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('packages')) {
+            return;
+        }
+
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by');

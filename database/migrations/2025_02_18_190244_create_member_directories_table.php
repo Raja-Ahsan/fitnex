@@ -13,6 +13,10 @@ class CreateMemberDirectoriesTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('member_directories')) {
+            return;
+        }
+
         Schema::create('member_directories', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by');
