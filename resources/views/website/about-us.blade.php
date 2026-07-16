@@ -81,11 +81,13 @@
         font-size: 1.1rem;
         line-height: 1.7;
         margin-bottom: 1.5rem;
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
     }
 
     .mission-list {
         list-style: none;
         padding-left: 0;
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
     }
 
     .mission-list li {
@@ -93,6 +95,7 @@
         padding-left: 35px;
         margin-bottom: 15px;
         font-size: 1.1rem;
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
     }
 
     .mission-list li::before {
@@ -103,6 +106,7 @@
         color: var(--primary-color);
         font-size: 1.5rem;
         font-weight: bold;
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
     }
 
     @media screen and (max-width: 991px) {

@@ -244,73 +244,135 @@
         <span id="cursor-card-price" class="text-sm text-white font-bold"></span>
     </div>
 </div>
-<section class="expert-trainers-sec relative bg-black py-10 sm:py-14 md:py-16 lg:py-20 xl:py-24 overflow-hidden">
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('https://framerusercontent.com/images/A1Yi2CbcmDfGLrAKZpFKVI8A4.jpg');"></div>
-    <div class="absolute inset-0 bg-black/70"></div>
+<style>
+    .home-trainers-sec {
+        --ot-accent: #0079D4;
+        --ot-card: #141414;
+        --ot-border: rgba(255, 255, 255, 0.1);
+        --ot-muted: #a1a1aa;
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
+    }
 
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center mb-8 sm:mb-10 md:mb-12">
-            <h3 class="sec-hd text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3"
-                {{-- data-aos="flip-right" data-aos-easing="linear" data-aos-duration="500" --}}>Expert Trainers</h3>
-            <p class="para para-white max-w-[490px] mx-auto text-sm sm:text-base md:text-lg px-2">
-                Achieve your fitness goals with our experienced and passionate trainers at strong.
+    .home-trainers-sec .trainer-profile-card {
+        max-height: none;
+        background: var(--ot-card);
+        border: 1px solid var(--ot-border);
+        border-radius: 14px;
+        overflow: hidden;
+        transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+
+    .home-trainers-sec .trainer-profile-card:hover {
+        border-color: rgba(0, 121, 212, 0.45);
+        transform: translateY(-3px);
+    }
+
+    .home-trainers-sec .trainer-profile-card img {
+        transition: transform 0.35s ease;
+    }
+
+    .home-trainers-sec .trainer-profile-card:hover img {
+        transform: scale(1.04);
+    }
+</style>
+
+<section class="home-trainers-sec expert-trainers-sec relative bg-[#0a0a0a] py-12 sm:py-16 md:py-20 lg:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-7xl">
+        <div class="text-center mb-10 sm:mb-12 md:mb-14">
+            <p class="text-[11px] sm:text-xs tracking-[0.22em] uppercase font-semibold text-[var(--ot-accent)] mb-3">
+                Expert Trainers
+            </p>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
+                Our Trainers
+            </h2>
+            <div class="w-12 h-[2px] bg-[var(--ot-accent)] mx-auto mb-5"></div>
+            <p class="text-[var(--ot-muted)] max-w-xl mx-auto text-sm sm:text-base leading-relaxed px-2">
+                Our certified trainers and coaches are here to help you move better, feel stronger, and achieve your goals.
             </p>
         </div>
- 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 justify-items-center max-w-6xl mx-auto">
-                @foreach ($trainers as $trainer)
-                <div class="trainer-card expert-trainer-item flex flex-col items-center w-full max-w-[280px] sm:max-w-[300px] lg:max-w-[320px]"
-                    data-title="{{ $trainer->trainer_type_display }}"
-                    data-description="{{ $trainer->description }}"
-                    data-price="Price: ${{ $trainer->price }}"
-                    data-aos="fade-up" data-aos-easing="linear" data-aos-duration="500" data-aos-delay="{{ $loop->index * 50 }}">
-                    <a href="{{ route('trainer.detail', $trainer->id) }}" class="trainer-card-link block w-full no-underline group">
-                        <div class="relative w-full overflow-hidden rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl bg-neutral-800" style="aspect-ratio: 3/4;">
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-7 mb-8 sm:mb-10">
+            @foreach ($trainers as $trainer)
+                @php
+                    $role = $trainer->trainer_type_display ?: ($trainer->designation ?: 'Personal Trainer');
+                    $bio = trim(strip_tags($trainer->description ?? ''));
+                    if ($bio === '') {
+                        $bio = 'Passionate about helping you build confidence and achieve peak performance.';
+                    }
+
+                    $typeLower = strtolower($role . ' ' . ($trainer->trainer_type ?? ''));
+                    $tagIcon = 'fa-dumbbell';
+                    $tagLabel = 'STRENGTH • FUNCTIONAL';
+                    if (str_contains($typeLower, 'nutrition')) {
+                        $tagIcon = 'fa-leaf';
+                        $tagLabel = 'NUTRITION • WELLNESS';
+                    }
+                    if (str_contains($typeLower, 'sport') || str_contains($typeLower, 'performance')) {
+                        $tagIcon = 'fa-user';
+                        $tagLabel = 'PERFORMANCE • CONFIDENCE';
+                    }
+                    if (str_contains($typeLower, 'body') || str_contains($typeLower, 'strength')) {
+                        $tagIcon = 'fa-dumbbell';
+                        $tagLabel = 'STRENGTH • FUNCTIONAL';
+                    }
+                @endphp
+
+                <article class="trainer-profile-card flex flex-col h-full">
+                    <a href="{{ route('trainer.detail', $trainer->id) }}" class="block no-underline group">
+                        <div class="relative w-full overflow-hidden bg-neutral-900" style="aspect-ratio: 4/5;">
                             @if($trainer->image)
                                 <img src="{{ asset('/admin/assets/images/UserImage/'.$trainer->image) }}"
-                                    class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105" alt="{{ $trainer->name }}" loading="lazy">
+                                    class="absolute inset-0 w-full h-full object-cover object-center"
+                                    alt="{{ $trainer->name }}" loading="lazy">
                             @else
                                 <img src="{{ asset('/admin/assets/images/trainers/no-photo1.jpg') }}"
-                                    class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105" alt="{{ $trainer->name }}" loading="lazy">
-                            @endif
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3 sm:p-4 md:p-5">
-                                <p class="text-white/95 text-xs sm:text-sm font-medium mb-0.5 sm:mb-1">{{ $trainer->trainer_type_display }}</p>
-                                <p class="text-white text-[10px] sm:text-xs line-clamp-2 sm:line-clamp-3 mb-2 sm:mb-3">{{ Str::limit($trainer->description, 100) }}</p>
-                                <p class="text-white font-bold text-sm sm:text-base mb-2 sm:mb-3">From ${{ $trainer->price }}</p>
-                                <span class="inline-flex items-center gap-1.5 text-white font-semibold text-xs sm:text-sm">View profile <i class="fas fa-arrow-right text-[10px] sm:text-xs"></i></span>
-                            </div>
-                            @if(!empty($trainer->twitter) || !empty($trainer->instagram))
-                                <div class="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-1.5 sm:gap-2 social-media-links z-10">
-                                    @if(!empty($trainer->twitter))
-                                        <a href="{{ $trainer->twitter }}" target="_blank" rel="noopener noreferrer" class="bg-white/90 text-black w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex justify-center items-center no-underline transition-all duration-300 hover:bg-[var(--primary-theme)] hover:text-white active:scale-95" onclick="event.stopPropagation();" aria-label="Twitter"><i class="fab fa-x-twitter text-sm sm:text-base"></i></a>
-                                    @endif
-                                    @if(!empty($trainer->instagram))
-                                        <a href="{{ $trainer->instagram }}" target="_blank" rel="noopener noreferrer" class="bg-white/90 text-black w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex justify-center items-center no-underline transition-all duration-300 hover:bg-[var(--primary-theme)] hover:text-white active:scale-95" onclick="event.stopPropagation();" aria-label="Instagram"><i class="fab fa-instagram text-sm sm:text-base"></i></a>
-                                    @endif
-                                </div>
+                                    class="absolute inset-0 w-full h-full object-cover object-center"
+                                    alt="{{ $trainer->name }}" loading="lazy">
                             @endif
                         </div>
                     </a>
-                    <div class="trainer-card-label mt-3 sm:mt-4 text-center w-full px-0.5 sm:px-1 min-w-0">
-                        <div class="border-t-2 sm:border-t-4 border-[var(--primary-theme)] pt-3 sm:pt-4">
-                            <h4 class="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-[var(--primary-theme)] leading-tight break-words">{{ $trainer->name }}</h4>
-                            <span class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-white/90 block mt-1 sm:mt-1.5 break-words">{{ $trainer->trainer_type_display }}</span>
+
+                    <div class="flex flex-col flex-1 px-4 sm:px-5 pt-4 pb-5 text-center">
+                        <a href="{{ route('trainer.detail', $trainer->id) }}" class="no-underline">
+                            <h3 class="text-lg sm:text-xl font-bold text-[var(--ot-accent)] leading-tight mb-1.5 break-words">
+                                {{ $trainer->name }}
+                            </h3>
+                        </a>
+                        <p class="text-white text-sm sm:text-[15px] font-medium mb-3 break-words">
+                            {{ $role }}
+                        </p>
+                        @if(!empty($trainer->gym_name) || !empty($trainer->workplace))
+                            <p class="text-[var(--ot-muted)] text-xs mb-2">
+                                @if(!empty($trainer->gym_name)){{ $trainer->gym_name }}@endif
+                                @if(!empty($trainer->gym_name) && !empty($trainer->workplace)) · @endif
+                                @if(!empty($trainer->workplace)){{ $trainer->workplace }}@endif
+                            </p>
+                        @endif
+                        <div class="w-10 h-[2px] bg-[var(--ot-accent)] mx-auto mb-3"></div>
+                        <p class="text-[var(--ot-muted)] text-xs sm:text-sm leading-relaxed mb-4 flex-1 line-clamp-3">
+                            {{ Str::limit($bio, 120) }}
+                        </p>
+                        <div class="mt-auto flex items-center justify-center gap-2 text-[10px] sm:text-[11px] tracking-[0.12em] uppercase text-[var(--ot-muted)]">
+                            <i class="fas {{ $tagIcon }} text-[var(--ot-accent)] text-xs"></i>
+                            <span>{{ $tagLabel }}</span>
                         </div>
                     </div>
-                </div>
-                @endforeach
-            </div>
-            <div class="col-span-1 sm:col-span-2 lg:col-span-4 flex justify-center mt-6 sm:mt-8 w-full" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="500">
-                <a href="{{ route('trainers') }}" class="btn primary-btn border border-transparent text-sm sm:text-base py-3 px-5 sm:px-6 md:px-8 min-h-[44px] inline-flex items-center justify-center">View All <span class="ps-2"><i class="fa-solid fa-arrow-right"></i></span></a>
-            </div> 
+                </article>
+            @endforeach
+        </div>
+
+        <div class="flex justify-center w-full">
+            <a href="{{ route('trainers') }}"
+                class="btn primary-btn border border-transparent text-sm sm:text-base py-3 px-5 sm:px-6 md:px-8 min-h-[44px] inline-flex items-center justify-center">
+                View All <span class="ps-2"><i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+        </div>
     </div>
 </section>
-<section class="testimonials-sec bg-black py-[50px] md:py-[100px]">
+{{-- <section class="testimonials-sec bg-black py-[50px] md:py-[100px]">
     <div class="container">
         <h2 class="sec-hd text-center mb-[40px] max-w-[670px] mx-auto"
-            {{-- data-aos="flip-right"
-            data-aos-easing="linear"
-            data-aos-duration="1500" --}}>
+            >
             What people say
         </h2>
     </div>
@@ -344,7 +406,7 @@
         </div>
         @endforeach
     </div>
-</section>
+</section> --}}
 <section class="form-sec py-[50px] md:py-[100px]" style="background: url('{{ asset('/assets/website/images/form-sec-bg.png') }}') no-repeat top/cover;">
     <style>
         .trial-submit-btn {

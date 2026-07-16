@@ -141,6 +141,22 @@
 								<span style="color: red">{{ $errors->first('state') }}</span>
 							</div>
 						</div>
+						<div class="form-group">
+							<label for="" class="col-sm-2 control-label">Where they work</label>
+							<div class="col-sm-9">
+								<input type="text" autocomplete="off" class="form-control" name="workplace" value="{{ old('workplace', $trainer->workplace) }}" placeholder="e.g. Studio, Private clients, Corporate gym">
+								<small class="text-muted">Optional. Where this trainer typically works.</small>
+								<span style="color: red">{{ $errors->first('workplace') }}</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="" class="col-sm-2 control-label">Gym name</label>
+							<div class="col-sm-9">
+								<input type="text" autocomplete="off" class="form-control" name="gym_name" value="{{ old('gym_name', $trainer->gym_name) }}" placeholder="e.g. Equinox Downtown, LA Fitness">
+								<small class="text-muted">Optional. Gym or facility they are associated with.</small>
+								<span style="color: red">{{ $errors->first('gym_name') }}</span>
+							</div>
+						</div>
 						
 						<div class="form-group">
 							<label for="" class="col-sm-2 control-label">Price<span style="color: red">*</span></label>

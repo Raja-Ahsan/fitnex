@@ -13,6 +13,13 @@
                     @if($trainer->designation)
                         <div style="font-size:12px;color:#6c7a88;">{{ $trainer->designation }}</div>
                     @endif
+                    @if($trainer->gym_name || $trainer->workplace)
+                        <div style="font-size:11px;color:#8a97a5;margin-top:2px;">
+                            @if($trainer->gym_name){{ $trainer->gym_name }}@endif
+                            @if($trainer->gym_name && $trainer->workplace) · @endif
+                            @if($trainer->workplace){{ $trainer->workplace }}@endif
+                        </div>
+                    @endif
                 </div>
             </div>
         </td>

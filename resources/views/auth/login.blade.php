@@ -60,6 +60,7 @@
         color: #a0a0a0;
         font-size: 0.95rem;
         line-height: 1.5;
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
     }
 
     .login-label {
@@ -68,6 +69,7 @@
         font-weight: 500;
         color: #fff;
         margin-bottom: 8px;
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
     }
 
     .login-page .input-wrap {
@@ -126,16 +128,19 @@
     .login-page .forgot-row {
         text-align: right;
         margin: -4px 0 20px;
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
     }
 
     .login-page .forgot-row a {
         color: #0079D4;
         font-size: 0.875rem;
         text-decoration: none;
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
     }
 
     .login-page .forgot-row a:hover {
         text-decoration: underline;
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
     }
 
     .login-page .btn-continue {
@@ -177,6 +182,7 @@
         font-size: 0.9rem;
         margin: 0;
         cursor: pointer;
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
     }
 
     .login-page .form-divider {
@@ -189,16 +195,19 @@
         text-align: center;
         font-size: 0.9rem;
         color: #a0a0a0;
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
     }
 
     .login-page .form-under-btn a {
         color: #0079D4;
         font-weight: 600;
         text-decoration: none;
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
     }
 
     .login-page .form-under-btn a:hover {
         text-decoration: underline;
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
     }
 
     .login-page .alert {
@@ -253,6 +262,7 @@
         margin-top: 16px;
         padding-top: 16px;
         border-top: 1px solid rgba(255, 255, 255, 0.08);
+        font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
     }
 
     .login-resend__toggle {

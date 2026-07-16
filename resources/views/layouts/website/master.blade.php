@@ -33,6 +33,11 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Space+Grotesk:wght@300..700&display=swap"
         rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Space Grotesk', 'Instrument Sans', system-ui, sans-serif;
+        }
+    </style>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))

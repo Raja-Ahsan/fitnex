@@ -84,6 +84,8 @@ class TrainerController extends Controller
         'price' => 'required',
         'state' => 'required', 
         'city' => 'required',
+        'workplace' => 'nullable|string|max:255',
+        'gym_name' => 'nullable|string|max:255',
         'image' => 'required|mimes:jpeg,jpg,png,gif,webp|'.upload_file_rule(),
     ]);
 
@@ -143,6 +145,8 @@ class TrainerController extends Controller
             'specialization' => json_encode($request->specialization),
             'city' => $request->city,
             'state' => $request->state,
+            'workplace' => $request->workplace,
+            'gym_name' => $request->gym_name,
             'status' => 1,
         ]);
     }
@@ -188,6 +192,8 @@ class TrainerController extends Controller
             'price' => 'required',
             'state' => 'required', 
             'city' => 'required',
+            'workplace' => 'nullable|string|max:255',
+            'gym_name' => 'nullable|string|max:255',
         ]);
 
         if (!$request->boolean('delivery_online') && !$request->boolean('delivery_in_person')) {
@@ -231,6 +237,8 @@ class TrainerController extends Controller
             'specialization' => json_encode($request->specialization),
             'city' => $request->city,
             'state' => $request->state,
+            'workplace' => $request->workplace,
+            'gym_name' => $request->gym_name,
             'status' => $request->status,
         ]);
 

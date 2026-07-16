@@ -214,6 +214,16 @@
                                 <input type="text" class="form-control @error('state') is-invalid @enderror" name="state" id="state" value="{{ old('state', $trainerAttrs['state'] ?? '') }}" required>
                                 @error('state')<div class="text-danger small">{{ $message }}</div>@enderror
                             </div>
+                            <div class="form-group">
+                                <label for="workplace">Where you work <span class="text-muted">(optional)</span></label>
+                                <input type="text" class="form-control @error('workplace') is-invalid @enderror" name="workplace" id="workplace" value="{{ old('workplace', $trainerAttrs['workplace'] ?? '') }}" placeholder="e.g. Studio, Private clients">
+                                @error('workplace')<div class="text-danger small">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="gym_name">Gym name <span class="text-muted">(optional)</span></label>
+                                <input type="text" class="form-control @error('gym_name') is-invalid @enderror" name="gym_name" id="gym_name" value="{{ old('gym_name', $trainerAttrs['gym_name'] ?? '') }}" placeholder="e.g. Equinox Downtown">
+                                @error('gym_name')<div class="text-danger small">{{ $message }}</div>@enderror
+                            </div>
                         </div>
 
                         <div class="form-group delivery-checkboxes">

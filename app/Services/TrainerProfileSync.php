@@ -21,6 +21,8 @@ class TrainerProfileSync
                 Rule::exists('categories', 'slug')->where(fn ($q) => $q->where('status', 1)),
             ],
             'delivery' => 'required|in:online,in_person,both',
+            'workplace' => 'nullable|string|max:255',
+            'gym_name' => 'nullable|string|max:255',
         ];
     }
 
@@ -37,6 +39,8 @@ class TrainerProfileSync
             $trainer->update([
                 'trainer_type' => (string) $request->trainer_category,
                 'delivery_modes' => $deliveryModes,
+                'workplace' => $request->filled('workplace') ? trim((string) $request->workplace) : null,
+                'gym_name' => $request->filled('gym_name') ? trim((string) $request->gym_name) : null,
                 'status' => $user->status == 1 ? 1 : 0,
             ]);
 
@@ -144,7 +148,7 @@ class TrainerProfileSync
     {
         $attrs = $trainer->getAttributes();
         $score = 0;
-        foreach (['trainer_type', 'description', 'price', 'city', 'state', 'delivery_modes'] as $column) {
+        foreach (['trainer_type', 'description', 'price', 'city', 'state', 'delivery_modes', 'workplace', 'gym_name'] as $column) {
             if (!empty($attrs[$column])) {
                 $score++;
             }
@@ -166,7 +170,7 @@ class TrainerProfileSync
             ->get()
             ->each(function (Trainer $duplicate) use ($keeper) {
                 $merge = [];
-                foreach (['trainer_type', 'description', 'price', 'city', 'state', 'delivery_modes', 'specialization'] as $column) {
+                foreach (['trainer_type', 'description', 'price', 'city', 'state', 'delivery_modes', 'specialization', 'workplace', 'gym_name'] as $column) {
                     $keeperValue = $keeper->getAttributes()[$column] ?? null;
                     $duplicateValue = $duplicate->getAttributes()[$column] ?? null;
                     if (empty($keeperValue) && !empty($duplicateValue)) {
@@ -199,6 +203,8 @@ class TrainerProfileSync
             'price' => 'required|string|max:50',
             'state' => 'required|string|max:100',
             'city' => 'required|string|max:100',
+            'workplace' => 'nullable|string|max:255',
+            'gym_name' => 'nullable|string|max:255',
             'specialization' => 'nullable|array',
             'specialization.*' => 'nullable|string|max:255',
             'facebook' => 'nullable|string|max:500',
@@ -237,6 +243,8 @@ class TrainerProfileSync
                 'specialization' => $specializations ? json_encode($specializations) : null,
                 'city' => $request->city,
                 'state' => $request->state,
+                'workplace' => $request->filled('workplace') ? trim((string) $request->workplace) : null,
+                'gym_name' => $request->filled('gym_name') ? trim((string) $request->gym_name) : null,
                 'status' => $user->status == 1 ? 1 : 0,
             ]);
 

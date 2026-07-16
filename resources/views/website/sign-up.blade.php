@@ -261,6 +261,22 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-row" style="margin-top:18px;">
+                    <div class="form-col form-col-half">
+                        <div class="form-field-group" style="margin-bottom:0;">
+                            <label for="workplace" class="field-label">Where you work <span style="opacity:.7;font-weight:400;">(optional)</span></label>
+                            <input type="text" class="input-field @error('workplace') invalid-input @enderror" name="workplace" id="workplace" placeholder="e.g. Studio, Private clients, Corporate gym" value="{{ old('workplace') }}">
+                            @error('workplace') <div class="error-message">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+                    <div class="form-col form-col-half">
+                        <div class="form-field-group" style="margin-bottom:0;">
+                            <label for="gym_name" class="field-label">Gym name <span style="opacity:.7;font-weight:400;">(optional)</span></label>
+                            <input type="text" class="input-field @error('gym_name') invalid-input @enderror" name="gym_name" id="gym_name" placeholder="e.g. Equinox Downtown, LA Fitness" value="{{ old('gym_name') }}">
+                            @error('gym_name') <div class="error-message">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="form-row">
                 <!-- First Name -->

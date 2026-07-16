@@ -55,6 +55,20 @@
                             {{ $trainer->state }}
                         </p>
                     @endif
+                    @if(!empty($trainer->workplace) || !empty($trainer->gym_name))
+                        <p class="text-white mb-4">
+                            <i class="fa-solid fa-dumbbell text-[#0079D4] mr-2"></i>
+                            @if(!empty($trainer->gym_name))
+                                <span>{{ $trainer->gym_name }}</span>
+                            @endif
+                            @if(!empty($trainer->workplace) && !empty($trainer->gym_name))
+                                <span class="text-white/50"> · </span>
+                            @endif
+                            @if(!empty($trainer->workplace))
+                                <span class="text-white/80">{{ $trainer->workplace }}</span>
+                            @endif
+                        </p>
+                    @endif
                     <div class="flex items-center mb-4">
                         <div class="flex text-yellow-400">
                             @php
