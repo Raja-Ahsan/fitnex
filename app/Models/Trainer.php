@@ -119,6 +119,68 @@ class Trainer extends Model
     }
 
     /**
+     * @return array<int, string>
+     */
+    public function getSpecializationListAttribute(): array
+    {
+        $raw = $this->attributes['specialization'] ?? null;
+        $decoded = is_string($raw) ? json_decode($raw, true) : $raw;
+
+        if (! is_array($decoded)) {
+            return [];
+        }
+
+        return array_values(array_filter(array_map(static fn ($item) => trim((string) $item), $decoded)));
+    }
+
+    public function getDeliveryLabelAttribute(): string
+    {
+        $raw = trim((string) ($this->attributes['delivery_modes'] ?? ''));
+        if ($raw === '') {
+            return 'Online · In Person';
+        }
+
+        $modes = array_filter(array_map('trim', explode(',', $raw)));
+        $labels = [];
+        if (in_array('online', $modes, true)) {
+            $labels[] = 'Online';
+        }
+        if (in_array('in_person', $modes, true)) {
+            $labels[] = 'In Person';
+        }
+
+        return $labels !== [] ? implode(' · ', $labels) : 'Online · In Person';
+    }
+
+    public function getPublicImageUrlAttribute(): string
+    {
+        $image = $this->image;
+        if ($image && file_exists(public_path('admin/assets/images/UserImage/' . $image))) {
+            return asset('/admin/assets/images/UserImage/' . $image);
+        }
+        if ($image && file_exists(public_path('uploads/user/' . $image))) {
+            return asset('uploads/user/' . $image);
+        }
+
+        return asset('/admin/assets/images/trainers/no-photo1.jpg');
+    }
+
+    public function getLocationLabelAttribute(): string
+    {
+        $city = trim((string) ($this->attributes['city'] ?? ''));
+        $state = trim((string) ($this->attributes['state'] ?? ''));
+        $zip = trim((string) ($this->attributes['zip_code'] ?? ''));
+
+        $parts = array_filter([$city, $state]);
+        $label = implode(', ', $parts);
+        if ($zip !== '') {
+            $label = $label !== '' ? $label . ' ' . $zip : $zip;
+        }
+
+        return $label;
+    }
+
+    /**
      * Accessor methods to get user data through relationship
      * These replace the removed duplicate columns
      */

@@ -126,6 +126,7 @@ Route::get('terms-of-service', [WebController::class, 'TermsOfService'])->name('
 Route::get('reviews', [WebController::class, 'Reviews'])->name('reviews');
 
 Route::get('trainers', [WebController::class, 'Trainers'])->name('trainers');
+Route::post('trainers/search', [WebController::class, 'searchTrainers'])->name('trainers.search');
 Route::get('trainer-details/{id}', [WebController::class, 'TrainerDetail'])->name('trainer.detail');
 Route::post('trainer-details/{id}/review', [WebController::class, 'storeTrainerReview'])->name('trainer.review.store');
 

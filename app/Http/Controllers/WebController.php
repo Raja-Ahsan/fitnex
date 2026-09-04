@@ -35,6 +35,8 @@ use App\Models\TrainerReview;
 use App\Models\BlogCategory;
 use App\Services\TrainerProfileSync;
 use App\Services\VerificationEmailService;
+use App\Services\WellnessProfessionalMatcher;
+use App\Http\Requests\SearchWellnessProfessionalsRequest;
 
 class WebController extends Controller
 {
@@ -231,46 +233,50 @@ class WebController extends Controller
     public function Trainers(Request $request)
     {
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
-        $categories = Category::where('status', 1)->get();
-        $query = Trainer::with('user')->where('status', 1);
+        $categories = Category::where('status', 1)->orderBy('id')->get(['id', 'title', 'slug']);
+        $goals = config('wellness_goals.options', []);
 
-        $selectedCategory = null;
-        $noTrainersAvailable = false; // true when service doesn't exist or has no trainers
+        $prefill = [
+            'services' => [],
+            'delivery' => null,
+        ];
 
-        // Filter by service category when user clicks Personal Training, Nutrition Coaching, etc.
         if ($request->filled('category')) {
             $selectedCategory = Category::where('slug', $request->category)->where('status', 1)->first();
-            if (!$selectedCategory) {
-                // Service/category does not exist
-                $noTrainersAvailable = true;
-            } else {
-                // trainer_type: comma-separated slugs (multiple) or legacy single title/slug
-                $query->where(function ($q) use ($selectedCategory) {
-                    $q->where('trainer_type', $selectedCategory->title)
-                      ->orWhere('trainer_type', $selectedCategory->slug)
-                      ->orWhereRaw('FIND_IN_SET(?, trainer_type) > 0', [$selectedCategory->slug]);
-                });
+            if ($selectedCategory) {
+                $prefill['services'] = [$selectedCategory->slug];
             }
         }
 
-        $selectedDelivery = null;
         if ($request->filled('delivery')) {
             $d = (string) $request->delivery;
-            if (in_array($d, ['online', 'in_person'], true)) {
-                $selectedDelivery = $d;
-                $query->matchingDelivery($d);
+            if (in_array($d, ['online', 'in_person', 'both'], true)) {
+                $prefill['delivery'] = $d;
             }
         }
 
-        $trainers = $query->get();
+        $searchUrl = route('trainers.search');
+        $page_title = 'Find a Wellness Professional | FITNEX';
 
-        // Service exists but has no trainers for this category
-        if ($selectedCategory && $trainers->isEmpty()) {
-            $noTrainersAvailable = true;
-        }
+        return view('website.trainers', compact('page_title', 'banner', 'categories', 'goals', 'prefill', 'searchUrl'));
+    }
 
-        $page_title = 'Trainer Listing | FITNEX';
-        return view('website.trainers', compact('page_title', 'banner', 'trainers', 'categories', 'selectedCategory', 'selectedDelivery', 'noTrainersAvailable'));
+    public function searchTrainers(SearchWellnessProfessionalsRequest $request, WellnessProfessionalMatcher $matcher)
+    {
+        $result = $matcher->search($request->validated());
+
+        $html = view('website.partials.trainer-match-results', [
+            'trainers' => $result['trainers'],
+            'count' => $result['total'],
+            'categories' => $result['categories'],
+        ])->render();
+
+        return response()->json([
+            'count' => $result['total'],
+            'html' => $html,
+            'current_page' => $result['trainers']->currentPage(),
+            'last_page' => $result['trainers']->lastPage(),
+        ]);
     }
 
     public function TrainerDetail($id)

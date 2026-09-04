@@ -215,6 +215,11 @@
                                 @error('state')<div class="text-danger small">{{ $message }}</div>@enderror
                             </div>
                             <div class="form-group">
+                                <label for="zip_code">ZIP Code <span class="text-muted">(optional)</span></label>
+                                <input type="text" class="form-control @error('zip_code') is-invalid @enderror" name="zip_code" id="zip_code" value="{{ old('zip_code', $trainerAttrs['zip_code'] ?? '') }}" placeholder="e.g. 75201">
+                                @error('zip_code')<div class="text-danger small">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="form-group">
                                 <label for="workplace">Where you work <span class="text-muted">(optional)</span></label>
                                 <input type="text" class="form-control @error('workplace') is-invalid @enderror" name="workplace" id="workplace" value="{{ old('workplace', $trainerAttrs['workplace'] ?? '') }}" placeholder="e.g. Studio, Private clients">
                                 @error('workplace')<div class="text-danger small">{{ $message }}</div>@enderror

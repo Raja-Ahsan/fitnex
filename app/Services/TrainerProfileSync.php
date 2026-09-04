@@ -148,7 +148,7 @@ class TrainerProfileSync
     {
         $attrs = $trainer->getAttributes();
         $score = 0;
-        foreach (['trainer_type', 'description', 'price', 'city', 'state', 'delivery_modes', 'workplace', 'gym_name'] as $column) {
+        foreach (['trainer_type', 'description', 'price', 'city', 'state', 'zip_code', 'delivery_modes', 'workplace', 'gym_name'] as $column) {
             if (!empty($attrs[$column])) {
                 $score++;
             }
@@ -170,7 +170,7 @@ class TrainerProfileSync
             ->get()
             ->each(function (Trainer $duplicate) use ($keeper) {
                 $merge = [];
-                foreach (['trainer_type', 'description', 'price', 'city', 'state', 'delivery_modes', 'specialization', 'workplace', 'gym_name'] as $column) {
+                foreach (['trainer_type', 'description', 'price', 'city', 'state', 'zip_code', 'delivery_modes', 'specialization', 'workplace', 'gym_name'] as $column) {
                     $keeperValue = $keeper->getAttributes()[$column] ?? null;
                     $duplicateValue = $duplicate->getAttributes()[$column] ?? null;
                     if (empty($keeperValue) && !empty($duplicateValue)) {
@@ -203,6 +203,7 @@ class TrainerProfileSync
             'price' => 'required|string|max:50',
             'state' => 'required|string|max:100',
             'city' => 'required|string|max:100',
+            'zip_code' => 'nullable|string|max:20',
             'workplace' => 'nullable|string|max:255',
             'gym_name' => 'nullable|string|max:255',
             'specialization' => 'nullable|array',
@@ -243,6 +244,7 @@ class TrainerProfileSync
                 'specialization' => $specializations ? json_encode($specializations) : null,
                 'city' => $request->city,
                 'state' => $request->state,
+                'zip_code' => $request->filled('zip_code') ? trim((string) $request->zip_code) : null,
                 'workplace' => $request->filled('workplace') ? trim((string) $request->workplace) : null,
                 'gym_name' => $request->filled('gym_name') ? trim((string) $request->gym_name) : null,
                 'status' => $user->status == 1 ? 1 : 0,

@@ -132,6 +132,14 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label for="" class="col-sm-2 control-label">ZIP Code</label>
+							<div class="col-sm-9">
+								<input type="text" autocomplete="off" class="form-control" name="zip_code" value="{{ old('zip_code') }}" placeholder="Enter ZIP Code">
+								<small class="text-muted">Optional. Used when clients search for in-person professionals nearby.</small>
+								<span style="color: red">{{ $errors->first('zip_code') }}</span>
+							</div>
+						</div>
+						<div class="form-group">
 							<label for="" class="col-sm-2 control-label">Where they work</label>
 							<div class="col-sm-9">
 								<input type="text" autocomplete="off" class="form-control" name="workplace" value="{{ old('workplace') }}" placeholder="e.g. Studio, Private clients, Corporate gym">

@@ -29,6 +29,12 @@
                         </button>
                         <div class="site-nav-dd__panel">
                             <ul class="site-nav-dd__list">
+                                <li class="site-nav-dd__cta">
+                                    <a href="{{ route('trainers') }}">
+                                        <span>Match with a professional</span>
+                                        <i class="fa-solid fa-arrow-right text-[10px] opacity-80" aria-hidden="true"></i>
+                                    </a>
+                                </li>
                                 @foreach($wellnessSpecs as $spec)
                                 <li class="relative site-nav-dd__has-sub">
                                     <span class="site-nav-dd__row">
@@ -118,6 +124,10 @@
 
             <li class="py-[8px] mt-2 border-t border-white/10">
                 <p class="text-[#0079D4] text-xs font-semibold uppercase tracking-wide mb-2">Find a wellness professional</p>
+                <a href="{{ route('trainers') }}" class="mobile-nav-cta">
+                    <span>Match with a professional</span>
+                    <i class="fa-solid fa-arrow-right text-[10px] opacity-80" aria-hidden="true"></i>
+                </a>
                 @foreach($wellnessSpecs as $spec)
                 <details class="mobile-wellness-details border-b border-white/10 py-2">
                     <summary class="text-white cursor-pointer flex justify-between items-center text-sm list-none">{{ $spec['label'] }} <i class="fa-solid fa-chevron-down text-xs opacity-70"></i></summary>
