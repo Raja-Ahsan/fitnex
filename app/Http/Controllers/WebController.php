@@ -379,7 +379,7 @@ class WebController extends Controller
         return view('website.thank-you', compact('page_title', 'banner'));
     }
 
-    /* public function PrivacyPolicy()
+    public function PrivacyPolicy()
     {
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
         $page_title = 'Privacy Policy | FITNEX';
@@ -391,7 +391,7 @@ class WebController extends Controller
         $banner = Banner::where('slug', request()->route()->getName())->where('status', 1)->first();
         $page_title = 'Terms of Service | FITNEX';
         return view('website.terms-of-service', compact('page_title', 'banner'));
-    } */
+    }
 
 
     public function SignUp()

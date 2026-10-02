@@ -15,8 +15,8 @@
             <div class="md:mx-auto">
                 <h4 class="text-white font-secondary font-bold text-[20px] mb-[20px]">Support</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="{{ route('terms-of-service') }}">Terms of Service</a></li>
+                    <li><a href="{{ route('privacy-policy') }}">Privacy Policy</a></li>
                     <li><a href="#">Refund Policy</a></li>
                 </ul>
             </div>
