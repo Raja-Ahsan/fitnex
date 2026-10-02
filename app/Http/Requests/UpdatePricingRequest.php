@@ -11,7 +11,7 @@ class UpdatePricingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user() && ($this->user()->hasRole('trainer') || $this->user()->hasRole('admin'));
+        return $this->user() && ($this->user()->isTrainer() || $this->user()->isAdmin());
     }
 
     /**

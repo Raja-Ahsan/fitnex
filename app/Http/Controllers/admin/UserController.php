@@ -60,9 +60,9 @@ class UserController extends Controller
             }
 
             // Role-based filtering
-            if ($user->hasRole('Trainer')) {
+            if ($user->isTrainer()) {
                 $query->where('role', 'Trainer'); // Show only Contractors for logged-in EPC Developer
-            } elseif ($user->hasRole('Admin')) {
+            } elseif ($user->isAdmin()) {
                 $query->where('role', '!=', 'Admin'); // Show all users except Admins for logged-in Admins
             }
 
@@ -75,10 +75,10 @@ class UserController extends Controller
         $page_title = 'All Users';
         $users = User::orderBy('id', 'asc')->paginate(10);
 
-        if ($user->hasRole('Trainer')) {
+        if ($user->isTrainer()) {
             $page_title = 'All Trainer';
             $users = User::where('role', 'Trainer')->paginate(10);
-        } elseif ($user->hasRole('Admin')) {
+        } elseif ($user->isAdmin()) {
             $users = User::where('role', '!=', 'Admin')->paginate(10);
         }
 
@@ -306,7 +306,7 @@ class UserController extends Controller
         }
 
         // This authenticate function is ONLY for trainers
-        if (!$user->hasRole('Trainer') && !$user->hasRole('trainer')) {
+        if (!$user->isTrainer()) {
             return redirect()->back()->with('error', 'This login is only for trainers. Please use the correct login page.');
         }
 
@@ -318,7 +318,8 @@ class UserController extends Controller
         // Attempt authentication
         if (Auth::attempt($credentials)) {
             $authenticatedUser = Auth::user();
-            
+            $authenticatedUser->ensureTrainerRole();
+
             // Ensure one trainer row exists (name/email live on users table, not trainers)
             TrainerProfileSync::resolveTrainer($authenticatedUser);
 

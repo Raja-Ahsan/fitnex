@@ -45,7 +45,7 @@ class HomeController extends Controller
     public function index()
     {
        
-        if (Auth::check() && Auth::user()->hasRole('admin')) {
+        if (Auth::check() && Auth::user()->isAdmin()) {
             // Admin dashboard
             $page_title = 'Admin Dashboard';
             
@@ -190,7 +190,7 @@ class HomeController extends Controller
                 'revenue_chart_data', 'booking_status_data', 'appointment_status_data',
                 'monthly_booking_data', 'top_trainers'
             ));
-        } elseif (Auth::check() && Auth::user()->hasRole('Trainer')) {
+        } elseif (Auth::check() && Auth::user()->isTrainer()) {
             // Trainer dashboard
             return redirect()->route('trainer.dashboard');
         } elseif (Auth::check() && Auth::user()->hasRole('Member')) {

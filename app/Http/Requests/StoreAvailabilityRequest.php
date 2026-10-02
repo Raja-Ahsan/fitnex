@@ -12,7 +12,7 @@ class StoreAvailabilityRequest extends FormRequest
     public function authorize(): bool
     {
         // Check if user is a trainer or admin
-        return $this->user() && ($this->user()->hasRole('trainer') || $this->user()->hasRole('admin'));
+        return $this->user() && ($this->user()->isTrainer() || $this->user()->isAdmin());
     }
 
     /**

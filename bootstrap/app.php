@@ -17,9 +17,23 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            'is_trainer' => \App\Http\Middleware\IsTrainer::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->render(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, Request $request) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'You do not have access to that page.'], 403);
+            }
+
+            if ($request->user()?->isTrainer()) {
+                return redirect()->route('trainer.dashboard')
+                    ->with('error', 'You can update your password and profile from your trainer dashboard.');
+            }
+
+            return redirect()->route('login')->with('error', 'You do not have access to that page.');
+        });
+
         $exceptions->render(function (PostTooLargeException $e, Request $request) {
             $message = upload_too_large_message();
 

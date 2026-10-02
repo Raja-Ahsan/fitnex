@@ -121,9 +121,16 @@ Route::post('book-session', [WebController::class, 'BookSession'])->name('book-s
 Route::get('faqs', [WebController::class, 'Faqs'])->name('faqs');
 Route::get('our-services', [WebController::class, 'Services'])->name('our-services');
 Route::get('service-details/{slug}', [WebController::class, 'ServiceDetails'])->name('service_details');
-/* Route::get('privacy-policy', [WebController::class, 'PrivacyPolicy'])->name('privacy-policy');
-Route::get('terms-of-service', [WebController::class, 'TermsOfService'])->name('terms-of-service'); */
+Route::get('privacy-policy', [WebController::class, 'PrivacyPolicy'])->name('privacy-policy');
+Route::get('terms-of-service', [WebController::class, 'TermsOfService'])->name('terms-of-service');
 Route::get('reviews', [WebController::class, 'Reviews'])->name('reviews');
+
+// Google redirects here (registered URI); forward to the trainer callback on APP_URL so the login session is kept.
+Route::get('oauth/google-calendar/callback', function (\Illuminate\Http\Request $request) {
+    $query = $request->getQueryString();
+
+    return redirect()->away(rtrim(config('app.url'), '/') . '/trainer/google/callback' . ($query ? '?' . $query : ''));
+})->name('google-calendar.oauth-callback');
 
 Route::get('trainers', [WebController::class, 'Trainers'])->name('trainers');
 Route::post('trainers/search', [WebController::class, 'searchTrainers'])->name('trainers.search');
@@ -182,6 +189,11 @@ Route::get('/mark-notification-read/{id}', function ($id, Request $request) {
     return redirect()->route('appointments.index');
 })->name('mark.notification.read');
 
+Route::post('/notifications/read-all', function () {
+    Auth::user()->unreadNotifications->markAsRead();
+    return back();
+})->middleware('auth')->name('notifications.read-all');
+
 Route::get('/appointments/available-times/{trainer_id}/{date}', [AppointmentController::class, 'getAvailableTimes'])->name('appointments.available-times');
 Route::get('/appointments/available-dates/{trainer_id}/{month}', [AppointmentController::class, 'getAvailableDates'])->name('appointments.available-dates');
 
@@ -194,49 +206,6 @@ Route::post('/appointments/{id}/cancel', [AppointmentController::class, 'cancel'
 // ============================================
 // BOOKING MODULE ROUTES - MUST BE BEFORE ADMIN ROUTES
 // ============================================
-
-// Trainer Routes (for trainers and admins)
-Route::prefix('trainer')->middleware(['auth', 'role:Trainer|Admin'])->name('trainer.')->group(function () {
-    // Test route to check auth
-    Route::get('test', function () {
-        return 'Auth works! User: ' . auth()->user()->name . ' | Roles: ' . auth()->user()->getRoleNames()->implode(', ');
-    });
-
-    // Dashboard
-    Route::get('dashboard', [\App\Http\Controllers\Trainer\TrainerDashboardController::class, 'index'])->name('dashboard');
-
-    // Availability Management
-    Route::resource('availability', \App\Http\Controllers\Trainer\TrainerAvailabilityController::class);
-
-    // Pricing Management
-    Route::get('pricing', [\App\Http\Controllers\Trainer\TrainerPricingController::class, 'index'])->name('pricing.index');
-    Route::post('pricing', [\App\Http\Controllers\Trainer\TrainerPricingController::class, 'update'])->name('pricing.update');
-
-    // Slot Management
-    Route::get('slots', [\App\Http\Controllers\Trainer\TrainerSlotController::class, 'index'])->name('slots.index');
-    Route::get('slots/block-form', [\App\Http\Controllers\Trainer\TrainerSlotController::class, 'blockForm'])->name('slots.block-form');
-    Route::post('slots/block', [\App\Http\Controllers\Trainer\TrainerSlotController::class, 'block'])->name('slots.block');
-    Route::get('slots/blocked', [\App\Http\Controllers\Trainer\TrainerSlotController::class, 'blocked'])->name('slots.blocked');
-    Route::delete('slots/{id}/unblock', [\App\Http\Controllers\Trainer\TrainerSlotController::class, 'unblock'])->name('slots.unblock');
-
-    // Booking Management
-    Route::get('bookings', [\App\Http\Controllers\Trainer\TrainerBookingController::class, 'index'])->name('bookings.index');
-    Route::get('bookings/{booking}', [\App\Http\Controllers\Trainer\TrainerBookingController::class, 'show'])->name('bookings.show');
-    Route::post('bookings/{booking}/approve', [\App\Http\Controllers\Trainer\TrainerBookingController::class, 'approve'])->name('bookings.approve');
-    Route::post('bookings/{booking}/cancel', [\App\Http\Controllers\Trainer\TrainerBookingController::class, 'cancel'])->name('bookings.cancel');
-    Route::post('bookings/{booking}/complete', [\App\Http\Controllers\Trainer\TrainerBookingController::class, 'complete'])->name('bookings.complete');
-
-    // Reschedule
-    Route::get('bookings/{booking}/reschedule', [\App\Http\Controllers\Trainer\TrainerRescheduleController::class, 'show'])->name('bookings.reschedule');
-    Route::post('bookings/reschedule', [\App\Http\Controllers\Trainer\TrainerRescheduleController::class, 'store'])->name('bookings.reschedule.store');
-
-    // Google Calendar Integration
-    Route::get('google', [\App\Http\Controllers\Trainer\GoogleCalendarController::class, 'index'])->name('google.index');
-    Route::get('google/connect', [\App\Http\Controllers\Trainer\GoogleCalendarController::class, 'connect'])->name('google.connect');
-    Route::get('google/callback', [\App\Http\Controllers\Trainer\GoogleCalendarController::class, 'callback'])->name('google.callback');
-    Route::post('google/disconnect', [\App\Http\Controllers\Trainer\GoogleCalendarController::class, 'disconnect'])->name('google.disconnect');
-    Route::post('google/test', [\App\Http\Controllers\Trainer\GoogleCalendarController::class, 'test'])->name('google.test');
-});
 
 // Customer Routes (for authenticated users)
 Route::prefix('customer')->name('customer.')->group(function () {
@@ -332,6 +301,16 @@ Route::group(['middleware' => ['auth']], function () {
         // Admin Availability Management
         Route::get('availability', [\App\Http\Controllers\admin\AdminAvailabilityController::class, 'index'])->name('availability.index');
         Route::get('availability/trainer/{trainerId}', [\App\Http\Controllers\admin\AdminAvailabilityController::class, 'show'])->name('availability.show');
+
+        // Google Calendar settings + trainer connection status
+        Route::get('google-calendar', [\App\Http\Controllers\admin\GoogleCalendarAdminController::class, 'index'])->name('google-calendar.index');
+        Route::post('google-calendar/settings', [\App\Http\Controllers\admin\GoogleCalendarAdminController::class, 'updateSettings'])->name('google-calendar.settings');
+        Route::post('google-calendar/remind-all', [\App\Http\Controllers\admin\GoogleCalendarAdminController::class, 'remindAll'])->name('google-calendar.remind-all');
+        Route::post('google-calendar/remind/{trainer}', [\App\Http\Controllers\admin\GoogleCalendarAdminController::class, 'remind'])->name('google-calendar.remind');
+        Route::get('google-calendar/central/connect', [\App\Http\Controllers\admin\GoogleCalendarAdminController::class, 'centralConnect'])->name('google-calendar.central.connect');
+        Route::post('google-calendar/central/disconnect', [\App\Http\Controllers\admin\GoogleCalendarAdminController::class, 'centralDisconnect'])->name('google-calendar.central.disconnect');
+        Route::post('google-calendar/central/test', [\App\Http\Controllers\admin\GoogleCalendarAdminController::class, 'centralTest'])->name('google-calendar.central.test');
+        Route::post('google-calendar/central/sync', [\App\Http\Controllers\admin\GoogleCalendarAdminController::class, 'centralSync'])->name('google-calendar.central.sync');
     });
 
     // ============================================
@@ -339,7 +318,7 @@ Route::group(['middleware' => ['auth']], function () {
     // ============================================
 
     // Trainer Routes (for trainers and admins)
-    Route::prefix('trainer')->middleware(['auth', 'role:trainer|admin'])->name('trainer.')->group(function () {
+    Route::prefix('trainer')->middleware(['auth', 'is_trainer'])->name('trainer.')->group(function () {
         // Test route to check auth
         Route::get('test', function () {
             return 'Auth works! User: ' . auth()->user()->name . ' | Roles: ' . auth()->user()->getRoleNames()->implode(', ');

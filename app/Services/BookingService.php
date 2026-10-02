@@ -10,7 +10,7 @@ use App\Models\TrainerPricing;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Services\NotificationService;
-use App\Services\GoogleCalendarService;
+use App\Services\TrainerGoogleCalendar;
 use Exception;
 
 class BookingService
@@ -20,7 +20,7 @@ class BookingService
 
     public function __construct(
         NotificationService $notificationService,
-        GoogleCalendarService $calendarService
+        TrainerGoogleCalendar $calendarService
     ) {
         $this->notificationService = $notificationService;
         $this->calendarService = $calendarService;
@@ -291,9 +291,9 @@ class BookingService
     protected function createGoogleCalendarEvent(Booking $booking): void
     {
         $trainer = $booking->trainer;
-        $googleAccount = $trainer->googleAccount;
+        $googleAccount = $this->calendarService->connectedAccount($trainer);
 
-        if (!$googleAccount || !$googleAccount->is_connected) {
+        if (!$googleAccount) {
             Log::info("Trainer {$trainer->id} does not have Google Calendar connected");
             return;
         }
@@ -311,33 +311,18 @@ class BookingService
             $description .= "Notes: {$booking->notes}";
         }
 
-        $attendees = [
-            $booking->user->email,
-            $trainer->email,
-        ];
-
-        $event = $this->calendarService->createEvent(
-            $googleAccount->calendar_id,
+        $eventId = $this->calendarService->createEvent(
+            $googleAccount,
             $title,
             $startDateTime,
             $endDateTime,
             $description,
-            $attendees
+            [$booking->user->email]
         );
 
-        if ($event) {
-            // Extract event ID from the event object
-            $eventId = null;
-            if (property_exists($event, 'googleEvent') && $event->googleEvent && isset($event->googleEvent->id)) {
-                $eventId = $event->googleEvent->id;
-            } elseif (isset($event->id)) {
-                $eventId = $event->id;
-            }
-
-            if ($eventId) {
-                $booking->update(['google_event_id' => $eventId]);
-                Log::info("Google Calendar event created for booking {$booking->id}: {$eventId}");
-            }
+        if ($eventId) {
+            $booking->update(['google_event_id' => $eventId]);
+            Log::info("Google Calendar event created for booking {$booking->id}: {$eventId}");
         }
     }
 
@@ -353,17 +338,13 @@ class BookingService
             return;
         }
 
-        $trainer = $booking->trainer;
-        $googleAccount = $trainer->googleAccount;
+        $googleAccount = $this->calendarService->connectedAccount($booking->trainer);
 
-        if (!$googleAccount || !$googleAccount->is_connected) {
+        if (!$googleAccount) {
             return;
         }
 
-        $deleted = $this->calendarService->deleteEvent(
-            $booking->google_event_id,
-            $googleAccount->calendar_id
-        );
+        $deleted = $this->calendarService->deleteEvent($googleAccount, $booking->google_event_id);
 
         if ($deleted) {
             $booking->update(['google_event_id' => null]);

@@ -20,73 +20,56 @@
                     $notifications = Auth::user()->unreadNotifications;
                 @endphp
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
+                <li class="nav-item dropdown trainer-bell">
+                    <a class="nav-link trainer-bell__toggle" data-toggle="dropdown" href="#" aria-label="Notifications">
                         <i class="fa fa-bell"></i>
                         @if($notifications->count())
-                            <span class="badge badge-warning">{{ $notifications->count() }}</span>
+                            <span class="trainer-bell__count">{{ $notifications->count() > 9 ? '9+' : $notifications->count() }}</span>
                         @endif
                     </a>
 
-                    <div class="dropdown-menu dropdown-menu-right notifications-dropdown">
-                        <style>
-                            .notifications-dropdown {
-                                max-height: 354px;
-                                overflow-y: auto;
-                            }
-
-                            .notification-item {
-                                padding: 10px 15px;
-                                border-bottom: 1px solid #eee;
-                            }
-
-                            .notification-item.unread {
-                                background-color: #fff3cd;
-                                border-left: 3px solid #ffc107;
-                            }
-
-                            .notification-dot {
-                                display: inline-block;
-                                width: 8px;
-                                height: 8px;
-                                background-color: #ffc107;
-                                border-radius: 50%;
-                                margin-right: 8px;
-                            }
-
-                            .dropdown-header {
-                                position: sticky;
-                                top: 0;
-                                background-color: #fff;
-                                z-index: 1;
-                                padding: 10px 15px;
-                                border-bottom: 1px solid #eee;
-                            }
-                        </style>
-                        <div class="dropdown-header">Notifications</div>
-
-                        @forelse($notifications as $notification)
-                            @php
-                                $data = $notification->data;
-                                $isAppointmentNotification = isset($data['type']) && in_array($data['type'], ['appointment_booked', 'appointment_confirmed']);
-                            @endphp
-
-                            @if($isAppointmentNotification)
-                                <a href="{{ route('mark.notification.read', $notification->id) }}"
-                                    class="dropdown-item notification-item{{ $notification->read_at ? '' : ' unread' }}">
-                                    @if(!$notification->read_at)
-                                        <span class="notification-dot"></span>
-                                    @endif
-                                    <span>{{ $data['message'] }}</span>
-                                </a>
-                            @else
-                                <span class="dropdown-item notification-item">
-                                    Unknown notification type.
-                                </span>
+                    <div class="dropdown-menu dropdown-menu-right trainer-bell__menu">
+                        <div class="trainer-bell__head">
+                            <strong>Notifications</strong>
+                            @if($notifications->count())
+                                <form action="{{ route('notifications.read-all') }}" method="POST" style="margin:0;">
+                                    @csrf
+                                    <button type="submit" class="trainer-bell__readall">Mark all as read</button>
+                                </form>
                             @endif
-                        @empty
-                            <span class="dropdown-item notification-item">No new notifications</span>
-                        @endforelse
+                        </div>
+
+                        <div class="trainer-bell__list">
+                            @forelse($notifications as $notification)
+                                @php
+                                    $data = $notification->data;
+                                    $type = $data['type'] ?? null;
+                                    $isAppointment = in_array($type, ['appointment_booked', 'appointment_confirmed']);
+                                    $icon = $data['icon'] ?? ($isAppointment ? 'fa-solid fa-calendar-check' : 'fa-solid fa-bell');
+                                    $title = $data['title'] ?? ($isAppointment ? 'Appointment update' : 'Notification');
+                                    $link = route('mark.notification.read', $notification->id);
+                                    if (!empty($data['url'])) {
+                                        $link .= '?redirect=' . urlencode($data['url']);
+                                    }
+                                @endphp
+
+                                @if(!empty($data['message']))
+                                    <a href="{{ $link }}" class="trainer-bell__item trainer-bell__item--{{ $type ?? 'general' }}">
+                                        <span class="trainer-bell__icon"><i class="{{ $icon }}"></i></span>
+                                        <span class="trainer-bell__body">
+                                            <span class="trainer-bell__title">{{ $title }}</span>
+                                            <span class="trainer-bell__text">{{ $data['message'] }}</span>
+                                            <span class="trainer-bell__time">{{ $notification->created_at?->diffForHumans() }}</span>
+                                        </span>
+                                    </a>
+                                @endif
+                            @empty
+                                <div class="trainer-bell__empty">
+                                    <i class="fa-regular fa-bell-slash"></i>
+                                    <span>You're all caught up</span>
+                                </div>
+                            @endforelse
+                        </div>
                     </div>
                 </li>
 
@@ -165,6 +148,61 @@
     .sidebar-mini.sidebar-collapse .main-header .logo {
         width: 50px;
         display: none;
+    }
+
+    .trainer-bell__toggle { position: relative; }
+    .trainer-bell__toggle .fa-bell { font-size: 17px; }
+    .trainer-bell__count {
+        position: absolute; top: 9px; right: 4px;
+        min-width: 18px; height: 18px; padding: 0 5px;
+        border-radius: 999px; background: #e53935; color: #fff;
+        font-size: 10px; font-weight: 700; line-height: 18px; text-align: center;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9);
+        animation: trainer-bell-pulse 2s ease-out infinite;
+    }
+    @keyframes trainer-bell-pulse {
+        0% { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 0 2px rgba(229, 57, 53, 0.5); }
+        70% { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 0 9px rgba(229, 57, 53, 0); }
+        100% { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 0 2px rgba(229, 57, 53, 0); }
+    }
+    .navbar-nav > .trainer-bell > .trainer-bell__menu {
+        width: 340px; padding: 0; border: none; border-radius: 12px; overflow: hidden;
+        box-shadow: 0 12px 32px rgba(15, 35, 60, 0.18);
+    }
+    .trainer-bell__head {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 12px 16px; background: #f5f8fc; border-bottom: 1px solid #e6edf5;
+    }
+    .trainer-bell__head strong { font-size: 14px; color: #1b2b3c; }
+    .trainer-bell__readall {
+        background: none; border: none; padding: 0;
+        font-size: 12px; font-weight: 600; color: #0b6fd6; cursor: pointer;
+    }
+    .trainer-bell__readall:hover { text-decoration: underline; }
+    .trainer-bell__list { max-height: 360px; overflow-y: auto; }
+    .navbar-nav .trainer-bell__item {
+        display: flex; gap: 12px; padding: 12px 16px;
+        border-bottom: 1px solid #eef2f6; color: #2a3a4a; white-space: normal;
+        background: #fffdf3; transition: background 0.15s;
+    }
+    .navbar-nav .trainer-bell__item:hover { background: #f1f6fd; color: #2a3a4a; text-decoration: none; }
+    .trainer-bell__icon {
+        flex: 0 0 36px; height: 36px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        background: rgba(11, 111, 214, 0.1); color: #0b6fd6; font-size: 15px;
+    }
+    .trainer-bell__item--google_calendar_reminder .trainer-bell__icon { background: rgba(219, 68, 55, 0.1); color: #db4437; }
+    .trainer-bell__body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .trainer-bell__title { font-size: 13px; font-weight: 700; color: #1b2b3c; }
+    .trainer-bell__text { font-size: 12px; line-height: 1.45; color: #5b6875; }
+    .trainer-bell__time { font-size: 11px; color: #95a2af; margin-top: 2px; }
+    .trainer-bell__empty {
+        display: flex; flex-direction: column; align-items: center; gap: 6px;
+        padding: 28px 16px; color: #95a2af; font-size: 13px;
+    }
+    .trainer-bell__empty i { font-size: 24px; }
+    @media (max-width: 480px) {
+        .navbar-nav > .trainer-bell > .trainer-bell__menu { width: 290px; }
     }
 </style>
 <script>

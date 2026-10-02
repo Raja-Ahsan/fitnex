@@ -222,6 +222,57 @@
             background: linear-gradient(to bottom, rgba(10, 10, 10, 0), #0a0a0a 28%);
         }
 
+        .finder-empty-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.78);
+        }
+
+        .finder-empty-modal__card {
+            width: 100%;
+            max-width: 540px;
+            background: #141414;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+            padding: 32px 28px;
+            text-align: center;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+        }
+
+        .finder-empty-modal__card h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            line-height: 1.3;
+        }
+
+        .finder-empty-modal__card p {
+            color: #a1a1aa;
+            font-size: 0.98rem;
+            line-height: 1.65;
+            margin-bottom: 12px;
+        }
+
+        .finder-empty-modal__actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        @@media (min-width: 640px) {
+            .finder-empty-modal__actions {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+
         .finder-field {
             background: #1A1A1A;
             border: 1px solid var(--ot-border);
@@ -296,6 +347,29 @@
     </style>
 
     <div x-data="wellnessFinder()">
+    <div x-show="phase === 'results' && count === 0"
+        x-cloak
+        class="finder-empty-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="finder-empty-title">
+        <div class="finder-empty-modal__card">
+            <h3 id="finder-empty-title">We currently do not have a match</h3>
+            <p>We currently do not have a wellness professional that matches what you’re looking for.</p>
+            <p>Please check back soon — we’re adding new professionals regularly. You can also contact us and we’ll help you find the right fit.</p>
+            <div class="finder-empty-modal__actions">
+                <a href="{{ route('contact-us') }}" class="btn primary-btn border border-transparent min-h-[44px] inline-flex items-center justify-center">
+                    Contact us
+                </a>
+                <button type="button"
+                    class="btn border border-white/20 text-white min-h-[44px] inline-flex items-center justify-center"
+                    x-on:click="editFilters()">
+                    Adjust filters
+                </button>
+            </div>
+        </div>
+    </div>
+
     <section class="inner-banner listing-banner finder-banner"
         x-show="phase !== 'results'"
         style="background: url('{{ ($banner && $banner->image) ? asset('/admin/assets/images/banner/' . $banner->image) : asset('/admin/assets/images/images.png') }}') no-repeat center/cover">
@@ -310,7 +384,7 @@
 
     <section class="our-trainers-page relative py-10 sm:py-14 md:py-16" x-cloak>
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-7xl">
-            <div class="text-center mb-6 sm:mb-8" x-show="phase === 'results'">
+            <div class="text-center mb-6 sm:mb-8" x-show="phase === 'results' && count > 0">
                 <p class="text-[11px] sm:text-xs tracking-[0.22em] uppercase font-semibold text-[var(--ot-accent)] mb-3">
                     Match with a coach
                 </p>
@@ -445,24 +519,12 @@
             </div>
 
             <div id="finder-results" x-ref="results" x-show="phase === 'results'" :inert="phase !== 'results'">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8" x-show="count > 0">
                     <button type="button"
                         class="btn border border-white/20 text-white min-h-[44px] inline-flex items-center justify-center"
                         x-on:click="editFilters()">
                         <i class="fa-solid fa-sliders me-2" aria-hidden="true"></i>
-                        <span x-text="count > 0 ? 'Change Preferences' : 'Adjust Filters'"></span>
-                    </button>
-                </div>
-
-                <div x-show="count === 0" class="text-center py-12 sm:py-16">
-                    <p class="text-white text-lg sm:text-xl font-semibold mb-3">We couldn’t find an exact match.</p>
-                    <p class="text-[var(--ot-muted)] text-base max-w-xl mx-auto mb-6">
-                        Try adjusting your preferences to see more wellness professionals.
-                    </p>
-                    <button type="button"
-                        class="btn primary-btn border border-transparent text-sm sm:text-base py-3 px-5 sm:px-6 min-h-[44px] inline-flex items-center justify-center"
-                        x-on:click="editFilters()">
-                        Adjust Filters
+                        Change Preferences
                     </button>
                 </div>
 
@@ -476,7 +538,8 @@
                 </div>
             </div>
 
-            <div class="feature-bar grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 overflow-hidden mt-10 sm:mt-12 md:mt-14">
+            <div class="feature-bar grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 overflow-hidden mt-10 sm:mt-12 md:mt-14"
+                x-show="!(phase === 'results' && count === 0)">
                 <div class="feature-bar-item flex items-start gap-4 p-5 sm:p-6">
                     <div class="shrink-0 w-12 h-12 text-[var(--ot-accent)]" aria-hidden="true">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" class="w-full h-full">
@@ -634,6 +697,7 @@
                 this.phase = 'wizard';
                 this.step = 1;
                 this.error = '';
+                document.body.style.overflow = '';
             },
             payload() {
                 return {
@@ -693,7 +757,11 @@
                     this.lastPage = data.last_page || 1;
                     this.phase = 'results';
                     this.loading = false;
+                    document.body.style.overflow = this.count === 0 ? 'hidden' : '';
                     this.$nextTick(() => {
+                        if (this.count === 0) {
+                            return;
+                        }
                         const el = this.$refs.results;
                         if (el && typeof el.scrollIntoView === 'function') {
                             el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

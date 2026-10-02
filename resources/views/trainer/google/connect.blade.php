@@ -159,7 +159,7 @@
         <div class="trainer-themed-page">
             <div class="fitnex-hero">
                 <div>
-                    <h1><i class="fa fa-google"></i> Google Calendar</h1>
+                    <h1><i class="fa-brands fa-google"></i> Google Calendar</h1>
                     <p>Sync your bookings with your personal Google Calendar.</p>
                 </div>
                 <div>
@@ -246,9 +246,9 @@
                             <div class="fitnex-alert fitnex-alert--info">
                                 <i class="fa fa-info-circle"></i>
                                 <strong>Calendar sync is not available yet.</strong>
-                                @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('Admin'))
+                                @if(auth()->user()->isAdmin())
                                     <p style="margin:10px 0 0;font-size:13px;">
-                                        Admin: add <code>GOOGLE_CLIENT_ID</code>, <code>GOOGLE_CLIENT_SECRET</code>, and <code>GOOGLE_REDIRECT_URI</code> in <code>.env</code>, then run <code>php artisan config:clear</code>.
+                                        Admin: add the Google keys in <a href="{{ route('admin.google-calendar.index') }}">Admin → Google Calendar</a>.
                                     </p>
                                 @else
                                     <p style="margin:10px 0 0;font-size:13px;">
@@ -304,12 +304,12 @@
                         <div class="google-cta-wrap">
                             @if(!empty($googleConfigured))
                                 <a href="{{ route('trainer.google.connect') }}" class="btn btn-fit-primary btn-connect">
-                                    <i class="fa fa-google"></i> Connect Google Calendar
+                                    <i class="fa-brands fa-google"></i> Connect Google Calendar
                                 </a>
                                 <p class="google-note">You will sign in with your own Google account. Each trainer connects their own calendar.</p>
                             @else
                                 <button type="button" class="btn btn-default btn-connect" disabled>
-                                    <i class="fa fa-google"></i> Connect unavailable
+                                    <i class="fa-brands fa-google"></i> Connect unavailable
                                 </button>
                             @endif
                         </div>

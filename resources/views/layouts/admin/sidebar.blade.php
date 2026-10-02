@@ -119,6 +119,13 @@
             </a>
         </li>
 
+        <li class="treeview mt-2">
+            <a href="{{ route('admin.google-calendar.index') }}"
+                class="{{ request()->is('admin/google-calendar') ? 'active' : '' }}">
+                <i class="fa-brands fa-google"></i> <span>Google Calendar</span>
+            </a>
+        </li>
+
         {{-- Trainer Management Section --}}
         <li class="treeview {{ (request()->is('admin/bookings') || request()->is('admin/bookings/*') || request()->is('admin/appointments/*') || request()->is('admin/slots') || request()->is('admin/slots/*') || request()->is('admin/availability') || request()->is('admin/availability/*')) ? 'active' : '' }}"
             style="height: auto;">

@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Services\NotificationService;
-use App\Services\GoogleCalendarService;
+use App\Services\TrainerGoogleCalendar;
 use Exception;
 
 class RescheduleService
@@ -21,7 +21,7 @@ class RescheduleService
 
     public function __construct(
         NotificationService $notificationService,
-        GoogleCalendarService $calendarService
+        TrainerGoogleCalendar $calendarService
     ) {
         $this->cutoffHours = config('booking.reschedule_cutoff_hours', 6);
         $this->notificationService = $notificationService;
@@ -142,7 +142,7 @@ class RescheduleService
 
         // Check if user is the customer or trainer
         $isCustomer = $booking->user_id === $userId;
-        $isTrainer = $booking->trainer->created_by === $userId || $user->hasRole('trainer');
+        $isTrainer = $booking->trainer->created_by === $userId || $user->isTrainer();
 
         if (!$isCustomer && !$isTrainer) {
             throw new Exception('You do not have permission to reschedule this booking.');
@@ -301,9 +301,9 @@ class RescheduleService
         }
 
         $trainer = $booking->trainer;
-        $googleAccount = $trainer->googleAccount;
+        $googleAccount = $this->calendarService->connectedAccount($trainer);
 
-        if (!$googleAccount || !$googleAccount->is_connected) {
+        if (!$googleAccount) {
             Log::info("Trainer {$trainer->id} does not have Google Calendar connected");
             return;
         }
@@ -312,14 +312,10 @@ class RescheduleService
         $duration = $newSlot->availability->session_duration ?? 60;
         $endDateTime = $startDateTime->copy()->addMinutes($duration);
 
-        $updated = $this->calendarService->updateEvent(
-            $booking->google_event_id,
-            $googleAccount->calendar_id,
-            [
-                'startDateTime' => $startDateTime,
-                'endDateTime' => $endDateTime,
-            ]
-        );
+        $updated = $this->calendarService->updateEvent($googleAccount, $booking->google_event_id, [
+            'start' => $startDateTime,
+            'end' => $endDateTime,
+        ]);
 
         if ($updated) {
             Log::info("Google Calendar event updated for booking {$booking->id}");

@@ -192,7 +192,7 @@
                         <div class="profile-grid">
                             <div class="form-group">
                                 <label for="trainer_types">Categories <span class="text-danger">*</span></label>
-                                <select name="trainer_types[]" id="trainer_types" class="form-control select2-trainer-categories" multiple required style="width:100%;">
+                                <select name="trainer_types[]" id="trainer_types" class="form-control select2-trainer-categories" multiple style="width:100%;">
                                     @foreach($categories as $category)
                                         <option value="{{ $category->slug }}" {{ in_array($category->slug, $selectedSlugs) ? 'selected' : '' }}>{{ $category->title }}</option>
                                     @endforeach
@@ -245,23 +245,23 @@
                         <div class="profile-grid">
                             <div class="form-group">
                                 <label for="facebook">Facebook</label>
-                                <input type="url" class="form-control" name="facebook" value="{{ old('facebook', $user->facebook) }}">
+                                <input type="text" class="form-control" name="facebook" value="{{ old('facebook', $user->facebook) }}" placeholder="https://">
                             </div>
                             <div class="form-group">
                                 <label for="twitter">Twitter / X</label>
-                                <input type="url" class="form-control" name="twitter" value="{{ old('twitter', $user->twitter) }}">
+                                <input type="text" class="form-control" name="twitter" value="{{ old('twitter', $user->twitter) }}" placeholder="https://">
                             </div>
                             <div class="form-group">
                                 <label for="instagram">Instagram</label>
-                                <input type="url" class="form-control" name="instagram" value="{{ old('instagram', $user->instagram) }}">
+                                <input type="text" class="form-control" name="instagram" value="{{ old('instagram', $user->instagram) }}" placeholder="https://">
                             </div>
                             <div class="form-group">
                                 <label for="linkedin">LinkedIn</label>
-                                <input type="url" class="form-control" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}">
+                                <input type="text" class="form-control" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}" placeholder="https://">
                             </div>
                             <div class="form-group">
                                 <label for="youtube">YouTube</label>
-                                <input type="url" class="form-control" name="youtube" value="{{ old('youtube', $user->youtube) }}">
+                                <input type="text" class="form-control" name="youtube" value="{{ old('youtube', $user->youtube) }}" placeholder="https://">
                             </div>
                         </div>
 

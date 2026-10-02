@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Trainer;
 use App\Services\BookingService;
+use App\Services\TrainerGoogleCalendar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -79,7 +80,7 @@ class TrainerBookingController extends Controller
     /**
      * Approve/confirm a booking.
      */
-    public function approve($id)
+    public function approve($id, TrainerGoogleCalendar $calendar)
     {
         $trainer = Trainer::where('created_by', Auth::id())->firstOrFail();
         $booking = \App\Models\Appointment::findOrFail($id);
@@ -93,9 +94,9 @@ class TrainerBookingController extends Controller
         }
 
         $booking->update(['status' => 'confirmed']);
+        $calendar->syncAppointment($booking, 'Confirmed');
 
         // TODO: Send notification to customer
-        // TODO: Create Google Calendar event
 
         return back()->with('success', 'Booking approved successfully.');
     }
@@ -103,7 +104,7 @@ class TrainerBookingController extends Controller
     /**
      * Cancel a booking.
      */
-    public function cancel(Request $request, $id)
+    public function cancel(Request $request, $id, TrainerGoogleCalendar $calendar)
     {
         $trainer = Trainer::where('created_by', Auth::id())->firstOrFail();
         $booking = \App\Models\Appointment::findOrFail($id);
@@ -120,6 +121,7 @@ class TrainerBookingController extends Controller
             'status' => 'cancelled',
             // 'cancellation_reason' => $request->reason // If column exists
         ]);
+        $calendar->removeAppointment($booking);
 
         return redirect()->route('trainer.bookings.index')
             ->with('success', 'Booking cancelled successfully.');

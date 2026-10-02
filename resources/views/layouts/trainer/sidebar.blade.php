@@ -29,7 +29,7 @@
             </li>
             <li class="{{ request()->is('trainer/google*') ? 'active' : '' }}">
                 <a href="{{ route('trainer.google.index') }}">
-                    <i class="fa fa-google" aria-hidden="true"></i> <span>Google Sync</span>
+                    <i class="fa-brands fa-google" aria-hidden="true"></i> <span>Google Sync</span>
                 </a>
             </li>
             <li class="{{ request()->is('trainer/profile*') ? 'active' : '' }}">

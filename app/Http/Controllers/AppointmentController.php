@@ -19,6 +19,7 @@ use App\Mail\NewAppointmentForTrainerMail;
 use App\Notifications\AppointmentBookedNotification;
 use App\Notifications\AppointmentConfirmedNotification;
 use App\Services\GoogleCalendarService;
+use App\Services\TrainerGoogleCalendar;
 use Carbon\Carbon;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
@@ -30,9 +31,11 @@ use Illuminate\Validation\ValidationException;
 class AppointmentController extends Controller
 {
     protected $googleCalendarService;
+    protected $trainerCalendar;
 
-    public function __construct(GoogleCalendarService $googleCalendarService)
+    public function __construct(GoogleCalendarService $googleCalendarService, TrainerGoogleCalendar $trainerCalendar)
     {
+        $this->trainerCalendar = $trainerCalendar;
         /* $this->middleware('auth'); */
         // Use config helper instead of env directly
         $stripeSecret = config('services.stripe.secret');
@@ -164,7 +167,9 @@ class AppointmentController extends Controller
 
             // Create Google Calendar event immediately when booking is created
             try {
-                if ($trainer && $trainer->google_calendar_id) {
+                if ($trainer && $this->trainerCalendar->syncAppointment($appointment, 'Pending Payment')) {
+                    Log::info("Appointment {$appointment->id} synced to trainer {$trainer->id}'s connected Google Calendar");
+                } elseif ($trainer && $trainer->google_calendar_id) {
                     // Prepare event details using appointment name and email
                     $clientName = $appointment->name;
                     $clientEmail = $appointment->email;
@@ -383,6 +388,7 @@ class AppointmentController extends Controller
                 return redirect($checkout_session->url);
             } catch (\Exception $e) {
                 Log::error('Stripe Checkout Error: ' . $e->getMessage());
+                $this->trainerCalendar->removeAppointment($appointment);
                 $appointment->delete();
 
                 if ($request->ajax()) {
@@ -447,7 +453,9 @@ class AppointmentController extends Controller
                 // If event doesn't exist, create a new one
                 try {
                     $trainer = $appointment->trainer;
-                    if ($trainer && $trainer->google_calendar_id) {
+                    if ($trainer && $this->trainerCalendar->syncAppointment($appointment, 'Confirmed')) {
+                        Log::info("Appointment {$appointment->id} confirmed in trainer {$trainer->id}'s connected Google Calendar");
+                    } elseif ($trainer && $trainer->google_calendar_id) {
                         // Prepare event details using appointment name and email
                         $clientName = $appointment->name;
                         $clientEmail = $appointment->email;
@@ -688,6 +696,7 @@ class AppointmentController extends Controller
         if ($appointment->payment_status === 'pending') {
             $appointment->status = 'cancelled';
             $appointment->save();
+            $this->trainerCalendar->removeAppointment($appointment);
         }
 
         return redirect()->route('appointments.index')->with('error', 'Payment was cancelled. Your booking has not been confirmed.');
@@ -1049,6 +1058,7 @@ class AppointmentController extends Controller
             $appointment->status = 'confirmed';
             $appointment->payment_status = 'completed';
             $appointment->save();
+            $this->trainerCalendar->syncAppointment($appointment, 'Confirmed');
 
             // Send confirmation email
             try {
@@ -1131,6 +1141,7 @@ class AppointmentController extends Controller
                 $appointment->payment_status = 'cancelled';
             }
             $appointment->save();
+            $this->trainerCalendar->removeAppointment($appointment);
 
             return redirect()->route('appointments.index')->with('success', 'Appointment cancelled successfully!');
 

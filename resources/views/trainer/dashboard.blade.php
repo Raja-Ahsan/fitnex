@@ -189,7 +189,7 @@
                                     <i class="fa fa-list"></i> Bookings
                                 </a>
                                 <a href="{{ route('trainer.google.index') }}" class="fitnex-quick-btn">
-                                    <i class="fa fa-google"></i> Google sync
+                                    <i class="fa-brands fa-google"></i> Google sync
                                 </a>
                                 <a href="{{ route('trainer.profile.edit') }}" class="fitnex-quick-btn">
                                     <i class="fa fa-user"></i> Profile

@@ -64,7 +64,7 @@ class WebController extends Controller
         }
 
         // This authenticate function is ONLY for trainers
-        if (!$user->hasRole('Trainer') && !$user->hasRole('trainer')) {
+        if (!$user->isTrainer()) {
             return redirect()->back()->with('error', 'This login is only for trainers. Please use the correct login page.');
         }
 
@@ -77,7 +77,7 @@ class WebController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             $authenticatedUser = Auth::user();
-            
+            $authenticatedUser->ensureTrainerRole();
             TrainerProfileSync::resolveTrainer($authenticatedUser);
 
             return redirect()->route('trainer.dashboard');

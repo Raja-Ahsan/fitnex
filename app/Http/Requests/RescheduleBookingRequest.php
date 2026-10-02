@@ -21,8 +21,8 @@ class RescheduleBookingRequest extends FormRequest
         // User must be the customer or the trainer
         return $this->user()->id === $booking->user_id ||
             $this->user()->id === $booking->trainer->created_by ||
-            $this->user()->hasRole('trainer') ||
-            $this->user()->hasRole('admin');
+            $this->user()->isTrainer() ||
+            $this->user()->isAdmin();
     }
 
     /**

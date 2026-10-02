@@ -62,6 +62,35 @@ class User extends Authenticatable
         return $this->belongsToMany(Project::class, 'stored_projects', 'user_id', 'project_id');
     }
 
+    public function isTrainer(): bool
+    {
+        if (is_string($this->role) && strcasecmp($this->role, 'trainer') === 0) {
+            return true;
+        }
+
+        return $this->hasRole('trainer') || $this->hasRole('Trainer');
+    }
+
+    public function isAdmin(): bool
+    {
+        if (is_string($this->role) && strcasecmp($this->role, 'admin') === 0) {
+            return true;
+        }
+
+        return $this->hasRole('admin') || $this->hasRole('Admin');
+    }
+
+    public function ensureTrainerRole(): void
+    {
+        if (!$this->isTrainer()) {
+            return;
+        }
+
+        if (!$this->hasRole('trainer') && !$this->hasRole('Trainer')) {
+            $this->assignRole('trainer');
+        }
+    }
+
     // Add the categories relationship (for user interests)
     public function categories()
     {

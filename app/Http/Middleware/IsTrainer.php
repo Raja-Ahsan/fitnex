@@ -20,7 +20,7 @@ class IsTrainer
         }
 
         // Check if user has trainer role
-        if (!auth()->user()->hasRole('trainer') && !auth()->user()->hasRole('admin')) {
+        if (!auth()->user()->isTrainer() && !auth()->user()->isAdmin()) {
             abort(403, 'Unauthorized. Trainer access required.');
         }
 

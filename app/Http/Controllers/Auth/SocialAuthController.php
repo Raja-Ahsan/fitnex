@@ -82,7 +82,7 @@ class SocialAuthController extends Controller
             return redirect()->route('login')->with('error', 'No account found for this ' . $provider . ' email. Please register first.');
         }
 
-        if (!$user->hasRole('Trainer') && !$user->hasRole('trainer')) {
+        if (!$user->isTrainer()) {
             return redirect()->route('login')->with('error', 'This login is only for trainers. Please use the correct login page.');
         }
 
@@ -91,6 +91,7 @@ class SocialAuthController extends Controller
         }
 
         Auth::login($user, true);
+        $user->ensureTrainerRole();
         TrainerProfileSync::resolveTrainer($user);
 
         return redirect()->route('trainer.dashboard');

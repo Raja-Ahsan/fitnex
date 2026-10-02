@@ -110,7 +110,7 @@ class TrainerController extends Controller
     ]);
     
     // Assign Trainer role
-    $user->assignRole('Trainer');
+    $user->assignRole('trainer');
     
     // Handle image upload for user
     if ($request->hasFile('image')) {
