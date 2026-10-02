@@ -45,6 +45,7 @@
     @endif
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     @stack('styles')
+    <meta name="google-site-verification" content="1-APG01H1GofCHUtX309lc29yGD6DASpGFjU8iiEa7s" />
 </head>
 
 <body>
