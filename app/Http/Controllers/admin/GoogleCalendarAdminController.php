@@ -62,11 +62,6 @@ class GoogleCalendarAdminController extends Controller
         ];
 
         $configured = google_oauth_configured();
-        $suggestedRedirects = array_values(array_unique(array_filter([
-            $settings['redirect_uri'],
-            url('/trainer/google/callback'),
-            'https://fitnexusa.com/trainer/google/callback',
-        ])));
 
         $central = CentralGoogleAccount::current();
         $centralConnected = $central && $central->is_connected;
@@ -80,7 +75,6 @@ class GoogleCalendarAdminController extends Controller
             'filter',
             'settings',
             'configured',
-            'suggestedRedirects',
             'central',
             'centralConnected',
             'centralSyncedCount'

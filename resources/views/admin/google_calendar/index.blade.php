@@ -4,8 +4,21 @@
 
 @push('css')
 <style>
-    .gc-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; }
-    .gc-grid > .admin-panel + .admin-panel { border-left: 1px solid var(--admin-border) !important; }
+    .gc-settings__head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .gc-source { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--admin-bg); border: 1px solid var(--admin-border); font-size: 11px; font-weight: 600; color: #5b6875; }
+    .gc-section-label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #95a2af; margin: 4px 0 10px; }
+    .gc-section-label:not(:first-child) { margin-top: 22px; padding-top: 18px; border-top: 1px dashed var(--admin-border); }
+    .gc-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 22px; }
+    .gc-field label { display: block; font-size: 13px; font-weight: 600; color: #1b2b3c; margin-bottom: 6px; }
+    .gc-optional { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 999px; background: var(--admin-bg); font-size: 10px; font-weight: 600; color: #95a2af; vertical-align: middle; }
+    .gc-input { position: relative; display: flex; align-items: center; background: #fff; border: 1px solid var(--admin-border); border-radius: 10px; transition: border-color .15s, box-shadow .15s; }
+    .gc-input:focus-within { border-color: var(--admin-secondary); box-shadow: 0 0 0 3px rgba(11, 111, 214, .12); }
+    .gc-input > i { width: 40px; text-align: center; color: #95a2af; font-size: 14px; flex-shrink: 0; }
+    .gc-input input { flex: 1; min-width: 0; height: 42px; border: none; outline: none; background: transparent; padding: 0 12px 0 0; font-size: 13px; color: #1b2b3c; }
+    .gc-input__toggle { border: none; background: transparent; width: 40px; height: 40px; color: #95a2af; cursor: pointer; flex-shrink: 0; }
+    .gc-input__toggle:hover { color: var(--admin-primary); }
+    .gc-error { font-size: 12px; color: #c62828; margin-top: 4px; }
+    .gc-settings__foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 14px 20px; background: var(--admin-bg); border-top: 1px solid var(--admin-border); }
     .gc-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
     .gc-stat { flex: 1; min-width: 140px; background: var(--admin-bg); border: 1px solid var(--admin-border); border-radius: 10px; padding: 12px 14px; }
     .gc-stat strong { display: block; font-size: 22px; color: var(--admin-primary); }
@@ -14,11 +27,6 @@
     .gc-status--ok { background: rgba(46, 125, 50, 0.12); color: #2e7d32; }
     .gc-status--off { background: rgba(198, 40, 40, 0.12); color: #c62828; }
     .gc-help { font-size: 12px; color: #6c7a88; margin-top: 4px; }
-    .gc-uri { display: flex; align-items: center; gap: 8px; background: var(--admin-bg); border: 1px solid var(--admin-border); border-radius: 8px; padding: 8px 10px; margin-bottom: 8px; font-family: monospace; font-size: 12px; word-break: break-all; }
-    .gc-uri button { margin-left: auto; flex-shrink: 0; }
-    .gc-steps { padding-left: 18px; margin: 0; font-size: 13px; }
-    .gc-steps li { margin-bottom: 8px; }
-    .gc-note { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 10px 12px; font-size: 12px; margin-top: 12px; }
     .gc-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
     .gc-tabs a { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--admin-border); font-size: 12px; color: var(--admin-primary); }
     .gc-tabs a.active { background: var(--admin-secondary); border-color: var(--admin-secondary); color: #fff; }
@@ -34,9 +42,8 @@
     .gc-central__icon.is-on { background: rgba(219, 68, 55, 0.1); color: #db4437; }
     .gc-central__title { font-size: 14px; color: #1b2b3c; }
     .gc-central__actions { display: flex; gap: 8px; flex-wrap: wrap; }
-    @media (max-width: 991px) {
-        .gc-grid { grid-template-columns: 1fr; }
-        .gc-grid > .admin-panel + .admin-panel { border-left: none !important; border-top: 1px solid var(--admin-border) !important; }
+    @media (max-width: 767px) {
+        .gc-fields { grid-template-columns: 1fr; }
     }
 </style>
 @endpush
@@ -56,76 +63,89 @@
             @endif
         </div>
 
-        <div class="gc-grid">
-            <div class="admin-panel">
-                <div class="admin-panel__head"><i class="fa fa-key"></i> Google OAuth settings</div>
-                <div class="admin-panel__body">
-                    <form action="{{ route('admin.google-calendar.settings') }}" method="POST" autocomplete="off">
-                        @csrf
-                        <div class="form-group">
-                            <label for="google_client_id">Client ID <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="google_client_id" name="google_client_id"
-                                value="{{ old('google_client_id', $settings['client_id']) }}"
-                                placeholder="xxxxxxxx.apps.googleusercontent.com" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="google_client_secret">Client Secret @if(!$settings['secret_mask'])<span class="text-danger">*</span>@endif</label>
-                            <input type="password" class="form-control" id="google_client_secret" name="google_client_secret"
-                                placeholder="{{ $settings['secret_mask'] ? 'Saved (' . $settings['secret_mask'] . ') — leave blank to keep' : 'GOCSPX-...' }}"
-                                autocomplete="new-password">
-                            <div class="gc-help">Stored encrypted. Leave blank to keep the current secret.</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="google_redirect_uri">Calendar redirect URI <span class="text-danger">*</span></label>
-                            <input type="url" class="form-control" id="google_redirect_uri" name="google_redirect_uri"
-                                value="{{ old('google_redirect_uri', $settings['redirect_uri']) }}" required>
-                            <div class="gc-help">Must exactly match an “Authorized redirect URI” in Google Cloud Console.</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="google_login_redirect_uri">Google login redirect URI <span class="text-muted">(optional)</span></label>
-                            <input type="url" class="form-control" id="google_login_redirect_uri" name="google_login_redirect_uri"
-                                value="{{ old('google_login_redirect_uri', $settings['login_redirect_uri']) }}">
-                            <div class="gc-help">Only needed for “Sign in with Google” on the login page.</div>
-                        </div>
-
-                        @if($settings['source'] === 'env')
-                            <p class="gc-help"><i class="fa fa-info-circle"></i> Currently using values from the server <code>.env</code> file. Saving here will override them.</p>
-                        @endif
-
-                        <button type="submit" class="btn btn-admin-primary"><i class="fa fa-save"></i> Save settings</button>
-                    </form>
-                </div>
+        <div class="admin-panel gc-settings">
+            <div class="admin-panel__head gc-settings__head">
+                <span><i class="fa fa-key"></i> Google OAuth settings</span>
+                <span class="gc-source">
+                    @if($settings['source'] === 'dashboard')
+                        <i class="fa fa-database"></i> Saved in dashboard
+                    @elseif($settings['source'] === 'env')
+                        <i class="fa fa-server"></i> Using server .env values
+                    @else
+                        <i class="fa fa-circle-exclamation"></i> Not configured
+                    @endif
+                </span>
             </div>
 
-            <div class="admin-panel">
-                <div class="admin-panel__head"><i class="fa fa-list-ol"></i> Google Cloud Console checklist</div>
+            <form action="{{ route('admin.google-calendar.settings') }}" method="POST" autocomplete="off">
+                @csrf
                 <div class="admin-panel__body">
-                    <ol class="gc-steps">
-                        <li>Open <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">Google Cloud Console → Credentials</a> and select the OAuth client.</li>
-                        <li>Under <strong>Authorized redirect URIs</strong>, add:
-                            <div style="margin-top:8px;">
-                                @foreach($suggestedRedirects as $uri)
-                                    <div class="gc-uri">
-                                        <span>{{ $uri }}</span>
-                                        <button type="button" class="btn btn-xs btn-default gc-copy" data-copy="{{ $uri }}"><i class="fa fa-copy"></i> Copy</button>
-                                    </div>
-                                @endforeach
+                    <div class="gc-section-label">Credentials</div>
+                    <div class="gc-fields">
+                        <div class="gc-field">
+                            <label for="google_client_id">Client ID <span class="text-danger">*</span></label>
+                            <div class="gc-input">
+                                <i class="fa fa-id-card"></i>
+                                <input type="text" id="google_client_id" name="google_client_id"
+                                    value="{{ old('google_client_id', $settings['client_id']) }}"
+                                    placeholder="xxxxxxxx.apps.googleusercontent.com" required>
                             </div>
-                        </li>
-                        <li>Make sure the <strong>Google Calendar API</strong> is enabled for the project.</li>
-                        <li>On <strong>OAuth consent screen → Branding</strong>, set the app name to <strong>FITNEX</strong> and add the logo.</li>
-                        <li>On <strong>Audience</strong>, click <strong>Publish app</strong> so any trainer can connect — no need to add each email as a test user.</li>
-                    </ol>
-                    <div class="gc-note">
-                        <strong>Why Publish?</strong> Google has no API for adding test users, so emails can't be added automatically.
-                        Once the app is published, every trainer can connect with their own Gmail. Until Google verifies the app,
-                        trainers will see “Google hasn’t verified this app” and can continue via <em>Advanced → Go to FITNEX</em> (limit: 100 trainers).
+                            @error('google_client_id')<div class="gc-error">{{ $message }}</div>@enderror
+                        </div>
+
+                        <div class="gc-field">
+                            <label for="google_client_secret">Client Secret @if(!$settings['secret_mask'])<span class="text-danger">*</span>@endif</label>
+                            <div class="gc-input">
+                                <i class="fa fa-lock"></i>
+                                <input type="password" id="google_client_secret" name="google_client_secret"
+                                    placeholder="{{ $settings['secret_mask'] ? 'Saved (' . $settings['secret_mask'] . ')' : 'GOCSPX-...' }}"
+                                    autocomplete="new-password">
+                                <button type="button" class="gc-input__toggle" data-toggle-secret="google_client_secret" aria-label="Show secret">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="gc-help">Stored encrypted. Leave blank to keep the saved secret.</div>
+                            @error('google_client_secret')<div class="gc-error">{{ $message }}</div>@enderror
+                        </div>
+                    </div>
+
+                    <div class="gc-section-label">Redirect URIs</div>
+                    <div class="gc-fields">
+                        <div class="gc-field">
+                            <label for="google_redirect_uri">Calendar redirect URI <span class="text-danger">*</span></label>
+                            <div class="gc-input">
+                                <i class="fa-solid fa-calendar-check"></i>
+                                <input type="url" id="google_redirect_uri" name="google_redirect_uri"
+                                    value="{{ old('google_redirect_uri', $settings['redirect_uri']) }}" required>
+                            </div>
+                            <div class="gc-help">Must match an authorized redirect URI in Google Cloud Console.</div>
+                            @error('google_redirect_uri')<div class="gc-error">{{ $message }}</div>@enderror
+                        </div>
+
+                        <div class="gc-field">
+                            <label for="google_login_redirect_uri">Login redirect URI <span class="gc-optional">Optional</span></label>
+                            <div class="gc-input">
+                                <i class="fa fa-right-to-bracket"></i>
+                                <input type="url" id="google_login_redirect_uri" name="google_login_redirect_uri"
+                                    value="{{ old('google_login_redirect_uri', $settings['login_redirect_uri']) }}">
+                            </div>
+                            <div class="gc-help">Used by "Sign in with Google" on the login page.</div>
+                            @error('google_login_redirect_uri')<div class="gc-error">{{ $message }}</div>@enderror
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                <div class="gc-settings__foot">
+                    <span class="gc-help" style="margin:0;">
+                        @if($settings['source'] === 'env')
+                            <i class="fa fa-info-circle"></i> Saving here overrides the values in the server .env file.
+                        @else
+                            <i class="fa fa-shield-halved"></i> Changes apply immediately — no server restart needed.
+                        @endif
+                    </span>
+                    <button type="submit" class="btn btn-admin-primary"><i class="fa fa-save"></i> Save settings</button>
+                </div>
+            </form>
         </div>
 
         <div class="admin-panel" style="border-top:1px solid var(--admin-border) !important;">
@@ -282,11 +302,12 @@
 
 @push('js')
 <script>
-document.querySelectorAll('.gc-copy').forEach(function (btn) {
+document.querySelectorAll('[data-toggle-secret]').forEach(function (btn) {
     btn.addEventListener('click', function () {
-        navigator.clipboard.writeText(btn.getAttribute('data-copy')).then(function () {
-            if (window.toastr) { toastr.success('Copied'); }
-        });
+        var input = document.getElementById(btn.getAttribute('data-toggle-secret'));
+        var show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        btn.querySelector('i').className = show ? 'fa fa-eye-slash' : 'fa fa-eye';
     });
 });
 
