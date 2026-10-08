@@ -159,6 +159,10 @@ class WebController extends Controller
 
     public function resetPassword($verify_token)
     {
+        if (!User::where('verify_token', $verify_token)->where('status', 1)->exists()) {
+            return redirect()->route('forgot-password')->with('error', 'This reset link has expired or was already used. Please request a new one.');
+        }
+
         $page_title = 'Reset Password';
         return view('auth.passwords.change', compact('page_title', 'verify_token'));
     }
@@ -170,6 +174,9 @@ class WebController extends Controller
         ]);
 
         $user = User::where('verify_token', $request->verify_token)->where('status', 1)->first();
+        if (!$user || empty($request->verify_token)) {
+            return redirect()->route('forgot-password')->with('error', 'This reset link has expired or was already used. Please request a new one.');
+        }
         $user->password = Hash::make($request->password);
         $user->verify_token = null;
         $user->update();
