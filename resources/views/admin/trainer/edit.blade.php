@@ -102,13 +102,7 @@
 								@php
 									$selectedSlugs = old('trainer_types', $trainer->trainer_type ? array_filter(explode(',', $trainer->trainer_type)) : []);
 								@endphp
-								<select name="trainer_types[]" class="form-control" multiple="multiple" required>
-									@foreach($categories as $category)
-										<option value="{{ $category->slug }}" {{ in_array($category->slug, $selectedSlugs) ? 'selected' : '' }}>{{ $category->title }}</option>
-									@endforeach
-								</select>
-								<small class="text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple categories.</small>
-								<span style="color: red">{{ $errors->first('trainer_types') }}</span>
+								@include('admin.trainer.partials.category-checkboxes', ['selected' => $selectedSlugs])
 							</div>
 						</div>
 						@php
