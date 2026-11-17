@@ -19,6 +19,8 @@ use App\Mail\NewAppointmentForTrainerMail;
 use App\Notifications\AppointmentBookedNotification;
 use App\Notifications\AppointmentConfirmedNotification;
 use App\Services\GoogleCalendarService;
+use App\Services\StripeConnectService;
+use App\Services\StripeConnectSettings;
 use App\Services\TrainerGoogleCalendar;
 use Carbon\Carbon;
 use Stripe\Stripe;
@@ -27,6 +29,7 @@ use Stripe\Webhook;
 use Stripe\Exception\SignatureVerificationException;
 use UnexpectedValueException;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class AppointmentController extends Controller
 {
@@ -443,11 +446,29 @@ class AppointmentController extends Controller
             if ($session->payment_status == 'paid' && $appointment->status === 'pending') {
                 $appointment->payment_status = 'completed';
                 $appointment->status = 'confirmed';
+                $appointment->stripe_payment_intent_id = is_string($session->payment_intent)
+                    ? $session->payment_intent
+                    : ($session->payment_intent->id ?? $appointment->stripe_payment_intent_id);
                 $appointment->save();
 
                 // Reload appointment with relationships to ensure we have all data
                 $appointment->refresh();
                 $appointment->load(['trainer.user', 'user']);
+
+                // Hold funds on platform; release after session complete (or immediately if settings say so)
+                try {
+                    $stripeConnect = app(StripeConnectService::class);
+                    $appointment = $stripeConnect->markPaymentHeld(
+                        $appointment,
+                        $appointment->stripe_payment_intent_id
+                    );
+
+                    if (!StripeConnectSettings::payoutOnSessionComplete()) {
+                        $appointment = $stripeConnect->releasePayout($appointment);
+                    }
+                } catch (Throwable $payoutException) {
+                    Log::error('Stripe Connect hold/release failed for appointment '.$appointment->id.': '.$payoutException->getMessage());
+                }
 
                 // Update Google Calendar event after payment success (if event already exists from booking)
                 // If event doesn't exist, create a new one

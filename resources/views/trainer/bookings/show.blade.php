@@ -131,6 +131,18 @@
                                             </td>
                                         </tr>
                                     @endif
+                                    @if($booking->payout_status && $booking->payout_status !== 'not_applicable')
+                                        <tr>
+                                            <th>Your payout</th>
+                                            <td>
+                                                ${{ number_format((float) ($booking->trainer_payout_amount ?? 0), 2) }}
+                                                <span class="label label-default" style="margin-left:6px;">{{ str_replace('_', ' ', $booking->payout_status) }}</span>
+                                                @if($booking->platform_commission_amount)
+                                                    <br><small class="text-muted">Fitnex commission: ${{ number_format((float) $booking->platform_commission_amount, 2) }}@if($booking->stripe_fee_amount) · Stripe fee: ${{ number_format((float) $booking->stripe_fee_amount, 2) }}@endif</small>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endif
                                 </table>
                             </div>
 

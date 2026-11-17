@@ -32,6 +32,11 @@
                     <i class="fa-brands fa-google" aria-hidden="true"></i> <span>Google Sync</span>
                 </a>
             </li>
+            <li class="{{ request()->is('trainer/stripe*') ? 'active' : '' }}">
+                <a href="{{ route('trainer.stripe.index') }}">
+                    <i class="fa fa-credit-card" aria-hidden="true"></i> <span>Stripe Payouts</span>
+                </a>
+            </li>
             <li class="{{ request()->is('trainer/profile*') ? 'active' : '' }}">
                 <a href="{{ route('trainer.profile.edit') }}">
                     <i class="fa fa-user" aria-hidden="true"></i> <span>Profile</span>

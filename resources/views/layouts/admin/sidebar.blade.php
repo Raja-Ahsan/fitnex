@@ -126,6 +126,13 @@
             </a>
         </li>
 
+        <li class="treeview mt-2">
+            <a href="{{ route('admin.stripe-connect.index') }}"
+                class="{{ request()->is('admin/stripe-connect*') ? 'active' : '' }}">
+                <i class="fa fa-credit-card"></i> <span>Stripe Connect</span>
+            </a>
+        </li>
+
         {{-- Trainer Management Section --}}
         <li class="treeview {{ (request()->is('admin/bookings') || request()->is('admin/bookings/*') || request()->is('admin/appointments/*') || request()->is('admin/slots') || request()->is('admin/slots/*') || request()->is('admin/availability') || request()->is('admin/availability/*')) ? 'active' : '' }}"
             style="height: auto;">

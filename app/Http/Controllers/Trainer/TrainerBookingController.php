@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Trainer;
 use App\Services\BookingService;
+use App\Services\StripeConnectService;
+use App\Services\StripeConnectSettings;
 use App\Services\TrainerGoogleCalendar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class TrainerBookingController extends Controller
 {
@@ -123,14 +127,22 @@ class TrainerBookingController extends Controller
         ]);
         $calendar->removeAppointment($booking);
 
+        if (in_array($booking->payout_status, ['held', 'manual_pending', 'failed'], true)) {
+            try {
+                app(StripeConnectService::class)->markRefunded($booking);
+            } catch (Throwable $e) {
+                Log::warning('Could not update payout status after cancel: '.$e->getMessage());
+            }
+        }
+
         return redirect()->route('trainer.bookings.index')
-            ->with('success', 'Booking cancelled successfully.');
+            ->with('success', 'Booking cancelled successfully. If payment was taken, process the refund from Stripe/admin.');
     }
 
     /**
-     * Mark booking as completed.
+     * Mark booking as completed and release Stripe Connect payout when configured.
      */
-    public function complete($id)
+    public function complete($id, StripeConnectService $stripeConnect)
     {
         $trainer = Trainer::where('created_by', Auth::id())->firstOrFail();
         $booking = \App\Models\Appointment::findOrFail($id);
@@ -139,8 +151,29 @@ class TrainerBookingController extends Controller
             abort(403, 'Unauthorized access to this booking.');
         }
 
+        if ($booking->status === 'cancelled') {
+            return back()->with('error', 'Cancelled bookings cannot be marked as completed.');
+        }
+
         $booking->update(['status' => 'completed']);
 
-        return back()->with('success', 'Booking marked as completed.');
+        $message = 'Booking marked as completed.';
+
+        if (StripeConnectSettings::payoutOnSessionComplete() && in_array($booking->payment_status, ['completed', 'paid'], true) && (float) $booking->price > 0) {
+            try {
+                $booking = $stripeConnect->releasePayout($booking->fresh());
+                $message .= match ($booking->payout_status) {
+                    'transferred' => ' Trainer payout was sent via Stripe.',
+                    'manual_pending' => ' Payout needs a manual transfer (trainer may not be connected to Stripe yet).',
+                    'failed' => ' Payout could not be released automatically.',
+                    default => '',
+                };
+            } catch (Throwable $e) {
+                Log::error('Payout release after complete failed: '.$e->getMessage());
+                $message .= ' Payout release failed — admin can retry from Stripe Connect.';
+            }
+        }
+
+        return back()->with('success', $message);
     }
 }

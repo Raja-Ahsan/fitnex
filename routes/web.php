@@ -311,6 +311,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('google-calendar/central/disconnect', [\App\Http\Controllers\admin\GoogleCalendarAdminController::class, 'centralDisconnect'])->name('google-calendar.central.disconnect');
         Route::post('google-calendar/central/test', [\App\Http\Controllers\admin\GoogleCalendarAdminController::class, 'centralTest'])->name('google-calendar.central.test');
         Route::post('google-calendar/central/sync', [\App\Http\Controllers\admin\GoogleCalendarAdminController::class, 'centralSync'])->name('google-calendar.central.sync');
+
+        // Stripe Connect — commission settings + trainer payout tracking
+        Route::get('stripe-connect', [\App\Http\Controllers\admin\StripeConnectAdminController::class, 'index'])->name('stripe-connect.index');
+        Route::post('stripe-connect/settings', [\App\Http\Controllers\admin\StripeConnectAdminController::class, 'updateSettings'])->name('stripe-connect.settings');
+        Route::post('stripe-connect/refresh/{trainer}', [\App\Http\Controllers\admin\StripeConnectAdminController::class, 'refreshTrainer'])->name('stripe-connect.refresh');
+        Route::post('stripe-connect/release/{appointment}', [\App\Http\Controllers\admin\StripeConnectAdminController::class, 'releasePayout'])->name('stripe-connect.release');
+        Route::post('stripe-connect/manual-paid/{appointment}', [\App\Http\Controllers\admin\StripeConnectAdminController::class, 'markManualPaid'])->name('stripe-connect.manual-paid');
     });
 
     // ============================================
@@ -362,6 +369,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('google/callback', [\App\Http\Controllers\Trainer\GoogleCalendarController::class, 'callback'])->name('google.callback');
         Route::post('google/disconnect', [\App\Http\Controllers\Trainer\GoogleCalendarController::class, 'disconnect'])->name('google.disconnect');
         Route::post('google/test', [\App\Http\Controllers\Trainer\GoogleCalendarController::class, 'test'])->name('google.test');
+
+        // Stripe Connect payouts
+        Route::get('stripe', [\App\Http\Controllers\Trainer\StripeConnectController::class, 'index'])->name('stripe.index');
+        Route::post('stripe/connect', [\App\Http\Controllers\Trainer\StripeConnectController::class, 'connect'])->name('stripe.connect');
+        Route::get('stripe/refresh', [\App\Http\Controllers\Trainer\StripeConnectController::class, 'refresh'])->name('stripe.refresh');
+        Route::get('stripe/return', [\App\Http\Controllers\Trainer\StripeConnectController::class, 'returnFromStripe'])->name('stripe.return');
     });
 
     //Trainers
